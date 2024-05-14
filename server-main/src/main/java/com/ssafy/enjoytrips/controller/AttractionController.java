@@ -9,23 +9,34 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ssafy.enjoytrips.model.dto.Attraction;
+import com.ssafy.enjoytrips.model.dto.Region;
 import com.ssafy.enjoytrips.model.dto.SearchCondition;
 import com.ssafy.enjoytrips.service.AttractionService;
-import com.ssafy.enjoytrips.service.SidoService;
+import com.ssafy.enjoytrips.service.RegionService;
 
 @RestController
 @RequestMapping("/attraction")
 public class AttractionController {
 
-	private final SidoService sidoService;
+	private final RegionService regionService;
 	private final AttractionService attractionInfoService;
 	
-	public AttractionController(SidoService sidoService, AttractionService attractionInfoService) {
+	public AttractionController(RegionService regionService, AttractionService attractionInfoService) {
 		super();
-		this.sidoService = sidoService;
+		this.regionService = regionService;
 		this.attractionInfoService = attractionInfoService;
 	}
-
+	
+	@GetMapping("region")
+	public ResponseEntity<?> getRegion() {
+		try {
+			List<Region> regionList = regionService.getRegion();
+			return ResponseEntity.ok(regionList);
+		} catch (Exception e) {
+			return exceptionHandling(e);
+		}
+	}
+	
 
 
 	@GetMapping("/search")
