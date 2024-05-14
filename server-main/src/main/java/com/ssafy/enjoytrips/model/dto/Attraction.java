@@ -10,7 +10,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Attraction {
-	private String title, addr1, addr2, zipcode, firstImage, tel;
+	private String title, addr1, addr2, zipcode, firstImage, tel, description;
 	private int category, sidoCode, gugunCode, contentId;
 	private double latitude, longitude;
 

@@ -10,4 +10,6 @@ public interface AttractionService {
 	// search
 	List<Attraction> search(String sido, String gugun, String contentType, SearchCondition condition);
 
+	Attraction searchById(String id);
+
 }

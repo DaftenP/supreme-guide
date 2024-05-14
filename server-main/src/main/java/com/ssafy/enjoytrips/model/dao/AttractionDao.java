@@ -11,8 +11,9 @@ import com.ssafy.enjoytrips.model.dto.SearchCondition;
 @Mapper
 public interface AttractionDao {
 
-	// search
 	List<Attraction> search(@Param("sido") String sido, @Param("gugun") String gugun,
 			@Param("category") String contentType, @Param("condition") SearchCondition condition);
+
+	Attraction searchById(String id);
 
 }

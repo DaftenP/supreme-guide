@@ -44,4 +44,33 @@
 		</if>
         ;
     </select>
+    
+    <select id="searchById" parameterType="string" resultType="attraction">
+    	SELECT 
+    		a.content_id, 
+        	a.content_type_id category, 
+        	a.title, 
+        	a.addr1, 
+        	a.addr2, 
+        	a.zipcode, 
+        	a.tel, 
+        	a.first_image, 
+        	a.first_image2, 
+        	a.readcount, 
+        	a.sido_code, 
+        	a.gugun_code, 
+        	a.latitude, 
+        	a.longitude, 
+        	a.mlevel,
+        	d.overview description
+        FROM
+        	attraction_info a
+        		INNER JOIN
+        	attraction_description d
+        		ON a.content_id = d.content_id
+        WHERE
+        	a.content_id = #{id}
+        ;
+    </select>
+    
 </mapper>
