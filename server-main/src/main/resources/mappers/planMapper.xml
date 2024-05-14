@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ssafy.enjoytrips.model.dao.PlanDao">
+
+
+	<resultMap type="plan" id="planMap">
+        <result column="trip_plan_id" property="tripPlanId"/>
+        <result column="trip_plan_name" property="tripPlanName"/>
+        <result column="trip_plan_user_id" property="tripPlanUserId"/>
+        <result column="trip_plan_content" property="tripPlanContent"/>
+        <result column="trip_plan_startDate" property="startDate"/>
+        <result column="trip_plan_endDate" property="endDate"/>
+        <result column="trip_plan_createdDate" property="createdDate"/>
+        <collection property="tripPlanItems" ofType="attraction">
+        	<id column="content_id" property="id"/>
+        	<result column="content_type_id" property="category"/>
+        	<result column="title" property="title"/>
+        	<result column="addr1" property="addr1"/>
+        	<result column="addr2" property="addr2"/>       	
+        	<result column="zipcode" property="zipcode"/>       	
+        	<result column="first_image" property="firstimage"/>       	
+        	<result column="sido_code" property="sidocode"/>       	
+        	<result column="gugun_code" property="guguncode"/>       	
+        	<result column="latitude" property="mapy"/>       	
+        	<result column="longitude" property="mapx"/>       	
+        </collection>
+    </resultMap>
+<!-- 
+	List<Plan> search(SearchCondition condition);
+	Plan select(String planId);
+	int regist(Plan plan);
+	int modify(Plan plan);
+	int delete(String planId);
+ -->
+ 	<select id="search" parameterType="searchCondition" resultType="plan">
+ 		SELECT 
+ 			trip_plan_id, trip_plan_name, trip_plan_user_id, trip_plan_content, trip_plan_startDate startDate, trip_plan_endDate endDate, trip_plan_createdDate createdDate
+ 		FROM
+ 			trip_plan
+ 		<where>
+ 			<if test="key != 'none'">
+ 				${key} LIKE CONCAT('%', #{word}, '%')
+ 			</if>
+ 			<if test="orderBy != 'none'">
+				ORDER BY ${orderBy} ${orderByDir}
+			</if>
+			
+			<if test="limit">
+				LIMIT #{offset}, #{countPerPage}
+			</if>
+	 		</where>
+ 		;
+ 	</select>
+
+ 	<select id="select" parameterType="string" resultMap="planMap">
+ 		SELECT 
+ 			p.trip_plan_id, p.trip_plan_name, p.trip_plan_user_id, p.trip_plan_content, p.trip_plan_startDate startDate, p.trip_plan_endDate endDate, p.trip_plan_createdDate createdDate,
+ 			a.content_id, a.content_type_id, a.title, a.addr1, a.addr2, a.zipcode, a.tel, a.first_image, a.first_image2, a.readcount, a.sido_code, a.gugun_code, a.latitude, a.longitude, a.mlevel
+ 		FROM
+ 			trip_plan p
+ 			INNER JOIN
+ 				trip_plan_item i
+ 			USING
+ 				(trip_plan_id)
+ 			INNER JOIN
+ 				attraction_info a
+ 			ON
+ 				i.attraction_info_content_id = a.content_id
+ 		WHERE
+ 			trip_plan_id = #{id}
+ 		;
+ 	</select>
+	
+	<insert id="registPlan" parameterType="plan">
+		INSERT INTO 
+			trip_plan (trip_plan_name, trip_plan_user_id, trip_plan_startDate, trip_plan_endDate, trip_plan_content)
+		VALUES
+			(#{tripPlanName}, #{tripPlanUserId}, #{startDate}, #{endDate}, #{tripPlanContent})
+		;
+		<selectKey resultType="int" keyProperty="tripPlanId" order="AFTER">
+            select last_insert_id()
+            ;
+        </selectKey>
+	</insert>
+	
+	<insert id="registPlanItems" parameterType="plan">
+		INSERT INTO 
+			trip_plan_item (trip_plan_id, attraction_info_content_id, trip_plan_item_order)
+		VALUES		
+			<foreach collection="tripPlanItems" index="i" item="item" separator=",">
+				(#{tripPlanId}, #{item.id}, #{i})
+			</foreach>
+		;
+	</insert>
+	
+	<update id="modify" parameterType="plan">
+		UPDATE 
+			trip_plan
+		SET
+			trip_plan_name = #{tripPlanName}, trip_plan_content = #{tripPlanContent}, trip_plan_startDate = #{startDate}, trip_plan_endDate = #{endDate}
+		WHERE
+			trip_plan_id = #{tripPlanId}	
+		;
+	</update>
+		
+	<delete id="deletePlanItems" parameterType="int">
+		DELETE FROM
+			trip_plan_item
+		WHERE
+			trip_plan_id = #{planId}
+		;
+	</delete>
+	
+	<delete id="delete" parameterType="string">
+		DELETE FROM
+			trip_plan
+		WHERE
+			trip_plan_id = #{planId}
+		;
+	</delete>
+
+</mapper>

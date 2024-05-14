@@ -1,0 +1,27 @@
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- -->
+<mapper namespace="com.ssafy.enjoytrips.model.dao.AttractionDao">
+	
+	<select id="search" resultType="attraction">
+        SELECT 
+        	content_id id, content_type_id category, title, addr1, addr2, zipcode, tel, first_image, first_image2, readcount, sido_code, gugun_code, latitude mapy, longitude mapx, mlevel
+        FROM 
+        	attraction_info
+        WHERE
+        <if test="contentType != null and contentType != '0'">
+            content_type_id = #{contentType} AND
+        </if>
+        <if test="sido != null and sido != '0'">
+            sido_code = #{sido} AND
+        </if>
+        <if test="gugun != null and gugun != '0'">
+            gugun_code = #{gugun} AND
+        </if>
+        <if test="keyword != null">
+            (title LIKE CONCAT('%', #{keyword}, '%') OR addr1 LIKE CONCAT('%', #{keyword}, '%')) AND
+        </if>
+        1
+        LIMIT 500
+    </select>
+</mapper>

@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ssafy.enjoytrips.model.dao.UserDao">
+
+
+<!-- 
+
+User login(User user);
+int regist();
+int modify();
+int delete();
+ -->
+ 	<select id="select" parameterType="user">
+ 		SELECT 
+ 			user_id id, user_name name, user_admin admin, user_email email
+ 		FROM
+ 			user
+ 		WHERE
+ 			user_id = #{id}
+ 		;
+ 	</select>
+ 
+ 	<select id="login" parameterType="user">
+ 		SELECT 
+ 			user_id id, user_pw pw, user_name name, user_admin admin, user_salt salt, user_email email
+ 		FROM
+ 			user
+ 		WHERE
+ 			user_id = #{id}
+ 		;
+ 	</select>
+	
+	<insert id="regist" parameterType="user">
+		INSERT INTO 
+			user (user_id, user_pw, user_name, user_admin, user_salt, user_email)
+		VALUES
+			(#{id}, #{pw}, #{name}, #{admin}, #{salt}, #{email})
+		;
+	</insert>
+	
+	<update id="modify" parameterType="user">
+		UPDATE 
+			user
+		SET
+			user_pw = #{pw}, user_salt = #{salt}<!-- , user_name = #{name}, user_email = #{email} -->
+		WHERE
+			user_id = #{id}	
+		;
+	</update>
+
+	<delete id="delete">
+		DELETE FROM
+			user
+		WHERE
+			user_id = #{id}
+		;
+	</delete>
+
+</mapper>
