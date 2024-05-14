@@ -1,10 +1,14 @@
 package com.ssafy.enjoytrips.model.dto;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
 @Getter
 @Setter
+@AllArgsConstructor
+@RequiredArgsConstructor
 public class Notice {
 
     private int noticeId;
@@ -14,15 +18,4 @@ public class Notice {
     private String noticeWriter;
     private String noticeCreateDate;
 
-    public Notice() {
-    }
-
-    public Notice(int noticeId, String noticeTitle, String noticeContent, int noticeView, String noticeWriter, String noticeCreateDate) {
-        this.noticeId = noticeId;
-        this.noticeTitle = noticeTitle;
-        this.noticeContent = noticeContent;
-        this.noticeView = noticeView;
-        this.noticeWriter = noticeWriter;
-        this.noticeCreateDate = noticeCreateDate;
-    }
 }

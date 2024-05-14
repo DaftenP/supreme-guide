@@ -1,10 +1,14 @@
 package com.ssafy.enjoytrips.model.dto;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
 @Getter
 @Setter
+@AllArgsConstructor
+@RequiredArgsConstructor
 public class QnaComment {
 
     private int qnaCommentId;
@@ -13,25 +17,4 @@ public class QnaComment {
     private int qnaId;
     private String userId;
 
-    public QnaComment() {
-    }
-
-    public QnaComment(int qnaCommentId, String qnaCommentContent, int qnaCommentHarmful, int qnaId, String userId) {
-        this.qnaCommentId = qnaCommentId;
-        this.qnaCommentContent = qnaCommentContent;
-        this.qnaCommentHarmful = qnaCommentHarmful;
-        this.qnaId = qnaId;
-        this.userId = userId;
-    }
-
-    @Override
-    public String toString() {
-        return "QnaComment{" +
-                "qnaCommentId=" + qnaCommentId +
-                ", qnaCommentContent='" + qnaCommentContent + '\'' +
-                ", qnaCommentHarmful=" + qnaCommentHarmful +
-                ", qnaId=" + qnaId +
-                ", userId='" + userId + '\'' +
-                '}';
-    }
 }

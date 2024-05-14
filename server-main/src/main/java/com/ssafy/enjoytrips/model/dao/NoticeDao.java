@@ -17,4 +17,6 @@ public interface NoticeDao {
     int delete(int noticeId);
     // 등록
     int regist(Notice notice);
+    // 조회수 증가
+    int updateView(int noticeId);
 }
