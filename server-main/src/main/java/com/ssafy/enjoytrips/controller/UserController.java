@@ -37,25 +37,25 @@ public class UserController extends HttpServlet {
 	}
 	
 	
-	@PostMapping("/login")
-	public ResponseEntity<?> login(@RequestBody User user) {
-		User loginUser = userService.login(user);
-		if (loginUser != null) {
-			return ResponseEntity.ok(loginUser);
-		} else {
-			return ResponseEntity.noContent().build();
-		}
-	}
+//	@PostMapping("/login")
+//	public ResponseEntity<?> login(@RequestBody User user) {
+//		User loginUser = userService.login(user);
+//		if (loginUser != null) {
+//			return ResponseEntity.ok(loginUser);
+//		} else {
+//			return ResponseEntity.noContent().build();
+//		}
+//	}
 
 
-	@PostMapping("/regist")
-	public ResponseEntity<?> regist(@RequestBody User user) {
-		if (userService.regist(user) > 0) {
-			return ResponseEntity.ok("회원 가입이 완료되었습니다.");
-		} else {
-			return ResponseEntity.internalServerError().body("회원 가입에 실패 하였습니다.");
-		}
-	}
+//	@PostMapping("/regist")
+//	public ResponseEntity<?> regist(@RequestBody User user) {
+//		if (userService.regist(user) > 0) {
+//			return ResponseEntity.ok("회원 가입이 완료되었습니다.");
+//		} else {
+//			return ResponseEntity.internalServerError().body("회원 가입에 실패 하였습니다.");
+//		}
+//	}
 
 	
 	@PutMapping("/modify")

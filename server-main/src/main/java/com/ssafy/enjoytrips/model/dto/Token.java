@@ -9,7 +9,7 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @RequiredArgsConstructor
-public class User {
-	private String id, pw, name, salt, email, createDate;
-	private int admin;
+public class Token {
+    private String accessToken, refreshToken, id;
+
 }

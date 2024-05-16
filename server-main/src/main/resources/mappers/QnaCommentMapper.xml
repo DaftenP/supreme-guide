@@ -19,25 +19,25 @@
         FROM
             qna_comment
         WHERE
-            qna_qna_id = #{qnaQnaId}
+            qna_qna_id = #{articleId}
     </select>
 
     <!-- 댓글 등록 -->
     <insert id="regist" parameterType="comment">
-        INSERT INTO qna_comment(qna_comment_id, qna_comment_content, qna_comment_harmful, qna_qna_id, user_user_id)
-        VALUES (#{qnaCommentId}, #{qnaCommentContent}, #{qnaCommentHarmful}, #{qnaQnaId}, #{userUserId})
+        INSERT INTO qna_comment(qna_comment_content, qna_comment_harmful, qna_qna_id, user_user_id)
+        VALUES (#{content}, #{harmful}, #{articleId}, #{userId})
     </insert>
     <!--  댓글 수정  -->
     <update id="modify" parameterType="comment">
         UPDATE qna_comment
-        SET qna_comment_content = #{qnaCommentContent}
-        WHERE qna_comment_id = #{qnaCommentId}
+        SET qna_comment_content = #{content}
+        WHERE qna_comment_id = #{id}
     </update>
 
     <!-- 댓글 삭제-->
     <delete id="delete" parameterType="int">
         DELETE
         FROM qna_comment
-        WHERE qna_comment_id = #{qnaCommentId}
+        WHERE qna_comment_id = #{id}
     </delete>
 </mapper>
