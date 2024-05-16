@@ -34,15 +34,21 @@ public class TripServiceImpl implements TripService {
 	}
 
 	@Override
+	@Transactional
 	public int regist(Trip trip) throws SQLException {
-		// TODO Auto-generated method stub
-		return 0;
+		int result = tripDao.regist(trip);
+		tripDao.registItems(trip);
+//		tripDao.registHashtags(trip);
+		return result;
 	}
 
 	@Override
+	@Transactional
 	public int modify(Trip trip) {
-		// TODO Auto-generated method stub
-		return 0;
+		int result = tripDao.modify(trip);
+		tripDao.deleteItems(trip.getTripId());
+		tripDao.registItems(trip);
+		return result;
 	}
 
 

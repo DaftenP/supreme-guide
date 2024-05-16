@@ -21,6 +21,7 @@
         	<result column="addr1" property="addr1"/>
         	<result column="addr2" property="addr2"/>       	
         	<result column="zipcode" property="zipcode"/>       	
+        	<result column="tel" property="tel"/>       	
         	<result column="first_image" property="firstImage"/>       	
         	<result column="sido_code" property="sidoCode"/>       	
         	<result column="gugun_code" property="gugunCode"/>       	
@@ -146,7 +147,7 @@
 			)
 		VALUES
 			(#{tripName},
-			 #{tripUserId}, 
+			 #{userId}, 
 			 #{tripStartDate}, 
 			 #{tripEndDate}, 
 			 #{tripContent})
@@ -166,7 +167,7 @@
 			)
 		VALUES		
 			<foreach collection="tripItems" index="i" item="item" separator=",">
-				(#{tripId}, #{item.contentId}, #{i+1})
+				(#{tripId}, #{item.contentId}, #{i}+1)
 			</foreach>
 		;
 	</insert>
