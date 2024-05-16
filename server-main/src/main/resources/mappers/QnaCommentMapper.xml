@@ -13,7 +13,7 @@
     int regist(QnaComment qnaComment); -->
 
     <!--  댓글 전체 조회  -->
-    <select id="list" parameterType="int" resultType="qnaComment">
+    <select id="list" parameterType="int" resultType="comment">
         SELECT
             qna_comment_id, qna_comment_content, qna_comment_harmful, qna_qna_id, user_user_id
         FROM
@@ -23,12 +23,12 @@
     </select>
 
     <!-- 댓글 등록 -->
-    <insert id="regist" parameterType="qnaComment">
+    <insert id="regist" parameterType="comment">
         INSERT INTO qna_comment(qna_comment_id, qna_comment_content, qna_comment_harmful, qna_qna_id, user_user_id)
         VALUES (#{qnaCommentId}, #{qnaCommentContent}, #{qnaCommentHarmful}, #{qnaQnaId}, #{userUserId})
     </insert>
     <!--  댓글 수정  -->
-    <update id="modify" parameterType="qnaComment">
+    <update id="modify" parameterType="comment">
         UPDATE qna_comment
         SET qna_comment_content = #{qnaCommentContent}
         WHERE qna_comment_id = #{qnaCommentId}

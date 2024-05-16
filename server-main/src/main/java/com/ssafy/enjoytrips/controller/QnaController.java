@@ -39,6 +39,7 @@ public class QnaController {
                 return ResponseEntity.noContent().build();
             }
         } catch (Exception e) {
+            System.out.println(e.getMessage());
             return ResponseEntity.internalServerError().build();
         }
     }

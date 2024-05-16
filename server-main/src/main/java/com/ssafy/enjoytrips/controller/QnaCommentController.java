@@ -1,16 +1,10 @@
 package com.ssafy.enjoytrips.controller;
 
-import com.ssafy.enjoytrips.model.dto.Qna;
-import com.ssafy.enjoytrips.model.dto.QnaComment;
+import com.ssafy.enjoytrips.model.dto.Comment;
 import com.ssafy.enjoytrips.service.CommentService;
-import com.ssafy.enjoytrips.service.QnaService;
-import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import org.apache.coyote.Response;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -19,18 +13,8 @@ public class QnaCommentController {
 
     private final CommentService commentService;
 
-    @GetMapping("/all")
-    public ResponseEntity<?> list(int qna_id) {
-        try {
-            List<QnaComment> qnaCommentList = commentService.list(qna_id);
-            return ResponseEntity.ok(qnaCommentList);
-        } catch (Exception e) {
-            return ResponseEntity.noContent().build();
-        }
-    }
-
     @PostMapping("/regist")
-    public ResponseEntity<?> regist(@RequestBody QnaComment comment) {
+    public ResponseEntity<?> regist(@RequestBody Comment comment) {
         try {
             int result = commentService.register(comment);
             return ResponseEntity.ok(result);
@@ -40,7 +24,7 @@ public class QnaCommentController {
     }
 
     @PutMapping("/{qna_comment_id}")
-    public ResponseEntity<?> modify(@RequestBody QnaComment comment) {
+    public ResponseEntity<?> modify(@RequestBody Comment comment) {
         try {
             int result = commentService.modify(comment);
             return ResponseEntity.ok(result);
