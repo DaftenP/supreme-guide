@@ -3,6 +3,7 @@ package com.ssafy.enjoytrips.model.dao;
 import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import com.ssafy.enjoytrips.model.dto.Comment;
 import com.ssafy.enjoytrips.model.dto.Hashtag;
@@ -24,11 +25,13 @@ public interface TripDao {
 	
 	int registItems(Trip trip);
 
-	int registHashtags(Trip trip);
+	int registHashtag(Hashtag hashtag);
+	
+	int registTripHashtag(@Param("tripId") int tripId, @Param("hashtagId") int hashtagId);
 	
 	int modify(Trip trip);
 	
 	int deleteItems(int tripId);
 	
-	int delete(String tripId);
+	int delete(int tripId);
 }

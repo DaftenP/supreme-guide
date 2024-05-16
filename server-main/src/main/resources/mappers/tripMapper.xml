@@ -136,7 +136,7 @@
  	</select>
  	
 	
-	<insert id="regist" parameterType="trip">
+	<insert id="regist" parameterType="trip" useGeneratedKeys="true" keyProperty="tripId">
 		INSERT INTO 
 			trip ( 
 				trip_name,
@@ -172,17 +172,27 @@
 		;
 	</insert>
 	
-	<insert id="registHashtags" parameterType="trip">
+	<insert id="registHashtag" parameterType="hashtag" useGeneratedKeys="true" keyProperty="hashtagId">
 		INSERT INTO 
-			trip_item (
-				trip_id, 
-				attraction_info_content_id, 
-				trip_item_order
+			hashtag (
+				hashtag_name
 			)
 		VALUES		
-			<foreach collection="tripItems" index="i" item="item" separator=",">
-				(#{tripId}, #{item.contentId}, #{i+1})
-			</foreach>
+			(
+				#{hashtagName}
+			)
+		;
+	</insert>
+	
+	<insert id="registTripHashtag">
+		INSERT INTO
+			trip_and_hashtag (
+				trip_id, hashtag_id
+			)
+		VALUES (
+			#{tripId},
+			#{hashtagId}
+		)
 		;
 	</insert>
 	
@@ -207,7 +217,7 @@
 		;
 	</delete>
 	
-	<delete id="delete" parameterType="string">
+	<delete id="delete" parameterType="int">
 		DELETE FROM
 			trip
 		WHERE

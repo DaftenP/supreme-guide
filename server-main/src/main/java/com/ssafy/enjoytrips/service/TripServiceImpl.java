@@ -7,9 +7,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.ssafy.enjoytrips.model.dao.TripDao;
-import com.ssafy.enjoytrips.model.dto.Trip;
+import com.ssafy.enjoytrips.model.dto.Hashtag;
 import com.ssafy.enjoytrips.model.dto.SearchCondition;
-import com.ssafy.enjoytrips.model.dto.User;
+import com.ssafy.enjoytrips.model.dto.Trip;
 
 @Service
 public class TripServiceImpl implements TripService {
@@ -30,6 +30,7 @@ public class TripServiceImpl implements TripService {
 	public Trip select(int tripId) {
 		Trip trip = tripDao.select(tripId);
 		trip.setTripComments(tripDao.selectComment(tripId));
+		trip.setHashtags(tripDao.selectHashtag(tripId));
 		return trip;
 	}
 
@@ -38,7 +39,12 @@ public class TripServiceImpl implements TripService {
 	public int regist(Trip trip) throws SQLException {
 		int result = tripDao.regist(trip);
 		tripDao.registItems(trip);
-//		tripDao.registHashtags(trip);
+		for(Hashtag hashtag: trip.getHashtags()) {
+			if (hashtag.getHashtagId() == 0) {
+				tripDao.registHashtag(hashtag);				
+			}
+			tripDao.registTripHashtag(trip.getTripId(), hashtag.getHashtagId());
+		}
 		return result;
 	}
 
@@ -53,9 +59,11 @@ public class TripServiceImpl implements TripService {
 
 
 	@Override
+	@Transactional
 	public int delete(int tripId) {
-		// TODO Auto-generated method stub
-		return 0;
+		tripDao.deleteItems(tripId);
+		int result = tripDao.delete(tripId); 
+		return result;
 	}
 
 	
