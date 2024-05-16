@@ -1,16 +1,13 @@
 package com.ssafy.enjoytrips.service;
 
-import com.ssafy.enjoytrips.model.dto.QnaComment;
-
-import java.util.List;
+import com.ssafy.enjoytrips.model.dto.Comment;
 
 public interface CommentService {
     // 등록
-    int register(QnaComment qnaComment);
-    // 전체 조회
-    List<QnaComment> getAllCommentsByQnaId(int qnaId);
+    int register(Comment comment);
+
     // 수정
-    int modify(QnaComment qnaComment);
+    int modify(Comment comment);
     // 삭제
     int delete(int qnaId);
 }

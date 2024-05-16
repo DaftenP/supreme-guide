@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ssafy.enjoytrips.model.dao.TripCommentDao">
+
+	<!-- 댓글 등록 -->
+	<insert id="regist" parameterType="comment">
+		INSERT INTO 
+			trip_comment (
+				trip_comment_content,
+				trip_comment_harmful, 
+				trip_id, 
+				user_id
+			)
+		VALUES ( 
+			#{content}, 
+			#{harmful},
+			#{articleId}, 
+			#{userId}
+		)
+		;
+	</insert>
+	
+	<!-- 댓글 수정 -->
+	<update id="modify" parameterType="comment">
+		UPDATE 
+			trip_comment
+		SET 
+			trip_comment_content = #{content},
+			trip_comment_harmful = #{harmful}
+		WHERE 
+			trip_comment_id = #{id}
+		;
+	</update>
+
+	<!-- 댓글 삭제 -->
+	<delete id="delete" parameterType="int">
+		DELETE FROM 
+			trip_comment
+		WHERE 
+			trip_comment_id = #{commentId}
+	</delete>
+</mapper>
