@@ -17,12 +17,12 @@ public class AuthServiceImpl implements AuthService{
     private final UserDao userDao;
     private final PasswordHashingUtil passwordHashingUtil;
 
-	public Token login(User user) {
+	public User login(User user) {
 		Token userGet = authDao.login(user);
         User users = userDao.select(userGet.getId());
 		if (users != null && passwordHashingUtil.get_SHA_256_SecurePassword(user.getPw(), users.getSalt())
 				.equals(users.getPw())) {
-			return userGet;
+			return users;
 		}
 		return null;
 	}

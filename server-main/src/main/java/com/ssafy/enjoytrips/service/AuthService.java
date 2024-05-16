@@ -5,7 +5,7 @@ import com.ssafy.enjoytrips.model.dto.User;
 
 public interface AuthService {
     // 로그인
-    Token login(User user);
+    User login(User user);
     // 회원가입
     int regist(User user);
 
