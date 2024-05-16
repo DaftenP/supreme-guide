@@ -18,27 +18,6 @@ public class UserServiceImpl implements UserService {
 		this.userDao = userDao;
 		this.passwordHashingUtil = passwordHashingUtil;
 	}
-
-	public User login(User user) {
-		User userGet = userDao.login(user);
-		if (userGet != null && passwordHashingUtil.get_SHA_256_SecurePassword(user.getPw(), userGet.getSalt())
-				.equals(userGet.getPw())) {
-			return userGet;
-		}
-		return null;
-	}
-
-	public int regist(User user) {
-		try {
-			String[] res = passwordHashingUtil.getHashedPassword(user.getPw());
-			user.setPw(res[0]);
-			user.setSalt(res[1]);
-		} catch (NoSuchAlgorithmException e) {
-			e.printStackTrace();
-		}
-		return userDao.regist(user);
-	}
-
 	public int modify(User user) {
 		try {
 			String[] res = passwordHashingUtil.getHashedPassword(user.getPw());

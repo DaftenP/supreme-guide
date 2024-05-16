@@ -4,14 +4,6 @@
 
 <mapper namespace="com.ssafy.enjoytrips.model.dao.UserDao">
 
-
-<!-- 
-
-User login(User user);
-int regist();
-int modify();
-int delete();
- -->
  	<select id="select" parameterType="user">
  		SELECT 
  			user_id id, user_name name, user_admin admin, user_email email
@@ -22,23 +14,23 @@ int delete();
  		;
  	</select>
  
- 	<select id="login" parameterType="user">
- 		SELECT 
- 			user_id id, user_pw pw, user_name name, user_admin admin, user_salt salt, user_email email
- 		FROM
- 			user
- 		WHERE
- 			user_id = #{id}
- 		;
- 	</select>
-	
-	<insert id="regist" parameterType="user">
-		INSERT INTO 
-			user (user_id, user_pw, user_name, user_admin, user_salt, user_email)
-		VALUES
-			(#{id}, #{pw}, #{name}, #{admin}, #{salt}, #{email})
-		;
-	</insert>
+<!-- 	<select id="login" parameterType="user">-->
+<!-- 		SELECT -->
+<!-- 			user_id id, user_pw pw, user_name name, user_admin admin, user_salt salt, user_email email-->
+<!-- 		FROM-->
+<!-- 			user-->
+<!-- 		WHERE-->
+<!-- 			user_id = #{id}-->
+<!-- 		;-->
+<!-- 	</select>-->
+<!--	-->
+<!--	<insert id="regist" parameterType="user">-->
+<!--		INSERT INTO -->
+<!--			user (user_id, user_pw, user_name, user_admin, user_salt, user_email)-->
+<!--		VALUES-->
+<!--			(#{id}, #{pw}, #{name}, #{admin}, #{salt}, #{email})-->
+<!--		;-->
+<!--	</insert>-->
 	
 	<update id="modify" parameterType="user">
 		UPDATE 

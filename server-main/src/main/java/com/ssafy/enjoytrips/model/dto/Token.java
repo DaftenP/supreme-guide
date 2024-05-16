@@ -9,12 +9,7 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @RequiredArgsConstructor
-public class QnaComment {
-
-    private int qnaCommentId;
-    private String qnaCommentContent;
-    private int qnaCommentHarmful;
-    private int qnaId;
-    private String userId;
+public class Token {
+    private String accessToken, refreshToken, id;
 
 }

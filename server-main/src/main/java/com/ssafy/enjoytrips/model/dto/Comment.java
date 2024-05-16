@@ -10,6 +10,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Comment {
+
 	private int id;
 	private boolean harmful;	// tinyint와 대응
 	private String content;
@@ -18,3 +19,4 @@ public class Comment {
 	private int articleId;	// 연결된 게시글
 	
 }
+
