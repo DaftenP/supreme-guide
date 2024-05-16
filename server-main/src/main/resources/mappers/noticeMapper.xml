@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ssafy.enjoytrips.model.dao.NoticeDao">
+    <!--    // 전체 조회
+        List<Notice> list();
+        // 개별 조회
+        Notice select(int noticeId);
+        // 수정
+        int modify(Notice notice);
+        // 삭제
+        int delete(int noticeId);
+        // 등록
+        int regist(Notice notice);
+        // 조회수 증가
+        int updateView(int noticeId);  -->
+
+    <select id="list" parameterType="searchCondition" resultType="notice">
+        SELECT
+            notice_id, notice_title, notice_content, notice_view, notice_writer, notice_createdDate
+        FROM
+            notice
+        <where>
+            <if test="key != 'none'">
+                ${key} LIKE CONCAT('%', #{word}, '%')
+            </if>
+            <if test="orderBy != 'none'">
+                ORDER BY ${orderBy} ${orderByDir}
+            </if>
+
+            <if test="limit">
+                LIMIT #{offset}, #{countPerPage}
+            </if>
+        </where>
+        ;
+    </select>
+
+    <insert id="regist" parameterType="notice">
+        INSERT INTO notice(notice_id, notice_title, notice_content, notice_view, notice_writer)
+        VALUES (#{noticeId}, #{noticeTitle}, #{noticeContent}, #{noticeView}, #{noticeWriter})
+    </insert>
+
+    <select id="select" parameterType="int" resultType="notice">
+        SELECT *
+        FROM notice
+        WHERE notice_id = #{noticeId}
+    </select>
+
+    <update id="modify" parameterType="notice">
+        UPDATE notice
+        SET notice_title = #{noticeTitle}, notice_content = #{noticeContent}
+        WHERE notice_id = #{noticeId}
+    </update>
+
+    <update id="updateView" parameterType="int">
+        UPDATE notice
+        SET notice_view = notice_view + 1
+        WHERE notice_id = #{noticeId}
+    </update>
+
+    <delete id="delete" parameterType="int">
+        DELETE
+        FROM notice
+        WHERE notice_id = #{noticeId}
+    </delete>
+</mapper>

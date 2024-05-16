@@ -1,13 +1,18 @@
 package com.ssafy.enjoytrips.model.dto;
 
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter
+@Setter
 public class User {
-	private String id, pw, name, email, salt;
-	private boolean admin;
+	private String id, pw, name, email, salt, createDate;
+	private int admin;
 
 	public User() {
 	}
 
-	public User(String id, String pw, String name, String email, String salt, boolean admin) {
+	public User(String id, String pw, String name, String email, String salt, int admin, String createDate) {
 		super();
 		this.id = id;
 		this.pw = pw;
@@ -15,60 +20,19 @@ public class User {
 		this.email = email;
 		this.salt = salt;
 		this.admin = admin;
+		this.createDate = createDate;
 	}
 
 	@Override
 	public String toString() {
-		return "User [id=" + id + ", pw=" + pw + ", name=" + name + ", email=" + email + ", salt=" + salt + ", admin="
-				+ admin + "]";
+		return "User{" +
+				"id='" + id + '\'' +
+				", pw='" + pw + '\'' +
+				", name='" + name + '\'' +
+				", email='" + email + '\'' +
+				", salt='" + salt + '\'' +
+				", createDate='" + createDate + '\'' +
+				", admin=" + admin +
+				'}';
 	}
-
-	public String getSalt() {
-		return salt;
-	}
-
-	public void setSalt(String salt) {
-		this.salt = salt;
-	}
-
-	public String getId() {
-		return id;
-	}
-
-	public void setId(String id) {
-		this.id = id;
-	}
-
-	public String getPw() {
-		return pw;
-	}
-
-	public void setPw(String pw) {
-		this.pw = pw;
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public boolean isAdmin() {
-		return admin;
-	}
-
-	public void setAdmin(boolean admin) {
-		this.admin = admin;
-	}
-
-	public String getEmail() {
-		return email;
-	}
-
-	public void setEmail(String email) {
-		this.email = email;
-	}
-
 }
