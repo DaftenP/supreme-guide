@@ -18,7 +18,7 @@ public class CommentServiceImpl implements CommentService{
     }
 
     @Override
-    public List<QnaComment> getAllCommentsByQnaId(int qnaId) {
+    public List<QnaComment> list(int qnaId) {
         return qnaCommentDao.list(qnaId);
     }
 

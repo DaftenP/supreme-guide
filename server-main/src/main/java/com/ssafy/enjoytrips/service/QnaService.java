@@ -1,5 +1,6 @@
 package com.ssafy.enjoytrips.service;
 
+import com.ssafy.enjoytrips.model.dto.Comment;
 import com.ssafy.enjoytrips.model.dto.Qna;
 import com.ssafy.enjoytrips.model.dto.SearchCondition;
 

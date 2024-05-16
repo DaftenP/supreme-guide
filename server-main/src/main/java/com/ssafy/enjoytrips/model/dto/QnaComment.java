@@ -14,7 +14,6 @@ public class QnaComment {
     private int qnaCommentId;
     private String qnaCommentContent;
     private int qnaCommentHarmful;
-    private int qnaId;
-    private String userId;
-
+    private int qnaQnaId;
+    private String userUserId;
 }

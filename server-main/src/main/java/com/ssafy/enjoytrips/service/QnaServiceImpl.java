@@ -1,6 +1,7 @@
 package com.ssafy.enjoytrips.service;
 
 import com.ssafy.enjoytrips.model.dao.QnaDao;
+import com.ssafy.enjoytrips.model.dto.Comment;
 import com.ssafy.enjoytrips.model.dto.Qna;
 import com.ssafy.enjoytrips.model.dto.SearchCondition;
 import lombok.RequiredArgsConstructor;
@@ -17,10 +18,13 @@ public class QnaServiceImpl implements QnaService{
     public List<Qna> list(SearchCondition searchCondition) {
         return qnaDao.list(searchCondition);
     }
-
     @Override
     public Qna select(int qnaId) {
-        return qnaDao.select(qnaId);
+
+        Qna qna = qnaDao.select(qnaId);
+        List<Comment> comments = qnaDao.selectComment(qnaId);
+        qna.setList(comments);
+        return qna;
     }
 
     @Override

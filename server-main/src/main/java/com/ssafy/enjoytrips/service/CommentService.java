@@ -8,7 +8,7 @@ public interface CommentService {
     // 등록
     int register(QnaComment qnaComment);
     // 전체 조회
-    List<QnaComment> getAllCommentsByQnaId(int qnaId);
+    List<QnaComment> list(int qnaId);
     // 수정
     int modify(QnaComment qnaComment);
     // 삭제
