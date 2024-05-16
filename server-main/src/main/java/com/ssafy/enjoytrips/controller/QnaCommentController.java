@@ -2,6 +2,7 @@ package com.ssafy.enjoytrips.controller;
 
 import com.ssafy.enjoytrips.model.dto.Comment;
 import com.ssafy.enjoytrips.service.CommentService;
+import com.ssafy.enjoytrips.service.QnaCommentServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -11,12 +12,12 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/qna/comment")
 public class QnaCommentController {
 
-    private final CommentService commentService;
+    private final QnaCommentServiceImpl qnaCommentService;
 
     @PostMapping("/regist")
     public ResponseEntity<?> regist(@RequestBody Comment comment) {
         try {
-            int result = commentService.register(comment);
+            int result = qnaCommentService.register(comment);
             return ResponseEntity.ok(result);
         } catch (Exception e) {
             return exceptionHandling(e);
@@ -26,7 +27,7 @@ public class QnaCommentController {
     @PutMapping("/{qna_comment_id}")
     public ResponseEntity<?> modify(@RequestBody Comment comment) {
         try {
-            int result = commentService.modify(comment);
+            int result = qnaCommentService.modify(comment);
             return ResponseEntity.ok(result);
         } catch (Exception e) {
             return exceptionHandling(e);
@@ -36,7 +37,7 @@ public class QnaCommentController {
     @DeleteMapping("/{qna_comment_id}")
     public ResponseEntity<?> delete(@PathVariable int qna_comment_id) {
         try {
-            int result = commentService.delete(qna_comment_id);
+            int result = qnaCommentService.delete(qna_comment_id);
             return ResponseEntity.ok(result);
         } catch (Exception e) {
             return exceptionHandling(e);
