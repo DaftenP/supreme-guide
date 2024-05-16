@@ -1,0 +1,217 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ssafy.enjoytrips.model.dao.TripDao">
+
+
+	<resultMap type="trip" id="tripMap">
+        <id column="trip_id" property="tripId"/>
+        <result column="trip_name" property="tripName"/>
+        <result column="user_id" property="userId"/>
+        <result column="user_name" property="userName"/>
+        <result column="trip_content" property="tripContent"/>
+        <result column="trip_startDate" property="tripStartDate"/>
+        <result column="trip_endDate" property="tripEndDate"/>
+        <result column="trip_createdDate" property="tripCreatedDate"/>
+        <collection property="tripItems" ofType="attraction">
+        	<id column="content_id" property="contentId"/>
+        	<result column="content_type_id" property="category"/>
+        	<result column="title" property="title"/>
+        	<result column="addr1" property="addr1"/>
+        	<result column="addr2" property="addr2"/>       	
+        	<result column="zipcode" property="zipcode"/>       	
+        	<result column="first_image" property="firstImage"/>       	
+        	<result column="sido_code" property="sidoCode"/>       	
+        	<result column="gugun_code" property="gugunCode"/>       	
+        	<result column="latitude" property="latitude"/>       	
+        	<result column="longitude" property="longitude"/>       	
+        </collection>
+    </resultMap>
+<!-- 
+	List<Plan> search(SearchCondition condition);
+	Plan select(String planId);
+	int regist(Plan plan);
+	int modify(Plan plan);
+	int delete(String planId);
+ -->
+ 	<select id="search" parameterType="searchCondition" resultType="trip">
+ 		SELECT 
+ 			t.trip_id, 
+ 			t.trip_name, 
+ 			t.user_id, 
+ 			t.trip_start_date, 
+ 			t.trip_end_date, 
+ 			t.trip_create_date, 
+ 			t.trip_content,
+ 			u.user_name
+ 		FROM
+ 			trip t
+ 				INNER JOIN
+ 			user u ON t.user_id = u.user_id
+ 		<where>
+ 			<if test="key != 'none'">
+ 				${key} LIKE CONCAT('%', #{word}, '%')
+ 			</if>
+	 	</where>
+		<if test="orderBy != 'none'">
+			ORDER BY ${orderBy} ${orderByDir}
+		</if>
+		
+		<if test="limit">
+			LIMIT #{countPerPage}
+			OFFSET #{offset}
+		</if>
+ 		;
+ 	</select>
+
+ 	<select id="select" parameterType="int" resultMap="tripMap">
+ 		SELECT 
+ 			t.trip_id, 
+ 			t.trip_name, 
+ 			t.user_id,
+ 			u.user_name,
+ 			t.trip_start_date, 
+ 			t.trip_end_date, 
+ 			t.trip_create_date, 
+ 			t.trip_content,
+ 			a.content_id, 
+ 			a.content_type_id, 
+ 			a.title, 
+ 			a.addr1, 
+ 			a.addr2, 
+ 			a.zipcode, 
+ 			a.tel, 
+ 			a.first_image, 
+ 			a.sido_code, 
+ 			a.gugun_code, 
+ 			a.latitude, 
+ 			a.longitude
+ 		FROM
+ 			user u
+ 				INNER JOIN 
+ 			trip t USING (user_id)
+ 				INNER JOIN
+			trip_item i USING (trip_id)
+ 				INNER JOIN
+ 			attraction_info a ON i.attraction_info_content_id = a.content_id
+ 		WHERE
+ 			trip_id = #{tripId}
+ 		;
+ 	</select>
+ 	
+ 	<select id="selectComment" parameterType="int" resultType="comment">
+ 		SELECT
+ 			c.trip_comment_id AS id, 
+ 			c.trip_comment_content AS content, 
+ 			c.trip_comment_harmful AS harmful, 
+ 			c.trip_id AS articleId, 
+ 			c.user_id,
+ 			u.user_name
+ 		FROM
+ 			trip t
+ 				INNER JOIN
+ 			trip_comment c USING (trip_id)
+ 				INNER JOIN
+ 			user u ON c.user_id = u.user_id
+ 		WHERE
+ 			t.trip_id = #{tripId}
+ 		;
+ 	</select>
+ 	
+ 	<select id="selectHashtag" parameterType="int" resultType="hashtag">
+ 		SELECT
+ 			h.hashtag_id, 
+ 			h.hashtag_name
+ 		FROM
+ 			trip t
+ 				INNER JOIN
+ 			trip_and_hashtag m USING (trip_id)
+ 				INNER JOIN
+ 			hashtag h USING (hashtag_id)
+ 		WHERE
+ 			t.trip_id = #{tripId}
+ 		;
+ 	</select>
+ 	
+	
+	<insert id="regist" parameterType="trip">
+		INSERT INTO 
+			trip ( 
+				trip_name,
+				user_id,
+				trip_start_date, 
+				trip_end_date,
+				trip_content
+			)
+		VALUES
+			(#{tripName},
+			 #{tripUserId}, 
+			 #{tripStartDate}, 
+			 #{tripEndDate}, 
+			 #{tripContent})
+		;
+		<selectKey resultType="int" keyProperty="tripId" order="AFTER">
+            select last_insert_id()
+            ;
+        </selectKey>
+	</insert>
+	
+	<insert id="registItems" parameterType="trip">
+		INSERT INTO 
+			trip_item (
+				trip_id, 
+				attraction_info_content_id, 
+				trip_item_order
+			)
+		VALUES		
+			<foreach collection="tripItems" index="i" item="item" separator=",">
+				(#{tripId}, #{item.contentId}, #{i+1})
+			</foreach>
+		;
+	</insert>
+	
+	<insert id="registHashtags" parameterType="trip">
+		INSERT INTO 
+			trip_item (
+				trip_id, 
+				attraction_info_content_id, 
+				trip_item_order
+			)
+		VALUES		
+			<foreach collection="tripItems" index="i" item="item" separator=",">
+				(#{tripId}, #{item.contentId}, #{i+1})
+			</foreach>
+		;
+	</insert>
+	
+	<update id="modify" parameterType="trip">
+		UPDATE 
+			trip
+		SET
+			trip_name = #{tripName}, 
+			trip_content = #{tripContent}, 
+			trip_start_date = #{tripStartDate}, 
+			trip_end_date = #{tripEndDate}
+		WHERE
+			trip_id = #{tripId}	
+		;
+	</update>
+		
+	<delete id="deleteItems" parameterType="int">
+		DELETE FROM
+			trip_item
+		WHERE
+			trip_id = #{tripId}
+		;
+	</delete>
+	
+	<delete id="delete" parameterType="string">
+		DELETE FROM
+			trip
+		WHERE
+			trip_id = #{tripId}
+		;
+	</delete>
+
+</mapper>
