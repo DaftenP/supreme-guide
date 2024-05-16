@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!---->
+<mapper namespace="com.ssafy.enjoytrips.model.dao.RegionDao">
+
+	<resultMap type="region" id="regionResultMap">
+		<id property="sidoCode" column="sido_code" />
+		<result property="sidoName" column="sido_name" />
+		<collection property="gugunList" ofType="gugun">
+			<id property="gugunCode" column="gugun_code"/>
+			<result property="gugunName" column="gugun_name"/>
+			<result property="sidoCode" column="sido_code"/>
+		</collection>
+	</resultMap>
+
+	<select id="getRegion" resultMap="regionResultMap">
+		SELECT
+			s.sido_code, 
+			s.sido_name,
+			g.gugun_code,
+			g.gugun_name
+		FROM
+			sido s
+				INNER JOIN
+			gugun g
+				ON s.sido_code = g.sido_code
+		;
+	</select>
+
+</mapper>

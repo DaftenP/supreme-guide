@@ -23,4 +23,9 @@ public class AttractionServiceImpl implements AttractionService {
 		return attractionDao.search(sido, gugun, contentType, condition);
 	}
 
+	@Override
+	public Attraction searchById(String id) {
+		return attractionDao.searchById(id);
+	}
+
 }
