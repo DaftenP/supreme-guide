@@ -2,6 +2,9 @@ package com.ssafy.enjoytrips.service;
 
 import java.security.NoSuchAlgorithmException;
 
+import com.ssafy.enjoytrips.model.dto.Token;
+import com.ssafy.utils.TokenProvider;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import com.ssafy.enjoytrips.model.dao.UserDao;
@@ -9,15 +12,13 @@ import com.ssafy.enjoytrips.model.dto.User;
 import com.ssafy.utils.PasswordHashingUtil;
 
 @Service
+@RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
 
-	private UserDao userDao;
-	private PasswordHashingUtil passwordHashingUtil;
+	private final UserDao userDao;
+	private final PasswordHashingUtil passwordHashingUtil;
+	private final TokenProvider tokenProvider;
 
-	public UserServiceImpl(UserDao userDao, PasswordHashingUtil passwordHashingUtil) {
-		this.userDao = userDao;
-		this.passwordHashingUtil = passwordHashingUtil;
-	}
 	public int modify(User user) {
 		try {
 			String[] res = passwordHashingUtil.getHashedPassword(user.getPw());

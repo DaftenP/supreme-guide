@@ -77,13 +77,15 @@ public class AuthController {
 //    Token refreshTokens(String accessToken, String refreshToken, String id);
     @PostMapping("/refresh")
     public ResponseEntity<?> refresh(@RequestBody Token token) {
-        if (!provider.validateToken(token.getRefreshToken()))
+        if (!provider.validateToken(token.getRefreshToken())) {
+            log.error("Invalid Refresh Token");
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid Refresh Token");
-
+        }
         try {
             String newAccessToken = provider.createAccesToken(token.getId());
             String newRefreshToken = provider.createRefreshToken(token.getId());
 
+            log.info("Token refreshed for user: {}", token.getId());
             return ResponseEntity.ok(new Token(newAccessToken, newRefreshToken, token.getId()));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error refreshing Token");
