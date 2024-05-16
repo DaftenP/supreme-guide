@@ -2,6 +2,8 @@ package com.ssafy.utils;
 
 import com.ssafy.enjoytrips.exception.UnAuthorizedException;
 import io.jsonwebtoken.*;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Value;
@@ -30,7 +32,8 @@ public class TokenProvider {
     }
 
     public String createRefreshToken(String userId) {
-        return create(userId, "refresh-token", accessTokenExpireTime);
+        long refreshTokenExpiredTime = System.currentTimeMillis() + refreshTokenExpireTime;
+        return create(userId, "refresh-token", refreshTokenExpiredTime);
     }
 
     // JWT 토큰 생성 및 발급
