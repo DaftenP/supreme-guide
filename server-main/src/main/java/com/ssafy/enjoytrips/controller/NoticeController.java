@@ -23,6 +23,7 @@ public class NoticeController {
             List<Notice> list = noticeService.list(searchCondition);
             return ResponseEntity.ok(list);
         } catch (Exception e) {
+            System.out.println(e.getMessage());
             return ResponseEntity.noContent().build();
         }
     }
@@ -37,6 +38,7 @@ public class NoticeController {
                 return ResponseEntity.noContent().build();
             }
         } catch (Exception e) {
+            System.out.println(e.getMessage());
             return ResponseEntity.internalServerError().build();
         }
     }

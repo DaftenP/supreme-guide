@@ -19,9 +19,9 @@
 
     <select id="list" parameterType="searchCondition" resultType="notice">
         SELECT
-        notice_id, notice_title, notice_content, notice_view, notice_writer, notice_create_date
+            notice_id, notice_title, notice_content, notice_view, notice_writer, notice_createdDate
         FROM
-        notice
+            notice
         <where>
             <if test="key != 'none'">
                 ${key} LIKE CONCAT('%', #{word}, '%')
@@ -54,7 +54,7 @@
         WHERE notice_id = #{noticeId}
     </update>
 
-    <update id="updateview" parameterType="int">
+    <update id="updateView" parameterType="int">
         UPDATE notice
         SET notice_view = notice_view + 1
         WHERE notice_id = #{noticeId}
