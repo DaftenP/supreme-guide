@@ -2,6 +2,7 @@
 import { Vue3Lottie } from "vue3-lottie";
 import { useRouter } from "vue-router";
 import { useUserStore } from "@/stores/userStore";
+import Cookies from "vue-cookies";
 import BearJson from "@/assets/animations/Bear.json";
 const router = useRouter();
 const userStore = useUserStore();
@@ -31,7 +32,9 @@ const goLogin = () => {
 };
 
 const logout = () => {
-  userStore.logout();
+  userStore.setUserId("");
+  Cookies.remove("accessToken");
+  Cookies.remove("refreshToken");
   alert("로그아웃 되었습니다.");
   router.push({ name: "home" });
 };

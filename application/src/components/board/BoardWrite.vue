@@ -4,25 +4,41 @@ import { ref, onMounted } from "vue";
 import { useRouter } from "vue-router";
 import { postArticle } from "@/api/board";
 import { useUserStore } from "@/stores/userStore";
+import authClient from "@/api/authClient";
 const userStore = useUserStore();
 const board = ref({});
 
 const router = useRouter();
-const writeArticle = () => {
-  postArticle(
-    board.value,
-    // success
-    (resp) => {
-      alert("질문 등록이 완료되었습니다.");
-      console.log(resp.data);
-      goList();
-    },
-    // fail
-    (err) => {
-      alert("질문 등록에 실패하였습니다.");
-      console.log(err);
-    }
-  );
+const writeArticle = async (qnaData) => {
+  // postArticle(
+  //   board.value,
+  //   // success
+  //   (resp) => {
+  //     alert("질문 등록이 완료되었습니다.");
+  //     console.log(resp.data);
+  //     goList();
+  //   },
+  //   // fail
+  //   (err) => {
+  //     alert("질문 등록에 실패하였습니다.");
+  //     console.log(err);
+  //   }
+  // );
+  try {
+    const res = await authClient({
+      method: "post",
+      url: `${import.meta.env.VITE_API_BASE_URL}/qna/regist`,
+      data: {
+        qna: qnaData,
+      },
+    });
+    alert("질문이 등록되었습니다.");
+    console.log(res.qna.data);
+    goList();
+  } catch (error) {
+    alert("질문 등록에 실패하였습니다.");
+    console.log(error);
+  }
 };
 
 const goList = () => {

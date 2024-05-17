@@ -13,6 +13,10 @@ const props = defineProps({
 
 const emit = defineEmits(["evtProcess"]);
 
+const emitProcess = () => {
+  emit("evt-process", board.value);
+};
+
 const refTitle = ref(null);
 const refContent = ref(null);
 const refWriter = ref(null);
