@@ -9,30 +9,48 @@ const router = createRouter({
       component: () => import("@/views/HomeView.vue"),
     },
     {
-      path: "/board",
+      path: "/qna",
       name: "BoardHome",
       component: () => import("@/views/BoardView.vue"),
-      redirect: "BoardList",
+      redirect: "/qna/all",
       children: [
         {
-          path: "",
+          path: "all",
           name: "BoardList",
           component: () => import("@/components/board/BoardList.vue"),
         },
         {
-          path: "view/:board_id",
+          path: "view/:qna_id",
           name: "BoardDetail",
           component: () => import("@/components/board/BoardDetail.vue"),
         },
         {
-          path: "modify/:board_id",
+          path: "modify/:qna_id",
           name: "BoardModify",
           component: () => import("@/components/board/BoardModify.vue"),
         },
         {
-          path: "write",
+          path: "/regist",
           name: "BoardWrite",
           component: () => import("@/components/board/BoardWrite.vue"),
+        },
+      ],
+    },
+    {
+      path: "/auth",
+      name: "AuthHome",
+      component: () => import("@/views/AuthView.vue"),
+      redirect: "/",
+      children: [
+        {
+          path: "/login",
+          name: "AuthLogin",
+          component: () => import("@/components/auth/Login.vue"),
+        },
+        {
+          path: "/join",
+          name: "AuthJoin",
+          component: () => import("@/components/auth/Join.vue"),
         },
       ],
     },

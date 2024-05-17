@@ -1,10 +1,10 @@
 import { localAxios } from "@/utils/http-commons";
 
-const axios = localAxios(`/board`);
+const axios = localAxios(`/qna`);
 
 export const getAllArticle = (params, success, fail) => {
   console.log("getAllArticle", params);
-  axios.get(`/list`, { params }).then(success).catch(fail);
+  axios.get(`/all`, { params }).then(success).catch(fail);
 };
 
 export const getArticle = (board_id, success, fail) => {

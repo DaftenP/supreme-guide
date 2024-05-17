@@ -36,19 +36,19 @@ const goList = () => {
   });
 };
 
-const boardId = route.params.board_id;
+const qnaId = route.params.qnaId;
 
 onBeforeMount(() => {
   getArticle(
-    boardId,
+    qnaId,
     (response) => {
       const b = response.data;
-      board.value = b;
-      board.value.computed_content = computed(() => {
-        return board.value.board_content.replaceAll(`\n`, `<br/>`);
+      qna.value = b;
+      qna.value.computed_content = computed(() => {
+        return qna.value.board_content.replaceAll(`\n`, `<br/>`);
       });
-      board.value.computed_date = computed(() => {
-        return board.value.board_created_time.replace(
+      qna.value.computed_date = computed(() => {
+        return qna.value.qna_created_time.replace(
           /^(\d{4})-(\d{2})-(\d{2}) (\d{2}):(\d{2}):\d{2}$/,
           "$1.$2.$3 $4:$5"
         );

@@ -54,9 +54,7 @@ public class UserController extends HttpServlet {
 		// 유저 정보가 있을 경우 200 OK 반환, 없을 경우 204 No Content 반환
 		return user != null ? ResponseEntity.ok(user) : ResponseEntity.noContent().build();
 	}
-	
 
-	
 	@PutMapping("/modify")
 	public ResponseEntity<?> modify(@RequestBody User user) {
 		System.out.println(user.toString());
@@ -68,9 +66,16 @@ public class UserController extends HttpServlet {
 	}
 	
 	@DeleteMapping("/delete")
-	public ResponseEntity<?> delete(@RequestBody User user) {
-		System.out.println(user.toString());
-		if (userService.delete(user) > 0) {
+	public ResponseEntity<?> delete(@RequestHeader("Authorization") String authorizationHeader) {
+		if (authorizationHeader == null || !authorizationHeader.startsWith("Bearer ")) {
+			// 헤더가 없거나 Bearer 토큰이 아닌 경우의 처리
+			// 예: 401 Unauthorized 반환
+			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Unauthorized");
+		}
+		String token = authorizationHeader.substring(7);
+		String userId = tokenProvider.getUserId(token);
+
+		if (userService.delete(userId) > 0) {
 			return ResponseEntity.ok("회원 탈퇴가 완료되었습니다.");
 		} else {
 			return ResponseEntity.internalServerError().body("회원 탈퇴에 실패 하였습니다.");

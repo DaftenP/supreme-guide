@@ -17,6 +17,6 @@ public class Qna {
     private String qnaContent;
     private int qnaView;
     private String qnaWriter;
-    private String qnaCreatetime;
+    private String qnaCreateDate;
     private List<Comment> list;
 }
