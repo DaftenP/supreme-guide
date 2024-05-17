@@ -24,10 +24,12 @@ import axios from "axios";
 import Cookies from "vue-cookies";
 import VueJwtDecode from "vue-jwt-decode";
 import noAuthClient from "@/api/noAuthClient";
+import { useUserStore } from "@/stores/userStore";
 
 export default {
   setup() {
     const router = useRouter();
+    const userStore = useUserStore();
     // ref를 사용하여 상태를 정의
     const id = ref("");
     const password = ref("");
@@ -48,6 +50,9 @@ export default {
           Cookies.set("refreshToken", res.data.refreshToken);
           console.log(res.data);
           const decode = VueJwtDecode.decode(res.data.accessToken);
+
+          // userId를 Pinia 스토어에 저장한다.
+          userStore.setUserId(decode.userId);
           console.log("decode!~1!!!!!" + decode.userId);
           alert("로그인에 성공했습니다.");
           router.push("/");
