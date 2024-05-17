@@ -6,7 +6,7 @@
 
  	<select id="select" parameterType="user">
  		SELECT 
- 			user_id id, user_name name, user_admin admin, user_email email
+ 			user_id id, user_pw pw, user_name name, user_admin admin, user_salt salt, user_email email, user_create_date createDate
  		FROM
  			user
  		WHERE

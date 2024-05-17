@@ -54,9 +54,7 @@ public class UserController extends HttpServlet {
 		// 유저 정보가 있을 경우 200 OK 반환, 없을 경우 204 No Content 반환
 		return user != null ? ResponseEntity.ok(user) : ResponseEntity.noContent().build();
 	}
-	
 
-	
 	@PutMapping("/modify")
 	public ResponseEntity<?> modify(@RequestBody User user) {
 		System.out.println(user.toString());
