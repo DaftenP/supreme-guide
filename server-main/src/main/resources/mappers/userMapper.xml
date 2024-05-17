@@ -42,7 +42,7 @@
 		;
 	</update>
 
-	<delete id="delete">
+	<delete id="delete" parameterType="String">
 		DELETE FROM
 			user
 		WHERE
