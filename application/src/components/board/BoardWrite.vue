@@ -1,10 +1,12 @@
 <script setup>
 import BoardFormItem from "@/components/item/BoardFormItem.vue";
+import axios from "axios";
 import { ref, onMounted } from "vue";
 import { useRouter } from "vue-router";
 import { postArticle } from "@/api/board";
 import { useUserStore } from "@/stores/userStore";
 import authClient from "@/api/authClient";
+import Cookies from "vue-cookies";
 const userStore = useUserStore();
 const board = ref({});
 
@@ -25,15 +27,19 @@ const writeArticle = async (qnaData) => {
   //   }
   // );
   try {
-    const res = await authClient({
+    const token = Cookies.get("accessToken");
+    const res = await axios({
       method: "post",
       url: `${import.meta.env.VITE_API_BASE_URL}/qna/regist`,
       data: {
         qna: qnaData,
       },
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
     });
     alert("질문이 등록되었습니다.");
-    console.log(res.qna.data);
+    console.log(res.data);
     goList();
   } catch (error) {
     alert("질문 등록에 실패하였습니다.");

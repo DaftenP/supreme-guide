@@ -14,7 +14,7 @@ const authClient = axios.create({
 // 토큰 만료 확인
 const checkToken = async () => {
   console.log("check token!!!!!");
-  let token = settingCookie("get-access");
+  let token = await settingCookie("get-access");
   const exp = VueJwtDecode.decode(token);
   if (Date.now() / 1000 > exp.exp) {
     console.log("해당 토큰은 만료되었습니다.");
@@ -38,7 +38,7 @@ const getNewToken = async () => {
     });
     settingCookie("remove");
     Cookies.set("accessToken", res.data.accessToken);
-    Cookies.set("refreshToken", res.datarefreshToken);
+    Cookies.set("refreshToken", res.data.refreshToken);
     return res.data.accessToken;
   } catch (error) {
     alert("error");
@@ -47,7 +47,7 @@ const getNewToken = async () => {
 
 // axios 요청 전 수행해야할 작업
 authClient.interceptors.request.use(async (config) => {
-  let token = settingCookie("get-access");
+  let token = await settingCookie("get-access");
   const exp = VueJwtDecode.decode(token);
   if (Date.now() / 1000 > exp.exp) {
     console.log("만료된 토큰 ", token);
