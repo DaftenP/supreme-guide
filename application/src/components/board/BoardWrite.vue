@@ -3,6 +3,8 @@ import BoardFormItem from "@/components/item/BoardFormItem.vue";
 import { ref, onMounted } from "vue";
 import { useRouter } from "vue-router";
 import { postArticle } from "@/api/board";
+import { useUserStore } from "@/stores/userStore";
+const userStore = useUserStore();
 const board = ref({});
 
 const router = useRouter();
@@ -31,7 +33,7 @@ const goList = () => {
 
 onMounted(() => {
   // TODO: 로그인 구현 시 로그인 정보로 부터 작성자 아이디 불러오기
-  board.value.board_writer = "ssafy";
+  board.value.board_writer = userStore.userId;
 });
 </script>
 
