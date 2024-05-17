@@ -5,7 +5,7 @@ import { Cookies } from "vue-cookies";
 import settingCookie from "@/utils/settingCookie";
 
 const authClient = axios.create({
-  // baseURL: "http://localhost"
+  baseURL: "http://localhost",
   headers: {
     "Content-type": "application/json",
   },

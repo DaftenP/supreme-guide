@@ -7,7 +7,7 @@
     <!-- 글 조회  -->
     <select id="list" parameterType="searchCondition" resultType="qna">
         SELECT
-        qna_id, qna_title, qna_content, qna_view, qna_writer, qna_create_date
+        qna_id, qna_title, qna_content, qna_view, qna_create_date, qna_writer
         FROM
         qna
         <where>

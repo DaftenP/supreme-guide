@@ -17,6 +17,18 @@ const goHome = () => {
     name: "home",
   });
 };
+
+const goJoin = () => {
+  router.push({
+    name: "AuthJoin",
+  });
+};
+
+const goLogin = () => {
+  router.push({
+    name: "AuthLogin",
+  });
+};
 </script>
 
 <template>
@@ -45,6 +57,12 @@ const goHome = () => {
           </li>
           <li class="nav-item">
             <button class="nav-link" href="#">공지사항</button>
+          </li>
+          <li class="nav-item">
+            <button class="nav-link" @click="goLogin">로그인</button>
+          </li>
+          <li class="nav-item">
+            <button class="nav-link" @click="goJoin">회원가입</button>
           </li>
         </ul>
       </div>

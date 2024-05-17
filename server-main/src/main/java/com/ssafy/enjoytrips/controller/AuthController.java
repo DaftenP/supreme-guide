@@ -43,8 +43,8 @@ public class AuthController {
                 authService.saveTokens(accessToken, refreshToken, loginUser.getId());
 
                 // json으로 token을 전달
-                resultMap.put("access-token", accessToken);
-                resultMap.put("refresh-token", refreshToken);
+                resultMap.put("accessToken", accessToken);
+                resultMap.put("refreshToken", refreshToken);
 
             } else {
                 resultMap.put("message", "Invalid credentials");
@@ -77,8 +77,8 @@ public class AuthController {
 //    Token refreshTokens(String accessToken, String refreshToken, String id);
     @PostMapping("/refresh")
     public ResponseEntity<?> refresh(@RequestBody Token token) {
-        if (!provider.validateToken(token.getRefreshToken())) {
-            log.error("Invalid Refresh Token");
+        if (provider.validateToken(token.getRefreshToken())) {
+            log.error("valid Refresh Token");
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid Refresh Token");
         }
         try {
