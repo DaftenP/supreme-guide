@@ -14,7 +14,7 @@ public class SearchCondition {
 
 	private int currentPage = 1;
 
-	private boolean limit = false;
+	private boolean limit = true;
 
 	public SearchCondition() {
 	}

@@ -17,6 +17,11 @@ const goHome = () => {
     name: "home",
   });
 };
+const goAttraction = () => {
+  router.push({
+    path: "/attraction",
+  });
+};
 </script>
 
 <template>
@@ -38,7 +43,7 @@ const goHome = () => {
       <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav">
           <li class="nav-item">
-            <button class="nav-link" href="#">관광지 검색</button>
+            <button class="nav-link" @click="goAttraction">관광지 검색</button>
           </li>
           <li class="nav-item">
             <button class="nav-link" @click="goList">Q&A 게시판</button>

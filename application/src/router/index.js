@@ -8,6 +8,7 @@ const router = createRouter({
       name: "home",
       component: () => import("@/views/HomeView.vue"),
     },
+
     {
       path: "/board",
       name: "BoardHome",
@@ -33,6 +34,21 @@ const router = createRouter({
           path: "write",
           name: "BoardWrite",
           component: () => import("@/components/board/BoardWrite.vue"),
+        },
+      ],
+    },
+
+    {
+      path: "/attraction",
+      name: "Attraction",
+      component: () => import("@/views/AttractionView.vue"),
+      redirect: "AttractionMain",
+      children: [
+        {
+          path: "",
+          name: "AttractionMain",
+          component: () =>
+            import("@/components/attraction/AttractionSearch.vue"),
         },
       ],
     },
