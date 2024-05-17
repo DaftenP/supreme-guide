@@ -13,5 +13,5 @@ const app = createApp(App).use(Vue3Lottie);
 app.use(vueCookies);
 app.use(router);
 
-Vue.$cookies.config("7d"); // 쿠키 만료일 -> 7일 default
+app.$cookies.config("7d"); // 쿠키 만료일 -> 7일 default
 app.mount("#app");
