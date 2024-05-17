@@ -11,7 +11,10 @@ const modalOpen = () => {
 
 <template>
   <div class="modal-wrap" v-show="mapStore.modalCheck" @click="modalOpen">
-    <div class="modal-container" @click.stop="">
+    <div class="modal-container overflow-auto" @click.stop="">
+      <div>
+        <img class="modal-img" :src="mapStore.attractionInfo.firstImage" />
+      </div>
       <div>{{ mapStore.attractionInfo.title }}</div>
       <div>{{ mapStore.attractionInfo.addr1 }}</div>
       <div>{{ mapStore.attractionInfo.addr2 }}</div>
@@ -41,11 +44,23 @@ const modalOpen = () => {
   position: relative;
   top: 50%;
   left: 50%;
+  max-height: 70%;
   transform: translate(-50%, -50%);
   width: 550px;
   background: #fff;
   border-radius: 10px;
   padding: 20px;
   box-sizing: border-box;
+}
+.modal-img {
+  width: 100%;
+}
+::-webkit-scrollbar {
+  width: 0.3rem;
+  height: 0.4rem;
+  padding-right: 10;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(127, 130, 140, 0.6);
 }
 </style>

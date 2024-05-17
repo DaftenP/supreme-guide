@@ -35,7 +35,8 @@ const panTo = () => {
     :lat="mapStore.lat"
     :lng="mapStore.lng"
     @onLoadKakaoMap="onLoadKakaoMap"
-    width="auto">
+    width="auto"
+    height="700px">
     <KakaoMapMarker
       v-for="(attraction, index) in attractions"
       :key="index"

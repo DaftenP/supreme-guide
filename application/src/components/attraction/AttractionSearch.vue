@@ -93,88 +93,71 @@ getRegion(
 <template>
   <div class="search-form wow fadeInUp">
     <div class="row">
-      <div class="col-lg-2 col-md-2 col-6 p-0">
-        <div class="search-input">
-          <label for="location">
-            <i class="lni lni-map-marker theme-color" />
-          </label>
-          <select
-            name="sido"
-            id="search-area-sido"
-            v-model="sidoSelectedOption"
-            @change="sidoSelect">
-            <option value="0" selected>시/도 선택</option>
-            <option
-              v-for="sido in region"
-              :key="sido.sidoCode"
-              :sido="sido"
-              :value="sido.sidoCode">
-              {{ sido.sidoName }}
-            </option>
-          </select>
-        </div>
+      <div class="col-lg-2 col-md-2 col-6 p-2">
+        <select
+          class="form-select"
+          name="sido"
+          id="search-area-sido"
+          v-model="sidoSelectedOption"
+          @change="sidoSelect">
+          <option value="0" selected>시/도 선택</option>
+          <option
+            v-for="sido in region"
+            :key="sido.sidoCode"
+            :sido="sido"
+            :value="sido.sidoCode">
+            {{ sido.sidoName }}
+          </option>
+        </select>
       </div>
-      <div class="col-lg-2 col-md-2 col-6 p-0">
-        <div class="search-input">
-          <label for="location">
-            <i class="lni lni-map-marker theme-color" />
-          </label>
-          <select
-            name="gugun"
-            id="search-area-gugun"
-            v-model="gugunSelectedOption">
-            <option value="0" selected>구/군 선택</option>
-            <option
-              v-for="g in gugun"
-              :key="g.gugunCode"
-              :g="g"
-              :value="g.gugunCode">
-              {{ g.gugunName }}
-            </option>
-          </select>
-        </div>
+      <div class="col-lg-2 col-md-2 col-6 p-2">
+        <select
+          class="form-select"
+          name="gugun"
+          id="search-area-gugun"
+          v-model="gugunSelectedOption">
+          <option value="0" selected>구/군 선택</option>
+          <option
+            v-for="g in gugun"
+            :key="g.gugunCode"
+            :g="g"
+            :value="g.gugunCode">
+            {{ g.gugunName }}
+          </option>
+        </select>
       </div>
-      <div class="col-lg-2 col-md-2 col-12 p-0">
-        <div class="search-input">
-          <label for="category">
-            <i class="lni lni-grid-alt theme-color"></i>
-          </label>
-          <select
-            name="category"
-            id="search-content-id"
-            v-model="categorySelectedOption">
-            <option value="0" selected>관광지 유형</option>
-            <option value="12">관광지</option>
-            <option value="14">문화시설</option>
-            <option value="15">축제공연행사</option>
-            <option value="25">여행코스</option>
-            <option value="28">레포츠</option>
-            <option value="32">숙박</option>
-            <option value="38">쇼핑</option>
-            <option value="39">음식점</option>
-          </select>
-        </div>
+      <div class="col-lg-2 col-md-2 col-12 p-2">
+        <select
+          class="form-select"
+          name="category"
+          id="search-content-id"
+          v-model="categorySelectedOption">
+          <option value="0" selected>관광지 유형</option>
+          <option value="12">관광지</option>
+          <option value="14">문화시설</option>
+          <option value="15">축제공연행사</option>
+          <option value="25">여행코스</option>
+          <option value="28">레포츠</option>
+          <option value="32">숙박</option>
+          <option value="38">쇼핑</option>
+          <option value="39">음식점</option>
+        </select>
       </div>
-      <div class="col-lg-4 col-md-4 col-12 p-0">
-        <div class="search-input">
-          <label for="keyword">
-            <i class="lni lni-search-alt theme-color"></i>
-          </label>
-          <input
-            type="search"
-            name="keyword"
-            id="search-keyword"
-            placeholder="검색어 입력"
-            aria-label="검색어 입력"
-            v-model="keywordSelectedOption" />
-        </div>
-      </div>
-      <div class="col-lg-2 col-md-2 col-12 p-0">
-        <div class="search-btn button">
-          <button class="btn btn-primary" id="btn-search" @click="search">
-            <i class="lni lni-search-alt"></i> 검색
-          </button>
-        </div>
+      <div class="col-lg-6 col-md-6 col-12 p-2 d-inline-flex">
+        <input
+          class="form-control inline"
+          type="search"
+          name="keyword"
+          id="search-keyword"
+          placeholder="검색어 입력"
+          aria-label="검색어 입력"
+          v-model="keywordSelectedOption" />
+        <button
+          class="btn btn-outline-primary inline"
+          id="btn-search"
+          @click="search">
+          검색
+        </button>
       </div>
     </div>
   </div>
@@ -191,4 +174,8 @@ getRegion(
   </div>
 </template>
 
-<style scoped></style>
+<style scoped>
+.inline {
+  display: inline-block;
+}
+</style>
