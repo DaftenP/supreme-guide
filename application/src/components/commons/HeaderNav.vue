@@ -9,7 +9,7 @@ const userStore = useUserStore();
 
 const goList = () => {
   router.push({
-    name: "BoardList",
+    name: "QnaList",
   });
 };
 
