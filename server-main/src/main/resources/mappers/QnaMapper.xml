@@ -59,13 +59,13 @@
             c.qna_comment_id AS id,
             c.qna_comment_content AS content,
             c.qna_comment_harmful AS harmful,
-            c.qna_qna_id AS articleId,
-            c.user_user_id,
+            c.qna_id AS articleId,
+            c.user_id,
             u.user_name
         FROM
             qna q
-                INNER JOIN qna_comment c ON q.qna_id = c.qna_qna_id
-                INNER JOIN user u ON c.user_user_id = u.user_id
+                INNER JOIN qna_comment c ON q.qna_id = c.qna_id
+                INNER JOIN user u ON c.user_id = u.user_id
         WHERE
             q.qna_id = #{qnaId}
     </select>

@@ -135,8 +135,15 @@ public class QnaController {
 
             String token = authorizationHeader.substring(7);
             String userId = tokenProvider.getUserId(token);
-            log.debug("hihihi"+userId);
+            log.debug("Extracted userId from token: " + userId);
+            System.out.println("UserID!!!!!!!!!!!!"+userId);
+            if (userId == null) {
+                log.error("userId is null after token extraction.");
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to extract userId from token.");
+            }
+
             comment.setUserId(userId);
+            log.debug("Comment after setting userId: " + comment);
 
             int result = qnaCommentService.register(comment);
             return ResponseEntity.ok(result);

@@ -108,7 +108,7 @@ onBeforeMount( async () => {
         <hr />
         <ul>
             <li v-for="comment in comments" :key="comment.qnaCommentId">
-              <strong>{{ comment.userName }}:</strong> {{ comment.content }}
+              <strong>{{ comment.userId }}:</strong> {{ comment.content }}
             </li>
           </ul>
       </div>
