@@ -22,12 +22,12 @@ public class QnaCommentServiceImpl implements CommentService{
     }
 
     @Override
-    public int delete(int qnaId) {
-        return qnaCommentDao.delete(qnaId);
+    public int delete(int id) {
+        return qnaCommentDao.delete(id);
     }
 
     @Override
-    public Comment selectCommentWriter(int qnaCommentId) {
-        return qnaCommentDao.selectCommentWriter(qnaCommentId);
+    public Comment selectCommentWriter(int id) {
+        return qnaCommentDao.selectCommentWriter(id);
     }
 }
