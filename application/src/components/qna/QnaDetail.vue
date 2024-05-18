@@ -20,7 +20,7 @@ const goModify = () => {
   });
 };
 
-const deleteBoard = async () => {
+const deleteQna = async () => {
   try {
     const token = Cookies.get("accessToken");
     const res = await axios({
@@ -98,7 +98,7 @@ onBeforeMount( async () => {
           >
           <a
             class="btn btn-outline-danger ms-2 pe-4 ps-4"
-            @click="deleteBoard()"
+            @click="deleteQna()"
             >삭제</a
           >
           <button class="btn btn-outline-dark ms-2 pe-4 ps-4" @click="goList">
@@ -108,7 +108,7 @@ onBeforeMount( async () => {
         <hr />
         <ul>
             <li v-for="comment in comments" :key="comment.qnaCommentId">
-              <strong>{{ comment.userId }}:</strong> {{ comment.content }}
+              <strong>{{ comment.userName }}:</strong> {{ comment.content }}
             </li>
           </ul>
       </div>

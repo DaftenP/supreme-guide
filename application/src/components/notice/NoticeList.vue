@@ -1,66 +1,60 @@
 <script setup>
 import { ref, onBeforeMount, computed } from "vue";
 import { useRouter } from "vue-router";
-import { getAllArticle } from "@/api/board";
+import axios from "axios";
+import Cookies from "vue-cookies";
 
 const router = useRouter();
-const qnas = ref([]);
 const key = ref("");
 const word = ref("");
+const notices = ref([]);
+const notice = ref({});
+// const noticeId = ref(0);
 
 const movePage = () => {
-  router.push({ name: "BoardWrite" });
-};
+    router.push({ name: "NoticeWrite"});
+}
 
-onBeforeMount(() => {
-  getAllArticle(
-    {},
-    (resp) => {
-      console.log(resp);
-      if (resp.status == 200) {
-        qnas.value = resp.data;
-        qnas.value.filter((qna) => {
-          qna.computed_date = computed(() => {
-            const dateString = qna.qnaCreatetime;
-            const date = new Date(dateString);
-            return date.toLocaleString();
-          });
-        });
-      } else {
-        alert("문제가 발생했습니다.");
-      }
-    },
-    (err) => {
-      alert("문제가 발생했습니다.", err);
+onBeforeMount( async () => {
+    try {
+        const res = await axios({
+            method: "get",
+            url: `${import.meta.env.VITE_API_BASE_URL}/notice/all`
+        })
+        notices.value = res.data;
+        // noticeId.value = res.data.noticeId;
+        console.log(res.data);
+    } catch (error) {
+        console.log(error);
+        alert("리스트를 불러오는 데 문제가 발생했습니다.");
     }
-  );
-});
+})
 
-const searchArticle = () => {
-  getAllArticle(
-    { key: key.value, word: word.value },
-    (resp) => {
-      console.log(resp);
-      if (resp.status == 200) {
-        boards.value = resp.data;
-      } else {
+const searchNotice = async () => {
+    try {
+        const res = await axios({
+            method: "get",
+            url: `${import.meta.env.VITE_API_BASE_URL}/notice/view/${noticeId}`,
+        })
+        notice.value = res.data;
+    } catch(error) {
+        console.log(error);
         alert("문제가 발생했습니다.");
-      }
-    },
-    (err) => {
-      alert("문제가 발생했습니다.", err);
     }
-  );
-};
+}
 
 const goDetail = (id) => {
-  router.push({
-    name: "BoardDetail",
-    params: {
-      qnaId: id,
-    },
-  });
-};
+    console.log(id);
+    router.push({
+        name: "NoticeDetail",
+        params: {
+            noticeId: id,
+        }
+    })
+}
+
+// searchArticle 구현
+
 </script>
 
 <template>
@@ -68,7 +62,7 @@ const goDetail = (id) => {
     <div class="row justify-content-center">
       <div class="col-lg-12">
         <h2 class="my-3 py-3 shadow-sm bg-light text-center">
-          <mark class="sky">Q&A 목록</mark>
+          <mark class="sky">Notice</mark>
         </h2>
       </div>
       <div class="col-lg-12">
@@ -78,16 +72,16 @@ const goDetail = (id) => {
               type="button"
               class="btn btn-outline-primary btn-sm"
               @click="movePage">
-              질문 등록
+              공지사항 등록
             </button>
           </div>
           <div class="col-md-5 offset-5">
             <form class="d-flex">
               <div class="input-group input-group-sm">
                 <select class="form-select" v-model="key">
-                  <option value="board_title">제목</option>
-                  <option value="board_content">내용</option>
-                  <option value="board_writer">작성자</option>
+                  <option value="noticeTitle">제목</option>
+                  <option value="noticeContent">내용</option>
+                  <option value="noticeWriter">작성자</option>
                 </select>
                 <input
                   type="text"
@@ -117,17 +111,17 @@ const goDetail = (id) => {
           <tbody>
             <tr
               class="text-center"
-              v-for="(qna, index) in qnas"
+              v-for="(notice, index) in notices"
               :index="index"
-              :qna="qna"
-              :key="qna.qnaId">
-              <td>{{ qna.qnaId }}</td>
+              :notice="notice"
+              :key="notice.noticeId">
+              <td>{{ notice.noticeId }}</td>
               <td>
-                <a href="#" @click="goDetail(qna.qnaId)">{{ qna.qnaTitle }}</a>
+                <a @click="goDetail(notice.noticeId)">{{ notice.noticeTitle }}</a>
               </td>
-              <td>{{ qna.qnaView }}</td>
-              <td>{{ qna.qnaWriter }}</td>
-              <td>{{ qna.qnaCreateDate }}</td>
+              <td>{{ notice.noticeView }}</td>
+              <td>{{ notice.noticeWriter }}</td>
+              <td>{{ notice.noticeCreateDate }}</td>
             </tr>
           </tbody>
         </table>
@@ -136,4 +130,9 @@ const goDetail = (id) => {
   </div>
 </template>
 
-<style scoped></style>
+
+
+
+<style scoped>
+
+</style>

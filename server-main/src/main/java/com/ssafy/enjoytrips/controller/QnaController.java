@@ -55,7 +55,7 @@ public class QnaController {
 
     // 수정
     @PutMapping("/{qna_id}")
-    public ResponseEntity<?> update(@RequestHeader("Authorization") String authorizationHeader, @PathVariable int qna_id,@RequestBody Qna qna) {
+    public ResponseEntity<?> update(@RequestHeader("Authorization") String authorizationHeader, @PathVariable int qna_id, @RequestBody Qna qna) {
         try {
             if (authorizationHeader == null || !authorizationHeader.startsWith("Bearer ")) {
                 // 헤더가 없거나 Bearer 토큰이 아닌 경우의 처리
@@ -135,6 +135,7 @@ public class QnaController {
 
             String token = authorizationHeader.substring(7);
             String userId = tokenProvider.getUserId(token);
+            log.debug("hihihi"+userId);
             comment.setUserId(userId);
 
             int result = qnaCommentService.register(comment);

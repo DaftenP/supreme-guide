@@ -7,7 +7,7 @@ import BearJson from "@/assets/animations/Bear.json";
 const router = useRouter();
 const userStore = useUserStore();
 
-const goList = () => {
+const goQna = () => {
   router.push({
     name: "QnaList",
   });
@@ -30,6 +30,12 @@ const goLogin = () => {
     name: "AuthLogin",
   });
 };
+
+const goNotice = () => {
+  router.push({
+    name: "NoticeList",
+  })
+}
 
 const logout = () => {
   userStore.setUserId("");
@@ -61,10 +67,10 @@ const logout = () => {
             <button class="nav-link" href="#">관광지 검색</button>
           </li>
           <li class="nav-item">
-            <button class="nav-link" @click="goList">Q&A 게시판</button>
+            <button class="nav-link" @click="goQna">Q&A 게시판</button>
           </li>
           <li class="nav-item">
-            <button class="nav-link" href="#">공지사항</button>
+            <button class="nav-link" @click="goNotice">공지사항</button>
           </li>
           <!-- 로그인 상태에 따라 다른 버튼을 표시 -->
           <li class="nav-item" v-if="userStore.isLoggedIn">
