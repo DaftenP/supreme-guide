@@ -1,7 +1,9 @@
 package com.ssafy.enjoytrips.controller;
 
+import com.ssafy.enjoytrips.model.dto.Comment;
 import com.ssafy.enjoytrips.model.dto.Qna;
 import com.ssafy.enjoytrips.model.dto.SearchCondition;
+import com.ssafy.enjoytrips.service.QnaCommentServiceImpl;
 import com.ssafy.enjoytrips.service.QnaService;
 import com.ssafy.utils.TokenProvider;
 import lombok.RequiredArgsConstructor;
@@ -19,6 +21,7 @@ import java.util.List;
 public class QnaController {
 
     private final QnaService qnaService;
+    private final QnaCommentServiceImpl qnaCommentService;
     private final TokenProvider tokenProvider;
 
     // 전체 조회
@@ -113,6 +116,78 @@ public class QnaController {
             qna.setQnaWriter(userId);
             int result = qnaService.regist(qna);
             return ResponseEntity.ok(result);
+        } catch (Exception e) {
+            return exceptionHandling(e);
+        }
+    }
+
+    // ------댓글-------
+
+    // 등록
+    @PostMapping("/comment/regist")
+    public ResponseEntity<?> registComment(@RequestHeader("Authorization") String authorizationHeader, @RequestBody Comment comment) {
+        try {
+            if (authorizationHeader == null || !authorizationHeader.startsWith("Bearer ")) {
+                // 헤더가 없거나 Bearer 토큰이 아닌 경우의 처리
+                // 예: 401 Unauthorized 반환
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Unauthorized");
+            }
+
+            String token = authorizationHeader.substring(7);
+            String userId = tokenProvider.getUserId(token);
+            comment.setUserId(userId);
+
+            int result = qnaCommentService.register(comment);
+            return ResponseEntity.ok(result);
+        } catch (Exception e) {
+            return exceptionHandling(e);
+        }
+    }
+
+    // 댓글 수정
+    @PutMapping("/comment/modify")
+    public ResponseEntity<?> modifyComment(@RequestHeader("Authorization") String authorizationHeader, @RequestBody Comment comment) {
+        try {
+            if (authorizationHeader == null || !authorizationHeader.startsWith("Bearer ")) {
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Unauthorized");
+            }
+            String token = authorizationHeader.substring(7);
+            String userId = tokenProvider.getUserId(token);
+
+            if (!comment.getUserId().equals(userId)) {
+                return ResponseEntity.status(HttpStatus.FORBIDDEN).body("수정할 수 있는 권한이 없습니다.");
+            }
+            comment.setUserId(userId);
+            int result = qnaCommentService.modify(comment);
+            return ResponseEntity.ok(result);
+        } catch (Exception e) {
+            return exceptionHandling(e);
+        }
+    }
+
+    // 댓글 삭제
+    @DeleteMapping("/comment/{qna_comment_id}")
+    public ResponseEntity<?> deleteComment(@RequestHeader("Authorization") String authorizationHeader, @PathVariable int qna_comment_id) {
+        try {
+            if (authorizationHeader == null || !authorizationHeader.startsWith("Bearer ")) {
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Unauthorized");
+            }
+            String token = authorizationHeader.substring(7);
+            String userId = tokenProvider.getUserId(token);
+
+            Comment comment = qnaCommentService.selectCommentWriter(qna_comment_id);
+            if (comment == null) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("댓글을 찾을 수 없습니다.");
+            }
+
+            // 댓글 작성자와 현재 사용자 비교
+            if (!comment.getUserId().equals(userId)) {
+                return ResponseEntity.status(HttpStatus.FORBIDDEN).body("삭제할 수 있는 권한이 없습니다.");
+            }
+
+            int result = qnaCommentService.delete(qna_comment_id);
+            return ResponseEntity.ok(result);
+
         } catch (Exception e) {
             return exceptionHandling(e);
         }

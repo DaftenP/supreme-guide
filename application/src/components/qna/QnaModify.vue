@@ -47,7 +47,7 @@ const modifyArticle = async () => {
         goDetail(qnaId);
     } catch (error) {
         console.log(error);
-        alert("문제가 발생하였습니다.")
+        alert("작성자만 글을 삭제할 수 있습니다.")
     }
 };
 

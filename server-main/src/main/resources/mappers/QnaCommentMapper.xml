@@ -12,32 +12,57 @@
     // 댓글 등록
     int regist(QnaComment qnaComment); -->
 
-    <!--  댓글 전체 조회  -->
-    <select id="list" parameterType="int" resultType="comment">
-        SELECT
-            qna_comment_id, qna_comment_content, qna_comment_harmful, qna_qna_id, user_user_id
-        FROM
-            qna_comment
-        WHERE
-            qna_qna_id = #{articleId}
+    <!-- 댓글 작성자 조회   -->
+    <select id="selectCommentWriter" resultType="com.ssafy.enjoytrips.model.dto.Comment">
+        SELECT qna_comment_id, qna_qna_id, user_user_id
+        FROM qna_comment
+        WHERE qna_comment_id = #{id}
     </select>
+
+
+<!--    &lt;!&ndash;  댓글 전체 조회  &ndash;&gt;-->
+<!--    <select id="list" parameterType="int" resultType="comment">-->
+<!--        SELECT-->
+<!--            qna_comment_id, qna_comment_content, qna_comment_harmful, qna_qna_id, user_user_id-->
+<!--        FROM-->
+<!--            qna_comment-->
+<!--        WHERE-->
+<!--            qna_qna_id = #{articleId}-->
+<!--    </select>-->
 
     <!-- 댓글 등록 -->
     <insert id="regist" parameterType="comment">
-        INSERT INTO qna_comment(qna_comment_content, qna_comment_harmful, qna_qna_id, user_user_id)
-        VALUES (#{content}, #{harmful}, #{articleId}, #{userId})
+        INSERT INTO
+            qna_comment(
+                qna_comment_content,
+                qna_comment_harmful,
+                qna_qna_id,
+                user_user_id)
+        VALUES (
+            #{content},
+            #{harmful},
+            #{articleId},
+            #{userId}
+        )
+        ;
     </insert>
+
     <!--  댓글 수정  -->
     <update id="modify" parameterType="comment">
-        UPDATE qna_comment
-        SET qna_comment_content = #{content}
-        WHERE qna_comment_id = #{id}
+        UPDATE
+            qna_comment
+        SET
+            qna_comment_content = #{content},
+            qna_comment_harmful = #{harmful}
+        WHERE
+            qna_comment_id = #{id}
     </update>
 
     <!-- 댓글 삭제-->
     <delete id="delete" parameterType="int">
-        DELETE
-        FROM qna_comment
-        WHERE qna_comment_id = #{id}
+        DELETE FROM
+                   qna_comment
+        WHERE
+            qna_comment_id = #{commentId}
     </delete>
 </mapper>

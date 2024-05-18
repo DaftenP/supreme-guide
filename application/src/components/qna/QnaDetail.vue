@@ -10,6 +10,7 @@ const route = useRoute();
 const router = useRouter();
 
 const qna = ref({});
+const comments = ref([]);
 
 const qnaId = route.params.qnaId;
 const goModify = () => {
@@ -20,18 +21,6 @@ const goModify = () => {
 };
 
 const deleteBoard = async () => {
-  // if (confirm("정말로 삭제하시겠습니까?")) {
-  //   const success = (response) => {
-  //     alert("삭제되었습니다.");
-  //     goList();
-  //   };
-
-  //   const fail = (error) => {
-  //     alert("문제가 발생했습니다", error);
-  //   };
-
-  //   deleteArticle(boardId, success, fail);
-  // }
   try {
     const token = Cookies.get("accessToken");
     const res = await axios({
@@ -45,7 +34,7 @@ const deleteBoard = async () => {
     goList();
   } catch (error) {
     console.log(error);
-    alert("삭제에 실패하였습니다.")
+    alert("작성자만 글을 삭제할 수 있습니다.")
   }
 };
 
@@ -66,8 +55,9 @@ onBeforeMount( async () => {
     })
     console.log(res.data);
     qna.value = res.data;
+    comments.value = res.data.list;
   } catch (error) {
-    consle.log(error);
+    console.log(error);
     alert("문제가 발생했습니다.")
   }
 });
@@ -115,6 +105,12 @@ onBeforeMount( async () => {
             목록
           </button>
         </div>
+        <hr />
+        <ul>
+            <li v-for="comment in comments" :key="comment.qnaCommentId">
+              <strong>{{ comment.userId }}:</strong> {{ comment.content }}
+            </li>
+          </ul>
       </div>
     </div>
   </div>

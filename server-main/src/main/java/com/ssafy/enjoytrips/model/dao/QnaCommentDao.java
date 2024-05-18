@@ -2,6 +2,7 @@ package com.ssafy.enjoytrips.model.dao;
 
 import com.ssafy.enjoytrips.model.dto.Comment;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -13,4 +14,9 @@ public interface QnaCommentDao {
     int delete(int qnaCommentId);
     // 댓글 등록
     int regist(Comment qnaComment);
+
+    // 댓글 작성자 조회
+    // 댓글 작성자 조회
+    Comment selectCommentWriter(@Param("qnaCommentId") int qnaCommentId);
+
 }

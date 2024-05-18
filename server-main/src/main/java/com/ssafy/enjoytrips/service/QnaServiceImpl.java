@@ -6,6 +6,7 @@ import com.ssafy.enjoytrips.model.dto.Qna;
 import com.ssafy.enjoytrips.model.dto.SearchCondition;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -13,17 +14,18 @@ import java.util.List;
 @RequiredArgsConstructor
 public class QnaServiceImpl implements QnaService{
     private final QnaDao qnaDao;
-
+    private final QnaCommentServiceImpl qnaCommentService;
     @Override
     public List<Qna> list(SearchCondition searchCondition) {
         return qnaDao.list(searchCondition);
     }
     @Override
+    @Transactional
     public Qna select(int qnaId) {
-
         Qna qna = qnaDao.select(qnaId);
-        List<Comment> comments = qnaDao.selectComment(qnaId);
-        qna.setList(comments);
+        qna.setList(qnaDao.selectComment(qnaId));
+//        List<Comment> comments = qnaDao.selectComment(qnaId);
+//        qna.setList(comments);
         return qna;
     }
 
@@ -46,4 +48,8 @@ public class QnaServiceImpl implements QnaService{
     public void updateView(int qnaId) {
         qnaDao.updateView(qnaId);
     }
+
+//    public int registerComment(Comment comment, int qnaId) {
+//        return qnaCommentService.register(comment, qnaId);
+//    }
 }

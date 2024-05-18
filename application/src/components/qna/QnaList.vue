@@ -4,55 +4,64 @@ import { useRouter } from "vue-router";
 import { getAllArticle } from "@/api/board";
 import axios from "axios";
 import Cookies from "vue-cookies";
+import noAuthClient from "@/api/noAuthClient";
 
 const router = useRouter();
 const qnas = ref([]);
 const key = ref("");
 const word = ref("");
-
+const qna = ref({});
 const movePage = () => {
   router.push({ name: "QnaWrite" });
 };
 
-onBeforeMount(() => {
-  getAllArticle(
-    {},
-    (resp) => {
-      console.log(resp);
-      if (resp.status == 200) {
-        qnas.value = resp.data;
-        qnas.value.filter((qna) => {
-          qna.computed_date = computed(() => {
-            const dateString = qna.qnaCreatetime;
-            const date = new Date(dateString);
-            return date.toLocaleString();
-          });
-        });
-      } else {
-        alert("문제가 발생했습니다.");
-      }
-    },
-    (err) => {
-      alert("문제가 발생했습니다.", err);
-    }
-  );
+onBeforeMount( async () => {
+  try {
+    const res = await axios({
+      method: "get",
+      url: `${import.meta.env.VITE_API_BASE_URL}/qna/all`
+    })
+    qnas.value = res.data;
+    console.log(res.data);
+  } catch (error) {
+    console.log(error);
+    alert("리스트를 불러오는 데 문제가 발생했습니다.")
+  }
+  // getAllArticle(
+  //   {},
+  //   (resp) => {
+  //     console.log(resp);
+  //     if (resp.status == 200) {
+  //       qnas.value = resp.data;
+  //       qnas.value.filter((qna) => {
+  //         qna.computed_date = computed(() => {
+  //           const dateString = qna.qnaCreatetime;
+  //           const date = new Date(dateString);
+  //           return date.toLocaleString();
+  //         });
+  //       });
+  //     } else {
+  //       alert("문제가 발생했습니다.");
+  //     }
+  //   },
+  //   (err) => {
+  //     alert("문제가 발생했습니다.", err);
+  //   }
+  // );
 });
 
-const searchArticle = () => {
-  getAllArticle(
-    { key: key.value, word: word.value },
-    (resp) => {
-      console.log(resp);
-      if (resp.status == 200) {
-        boards.value = resp.data;
-      } else {
-        alert("문제가 발생했습니다.");
-      }
-    },
-    (err) => {
-      alert("문제가 발생했습니다.", err);
-    }
-  );
+const searchArticle = async () => {
+  try { 
+    const res = await noAuthClient({
+      method: "get",
+      url: `${import.meta.env.VITE_API_BASE_URL}/qna/view/${qnaId}`,
+    })
+    console.log(res.data);
+    qna.value = res.data;
+  } catch (error) {
+    consle.log(error);
+    alert("문제가 발생했습니다.")
+  }
 };
 
 const goDetail = (id) => {
