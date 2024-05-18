@@ -54,13 +54,16 @@ const searchArticle = () => {
 };
 
 const goDetail = (id) => {
+  console.log(id);
   router.push({
     name: "QnaDetail",
     params: {
       qnaId: id,
+      
     },
+    
   });
-};
+}; 
 </script>
 
 <template>

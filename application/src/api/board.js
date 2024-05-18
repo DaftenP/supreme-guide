@@ -9,7 +9,7 @@ export const getAllArticle = (params, success, fail) => {
 
 export const getArticle = (board_id, success, fail) => {
   console.log("getArticle", board_id);
-  axios.get(`/select/${board_id}`).then(success).catch(fail);
+  axios.get(`/view/${board_id}`).then(success).catch(fail);
 };
 
 export const postArticle = (article, success, fail) => {

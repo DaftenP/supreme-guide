@@ -17,7 +17,7 @@ const qna = reactive({
     list: [],
 });
 
-// LifeCtcle
+// LifeCycle
 onUpdated(() => {
     console.log(`정보: ${JSON.stringify(qna)}` );
 });
@@ -44,7 +44,7 @@ const writeArticle = async () => {
       method: "post",
       url: `${import.meta.env.VITE_API_BASE_URL}/qna/regist`,
       data: {
-        qna: qnaData,
+        qna: qna
       },
       headers: {
         Authorization: `Bearer ${token}`,
@@ -66,7 +66,7 @@ const goList = () => {
 };
 
 onMounted(() => {
-  qna.value.qna_writer = userStore.userId;
+  qna.qna_writer = userStore.userId;
 });
 </script>
 

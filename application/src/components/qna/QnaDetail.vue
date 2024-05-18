@@ -38,7 +38,14 @@ const goList = () => {
 
 const qnaId = route.params.qnaId;
 
-onBeforeMount(() => {
+// 게시글 상세 조회
+onBeforeMount( async () => {
+  // try {
+    
+  // } catch (error) {
+  //   consle.log(error);
+  //   alert("문제가 발생했습니다.")
+  // }
   getArticle(
     qnaId,
     (response) => {
@@ -71,22 +78,22 @@ onBeforeMount(() => {
         </h2>
       </div>
       <div class="col-lg-12">
-        <h1 class="">{{ board.board_title }}</h1>
+        <h1 class="">{{ qna.qnaTitle }}</h1>
         <div class="d-flex justify-content-between">
           <div>
             <label for="writer">작성자 :</label>
-            {{ qna.qna_writer }}
+            {{ qna.qnaWriter }}
           </div>
 
           <div>
-            {{ qna.computed_date }}
+            {{ qna.qnaCreateDate }}
 
             <label class="ms-1" for="view">조회 </label>
-            {{ qna.qna_view }}
+            {{ qna.qnaView }}
           </div>
         </div>
         <hr />
-        <span v-html="qna.computed_content"></span>
+        <span v-html="qna.qnaContent"></span>
         <hr />
         <div class="d-flex justify-content-end">
           <a

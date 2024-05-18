@@ -20,5 +20,7 @@ public interface QnaDao {
     int modify(Qna qna);
     // 삭제
     int delete(int qnaId);
+    // 글 조회수 증가
+    int updateView(int qnaId);
 
 }

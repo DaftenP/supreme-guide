@@ -36,6 +36,7 @@ public class QnaController {
     public ResponseEntity<?> select(@PathVariable int qna_id) {
         try {
             Qna qna = qnaService.select(qna_id);
+            qnaService.updateView(qna_id);
             if (qna != null) {
                 return ResponseEntity.ok(qna);
             } else {
