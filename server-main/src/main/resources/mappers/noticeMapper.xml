@@ -19,13 +19,14 @@
 
     <select id="list" parameterType="searchCondition" resultType="notice">
         SELECT
-            notice_id, notice_title, notice_content, notice_view, notice_writer, notice_create_date
+        notice_id, notice_title, notice_content, notice_view, notice_writer, notice_create_date
         FROM
-            notice
+        notice
         <where>
             <if test="key != 'none'">
                 ${key} LIKE CONCAT('%', #{word}, '%')
             </if>
+        </where>
             <if test="orderBy != 'none'">
                 ORDER BY ${orderBy} ${orderByDir}
             </if>
@@ -33,7 +34,7 @@
             <if test="limit">
                 LIMIT #{offset}, #{countPerPage}
             </if>
-        </where>
+
         ;
     </select>
 
