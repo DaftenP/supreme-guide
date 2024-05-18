@@ -11,29 +11,29 @@ const router = createRouter({
 
     {
       path: "/qna",
-      name: "BoardHome",
-      component: () => import("@/views/BoardView.vue"),
+      name: "QnaHome",
+      component: () => import("@/views/QnaView.vue"),
       redirect: "/qna/all",
       children: [
         {
           path: "all",
-          name: "BoardList",
-          component: () => import("@/components/board/BoardList.vue"),
+          name: "QnaList",
+          component: () => import("@/components/qna/QnaList.vue"),
         },
         {
-          path: "view/:qna_id",
-          name: "BoardDetail",
-          component: () => import("@/components/board/BoardDetail.vue"),
+          path: "view/:qnaId",
+          name: "QnaDetail",
+          component: () => import("@/components/qna/QnaDetail.vue"),
         },
         {
-          path: "modify/:qna_id",
-          name: "BoardModify",
-          component: () => import("@/components/board/BoardModify.vue"),
+          path: "modify/:qnaId",
+          name: "QnaModify",
+          component: () => import("@/components/qna/QnaModify.vue"),
         },
         {
           path: "/regist",
-          name: "BoardWrite",
-          component: () => import("@/components/board/BoardWrite.vue"),
+          name: "QnaWrite",
+          component: () => import("@/components/qna/QnaWrite.vue"),
         },
       ],
     },
@@ -66,6 +66,34 @@ const router = createRouter({
         },
       ],
     },
+    {
+      path: "/notice",
+      name: "NoticeHome",
+      component: () => import("@/views/NoticeView.vue"),
+      redirect: "/",
+      children: [
+        {
+          path: "all",
+          name: "NoticeList",
+          component: () => import("@/components/notice/NoticeList.vue"),
+        },
+        {
+          path: "view/:noticeId",
+          name: "NoticeDetail",
+          component: () => import("@/components/notice/NoticeDetail.vue"),
+        },
+        {
+          path: "modify/:noticeId",
+          name: "NoticeModify",
+          component: () => import("@/components/notice/NoticeModify.vue"),
+        },
+        {
+          path: "/regist",
+          name: "NoticeWrite",
+          component: () => import("@/components/notice/NoticeWrite.vue"),
+        },
+      ]
+    }
   ],
 });
 

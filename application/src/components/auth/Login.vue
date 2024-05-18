@@ -58,6 +58,7 @@ export default {
           router.push("/");
         } catch (error) {
           console.log(error);
+          alert("아이디나 비밀번호를 다시 확인해주세요.");
         }
       } else {
         alert("유효성 검사를 다시 해주세요.");

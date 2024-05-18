@@ -1,5 +1,5 @@
 <script setup>
-import { ref } from "vue";
+import { ref, toRefs } from "vue";
 import { getArticle } from "@/api/board";
 import { useRouter, useRoute } from "vue-router";
 
@@ -8,10 +8,16 @@ const route = useRoute();
 
 const props = defineProps({
   type: String,
-  board: Object,
+  qna: Object,
 });
 
 const emit = defineEmits(["evtProcess"]);
+
+const { qna } = toRefs(props);
+
+const emitProcess = () => {
+  emit("evt-process", qna.value);
+};
 
 const refTitle = ref(null);
 const refContent = ref(null);
@@ -21,15 +27,15 @@ const validate = () => {
   let isValid = true;
   let errMsg = "";
 
-  !props.board.board_title
+  !props.qna.qnaTitle
     ? ((isValid = false),
       (errMsg = "제목을 입력해주세요."),
       refTitle.value.focus())
-    : !props.board.board_content
+    : !props.qna.qnaContent
     ? ((isValid = false),
       (errMsg = "내용을 입력해주세요."),
       refContent.value.focus())
-    : !props.board.board_writer
+    : !props.qna.qnaWriter
     ? ((isValid = false),
       (errMsg = "작성자를 입력해주세요."),
       refWriter.value.focus())
@@ -43,7 +49,7 @@ const validate = () => {
 
 const goList = () => {
   router.push({
-    name: "BoardList",
+    name: "QnaList",
   });
 };
 </script>
@@ -56,7 +62,7 @@ const goList = () => {
       type="text"
       id="title"
       name="title"
-      v-model="board.board_title"
+      v-model="qna.qnaTitle"
       ref="refTitle" />
 
     <label class="form-label pt-3" for="writer">글쓴이</label>
@@ -65,7 +71,7 @@ const goList = () => {
       type="text"
       id="writer"
       name="writer"
-      v-model="board.board_writer"
+      v-model="qna.qnaWriter"
       ref="refWriter"
       disabled />
 
@@ -75,7 +81,7 @@ const goList = () => {
       id="content"
       name="content"
       rows="5"
-      v-model="board.board_content"
+      v-model="qna.qnaContent"
       ref="refContent">
     </textarea>
 

@@ -1,21 +1,26 @@
 import { defineStore } from "pinia";
+import { ref, computed } from "vue";
 import Cookies from "vue-cookies";
 
-export const useUserStore = defineStore("user", {
-  state: () => ({
-    userId: null,
-  }),
-  getters: {
-    isLoggedIn: (state) => !!state.userId,
+export const useUserStore = defineStore(
+  "user",
+  () => {
+    const userId = ref("");
+
+    const isLoggedIn = computed(() => {
+      return userId.value !== "";
+    });
+
+    const setUserId = (id) => {
+      userId.value = id;
+    };
+
+    return {
+      userId,
+      isLoggedIn,
+      setUserId,
+    };
   },
-  actions: {
-    setUserId(userId) {
-      this.userId = userId;
-    },
-    logout() {
-      this.userId = null;
-      Cookies.remove("accessToken");
-      Cookies.remove("refreshToken");
-    },
-  },
-});
+
+  { persist: true }
+);

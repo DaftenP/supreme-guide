@@ -54,53 +54,38 @@
         WHERE qna_id = #{qnaId}
     </delete>
 
-<!--    <select id="selectComment" parameterType="int" resultType="qna" resultMap="QnaWithComments">-->
-<!--        SELECT-->
-<!--            q.qna_id,-->
-<!--            q.qna_title,-->
-<!--            q.qna_content,-->
-<!--            q.qna_view,-->
-<!--            q.qna_writer,-->
-<!--            q.qna_create_date,-->
-<!--            qc.qna_comment_id,-->
-<!--            qc.qna_comment_content,-->
-<!--            qc.qna_comment_harmful-->
-<!--        FROM-->
-<!--            qna q-->
-<!--                LEFT JOIN qna_comment qc ON q.qna_id = qc.qna_qna_id-->
-<!--        WHERE-->
-<!--            q.qna_id = #{qnaId}-->
-<!--    </select>-->
-
-<!--    <resultMap id="QnaWithComments" type="Qna">-->
-<!--        <result property="qnaId" column="qna_id"/>-->
-<!--        <result property="qnaTitle" column="qna_title" />-->
-<!--        <result property="qnaContent" column="qna_content" />-->
-<!--        <result property="qnaView" column="qna_view" />-->
-<!--        <result property="qnaWriter" column="qna_writer"/>-->
-<!--        <collection property="comments" ofType="qnaComment">-->
-<!--            <id property="qnaCommentId" column="qna_comment_id" />-->
-<!--            <result property="qnaCommentContent" column="qna_comment_content" />-->
-<!--            <result property="qnaCommentHarmful" column="qna_comment_harmful" />-->
-<!--            <result property="qnaId" column="qna_qna_id" />-->
-<!--            <result property="userId" column="user_user_id" />-->
-<!--        </collection>-->
-<!--    </resultMap>-->
-    <resultMap id="commentResultMap" type="comment">
-        <id property="commentId" column="qna_comment_id" />
-        <result property="commentContent" column="qna_comment_content" />
-        <result property="commentHarmful" column="qna_comment_harmful" />
-        <result property="qnaId" column="qna_qna_id"/>
-        <result property="userId" column="user_user_id" />
-    </resultMap>
-
-    <select id="selectComment" parameterType="int" resultMap="commentResultMap">
+    <select id="selectComment" parameterType="int" resultType="comment">
         SELECT
-            qna_comment_id, qna_comment_content, qna_comment_harmful, qna_qna_id, user_user_id
+            c.qna_comment_id AS id,
+            c.qna_comment_content AS content,
+            c.qna_comment_harmful AS harmful,
+            c.qna_qna_id AS articleId,
+            c.user_user_id,
+            u.user_name
         FROM
-            qna_comment
+            qna q
+                INNER JOIN qna_comment c ON q.qna_id = c.qna_qna_id
+                INNER JOIN user u ON c.user_user_id = u.user_id
         WHERE
-            qna_qna_id = #{qnaId}
+            q.qna_id = #{qnaId}
     </select>
+
+
+    <!--    <resultMap id="commentResultMap" type="comment">-->
+<!--        <id property="commentId" column="qna_comment_id" />-->
+<!--        <result property="commentContent" column="qna_comment_content" />-->
+<!--        <result property="commentHarmful" column="qna_comment_harmful" />-->
+<!--        <result property="qnaId" column="qna_qna_id"/>-->
+<!--        <result property="userId" column="user_user_id" />-->
+<!--    </resultMap>-->
+
+<!--    <select id="selectComment" parameterType="int" resultMap="commentResultMap">-->
+<!--        SELECT-->
+<!--            qna_comment_id, qna_comment_content, qna_comment_harmful, qna_qna_id, user_user_id-->
+<!--        FROM-->
+<!--            qna_comment-->
+<!--        WHERE-->
+<!--            qna_qna_id = #{qnaId}-->
+<!--    </select>-->
 
 </mapper>

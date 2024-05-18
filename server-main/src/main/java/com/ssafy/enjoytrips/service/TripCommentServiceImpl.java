@@ -29,4 +29,10 @@ public class TripCommentServiceImpl implements CommentService{
 		return commentDao.delete(commentId);
 	}
 
+	// 추후 추가 -> 댓글 작성자 조회 -> 수정과 삭제 권한 확인하기 위함
+	@Override
+	public Comment selectCommentWriter(int qnaCommentId) {
+		return null;
+	}
+
 }

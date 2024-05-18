@@ -1,66 +1,64 @@
 <script setup>
 import { ref, onBeforeMount, computed } from "vue";
 import { useRouter } from "vue-router";
-import { getAllArticle } from "@/api/board";
+import axios from "axios";
+import Cookies from "vue-cookies";
+import noAuthClient from "@/api/noAuthClient";
 
 const router = useRouter();
 const qnas = ref([]);
 const key = ref("");
 const word = ref("");
+const qna = ref({});
+// const qnaId = ref(0);
 
 const movePage = () => {
-  router.push({ name: "BoardWrite" });
+  router.push({ name: "QnaWrite" });
 };
 
-onBeforeMount(() => {
-  getAllArticle(
-    {},
-    (resp) => {
-      console.log(resp);
-      if (resp.status == 200) {
-        qnas.value = resp.data;
-        qnas.value.filter((qna) => {
-          qna.computed_date = computed(() => {
-            const dateString = qna.qnaCreatetime;
-            const date = new Date(dateString);
-            return date.toLocaleString();
-          });
-        });
-      } else {
-        alert("문제가 발생했습니다.");
-      }
-    },
-    (err) => {
-      alert("문제가 발생했습니다.", err);
-    }
-  );
+// searchArticle구현
+
+
+onBeforeMount( async () => {
+  try {
+    const res = await axios({
+      method: "get",
+      url: `${import.meta.env.VITE_API_BASE_URL}/qna/all`
+    })
+    qnas.value = res.data;
+    // qnaId.value = res.data.qnaId;
+    console.log(res.data);
+  } catch (error) {
+    console.log(error);
+    alert("리스트를 불러오는 데 문제가 발생했습니다.")
+  }
 });
 
-const searchArticle = () => {
-  getAllArticle(
-    { key: key.value, word: word.value },
-    (resp) => {
-      console.log(resp);
-      if (resp.status == 200) {
-        boards.value = resp.data;
-      } else {
-        alert("문제가 발생했습니다.");
-      }
-    },
-    (err) => {
-      alert("문제가 발생했습니다.", err);
-    }
-  );
+const searchArticle = async () => {
+  try { 
+    const res = await noAuthClient({
+      method: "get",
+      url: `${import.meta.env.VITE_API_BASE_URL}/qna/view/${qnaId}`,
+    })
+    console.log(res.data);
+    qna.value = res.data;
+  } catch (error) {
+    consle.log(error);
+    alert("문제가 발생했습니다.")
+  }
 };
 
 const goDetail = (id) => {
+  console.log(id);
   router.push({
-    name: "BoardDetail",
+    name: "QnaDetail",
     params: {
       qnaId: id,
+      
     },
+    
   });
-};
+}; 
 </script>
 
 <template>
@@ -85,9 +83,9 @@ const goDetail = (id) => {
             <form class="d-flex">
               <div class="input-group input-group-sm">
                 <select class="form-select" v-model="key">
-                  <option value="board_title">제목</option>
-                  <option value="board_content">내용</option>
-                  <option value="board_writer">작성자</option>
+                  <option value="qna_title">제목</option>
+                  <option value="qna_content">내용</option>
+                  <option value="qna_writer">작성자</option>
                 </select>
                 <input
                   type="text"
@@ -123,7 +121,7 @@ const goDetail = (id) => {
               :key="qna.qnaId">
               <td>{{ qna.qnaId }}</td>
               <td>
-                <a href="#" @click="goDetail(qna.qnaId)">{{ qna.qnaTitle }}</a>
+                <a @click="goDetail(qna.qnaId)">{{ qna.qnaTitle }}</a>
               </td>
               <td>{{ qna.qnaView }}</td>
               <td>{{ qna.qnaWriter }}</td>

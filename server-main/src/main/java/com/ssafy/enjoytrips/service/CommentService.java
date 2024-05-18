@@ -10,4 +10,8 @@ public interface CommentService {
     int modify(Comment comment);
     // 삭제
     int delete(int qnaId);
+
+    // 댓글 작성자 조회
+    Comment selectCommentWriter(int qnaCommentId);
+
 }

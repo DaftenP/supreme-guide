@@ -36,11 +36,10 @@
 
     <!-- 회원 가입-->
     <insert id="regist" parameterType="user">
-        INSERT INTO
-            user(user_id, user_pw, user_name, user_admin, user_salt, user_email)
-        VALUES
-            (#{id}, #{pw}, #{name}, #{admin}, #{salt}, #{email})
+        INSERT INTO user (user_id, user_pw, user_name, user_admin, user_salt, user_email)
+        VALUES (#{id}, #{pw}, #{name}, #{admin}, #{salt}, #{email})
     </insert>
+
 
     <!-- id 중복확인 -->
     <select id="isDuplicateId" parameterType="String" resultType="int">

@@ -1,6 +1,6 @@
 import axios from "axios";
-import jwtDecode from "jwt-decode";
-import { Cookies } from "vue-cookies";
+import VueJwtDecode from "vue-jwt-decode";
+import Cookies from "vue-cookies";
 
 import settingCookie from "@/utils/settingCookie";
 
@@ -14,8 +14,8 @@ const authClient = axios.create({
 // 토큰 만료 확인
 const checkToken = async () => {
   console.log("check token!!!!!");
-  let token = settingCookie("get-access");
-  const exp = jwtDecode(token);
+  let token = await settingCookie("get-access");
+  const exp = VueJwtDecode.decode(token);
   if (Date.now() / 1000 > exp.exp) {
     console.log("해당 토큰은 만료되었습니다.");
     await getNewToken();
@@ -26,7 +26,7 @@ const checkToken = async () => {
 const getNewToken = async () => {
   const access = settingCookie("get-access");
   const refresh = settingCookie("get-refresh");
-  const cookie = new Cookies();
+
   try {
     const res = await axios({
       method: "post",
@@ -37,8 +37,8 @@ const getNewToken = async () => {
       },
     });
     settingCookie("remove");
-    cookie.set("accessToken", res.data.accessToken);
-    cookie.set("refreshToken", res.datarefreshToken);
+    Cookies.set("accessToken", res.data.accessToken);
+    Cookies.set("refreshToken", res.data.refreshToken);
     return res.data.accessToken;
   } catch (error) {
     alert("error");
@@ -47,8 +47,8 @@ const getNewToken = async () => {
 
 // axios 요청 전 수행해야할 작업
 authClient.interceptors.request.use(async (config) => {
-  let token = settingCookie("get-access");
-  const exp = jwtDecode(token);
+  let token = await settingCookie("get-access");
+  const exp = VueJwtDecode.decode(token);
   if (Date.now() / 1000 > exp.exp) {
     console.log("만료된 토큰 ", token);
     const newToken = await getNewToken();

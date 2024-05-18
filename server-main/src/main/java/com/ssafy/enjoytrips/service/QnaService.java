@@ -17,6 +17,8 @@ public interface QnaService {
     int modify(Qna qna);
     // 글 삭제
     int delete(int qnaId);
+    // 글 조회수 증가
+    void updateView(int qnaId);
 
 
 }

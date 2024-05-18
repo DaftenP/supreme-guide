@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 public class QnaCommentServiceImpl implements CommentService{
     private final QnaCommentDao qnaCommentDao;
 
+
     @Override
     public int register(Comment qnaComment) {
         return qnaCommentDao.regist(qnaComment);
@@ -23,5 +24,10 @@ public class QnaCommentServiceImpl implements CommentService{
     @Override
     public int delete(int qnaId) {
         return qnaCommentDao.delete(qnaId);
+    }
+
+    @Override
+    public Comment selectCommentWriter(int qnaCommentId) {
+        return qnaCommentDao.selectCommentWriter(qnaCommentId);
     }
 }
