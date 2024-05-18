@@ -8,6 +8,7 @@ const router = createRouter({
       name: "home",
       component: () => import("@/views/HomeView.vue"),
     },
+
     {
       path: "/qna",
       name: "BoardHome",
@@ -36,6 +37,17 @@ const router = createRouter({
         },
       ],
     },
+    {
+      path: "/attraction",
+      name: "Attraction",
+      component: () => import("@/views/AttractionView.vue"),
+      redirect: "AttractionMain",
+      children: [
+        {
+          path: "",
+          name: "AttractionMain",
+          component: () =>
+            import("@/components/attraction/AttractionSearch.vue"),
     {
       path: "/auth",
       name: "AuthHome",

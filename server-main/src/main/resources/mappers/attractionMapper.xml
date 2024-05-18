@@ -3,38 +3,38 @@
 <!-- -->
 <mapper namespace="com.ssafy.enjoytrips.model.dao.AttractionDao">
 	<select id="search" parameterType="map" resultType="attraction">
-        SELECT 
-        	content_id, 
-        	content_type_id category, 
-        	title, 
-        	addr1, 
-        	addr2, 
-        	zipcode, 
-        	tel, 
-        	first_image, 
-        	first_image2, 
-        	readcount, 
-        	sido_code, 
-        	gugun_code, 
-        	latitude, 
-        	longitude, 
-        	mlevel
-        FROM 
-        	attraction_info
-        <where>
-	        <if test="category != null">
-	            content_type_id = #{category} 
-	        </if>
-	        <if test="sido != null">
-	            sido_code = #{sido} 
-	        </if>
-	        <if test="gugun != null">
-	            gugun_code = #{gugun} 
-	        </if>
- 			<if test="condition.key != 'none'">
- 				 ${condition.key} LIKE CONCAT('%', #{condition.word}, '%')
- 			</if>
-        </where>
+		SELECT
+		content_id,
+		content_type_id category,
+		title,
+		addr1,
+		addr2,
+		zipcode,
+		tel,
+		first_image,
+		first_image2,
+		readcount,
+		sido_code,
+		gugun_code,
+		latitude,
+		longitude,
+		mlevel
+		FROM
+		attraction_info
+		<where>
+			<if test="category != null">
+				AND content_type_id = #{category}
+			</if>
+			<if test="sido != null">
+				AND sido_code = #{sido}
+			</if>
+			<if test="gugun != null">
+				AND gugun_code = #{gugun}
+			</if>
+			<if test="condition.key != 'none'">
+				AND ${condition.key} LIKE CONCAT('%', #{condition.word}, '%')
+			</if>
+		</where>
 		<if test="condition.orderBy != 'none'">
 			ORDER BY ${condition.orderBy} ${condition.orderByDir}
 		</if>
@@ -42,35 +42,36 @@
 			LIMIT #{condition.countPerPage}
 			OFFSET #{condition.offset}
 		</if>
-        ;
-    </select>
-    
-    <select id="searchById" parameterType="string" resultType="attraction">
-    	SELECT 
-    		a.content_id, 
-        	a.content_type_id category, 
-        	a.title, 
-        	a.addr1, 
-        	a.addr2, 
-        	a.zipcode, 
-        	a.tel, 
-        	a.first_image, 
-        	a.first_image2, 
-        	a.readcount, 
-        	a.sido_code, 
-        	a.gugun_code, 
-        	a.latitude, 
-        	a.longitude, 
-        	a.mlevel,
-        	d.overview description
-        FROM
-        	attraction_info a
-        		INNER JOIN
-        	attraction_description d
-        		ON a.content_id = d.content_id
-        WHERE
-        	a.content_id = #{id}
-        ;
-    </select>
-    
+		;
+	</select>
+
+	<select id="searchById" parameterType="string"
+		resultType="attraction">
+		SELECT
+		a.content_id,
+		a.content_type_id category,
+		a.title,
+		a.addr1,
+		a.addr2,
+		a.zipcode,
+		a.tel,
+		a.first_image,
+		a.first_image2,
+		a.readcount,
+		a.sido_code,
+		a.gugun_code,
+		a.latitude,
+		a.longitude,
+		a.mlevel,
+		d.overview description
+		FROM
+		attraction_info a
+		INNER JOIN
+		attraction_description d
+		ON a.content_id = d.content_id
+		WHERE
+		a.content_id = #{id}
+		;
+	</select>
+
 </mapper>
