@@ -14,6 +14,7 @@
             <if test="key != 'none'">
                 ${key} LIKE CONCAT('%', #{word}, '%')
             </if>
+        </where>
             <if test="orderBy != 'none'">
                 ORDER BY ${orderBy} ${orderByDir}
             </if>
@@ -21,7 +22,6 @@
             <if test="limit">
                 LIMIT #{offset}, #{countPerPage}
             </if>
-        </where>
         ;
     </select>
 

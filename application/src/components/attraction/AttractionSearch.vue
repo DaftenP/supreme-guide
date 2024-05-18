@@ -1,8 +1,8 @@
 <script setup>
 import { ref } from "vue";
 import MapComponent from "../commons/MapComponent.vue";
-import AttractionListItem from "@/components/item/AttractionListItem.vue";
 import AttractionModal from "../modal/AttractionModal.vue";
+import AttractionSideBar from "@/components/attraction/AttractionSideBar.vue";
 import { getRegion, getAllAttraction, getAttraction } from "@/api/attraction";
 import { useMapStore } from "@/stores/map";
 
@@ -64,19 +64,6 @@ const search = () => {
   );
 };
 
-const showModal = (id) => {
-  mapStore.modalCheck = true;
-  getAttraction(
-    id,
-    (resp) => {
-      mapStore.attractionInfo = resp.data;
-    },
-    (err) => {
-      console.log(err);
-    }
-  );
-};
-
 // created
 getRegion(
   // success
@@ -91,91 +78,91 @@ getRegion(
 </script>
 
 <template>
-  <div class="search-form wow fadeInUp">
-    <div class="row">
-      <div class="col-lg-2 col-md-2 col-6 p-2">
-        <select
-          class="form-select"
-          name="sido"
-          id="search-area-sido"
-          v-model="sidoSelectedOption"
-          @change="sidoSelect">
-          <option value="0" selected>시/도 선택</option>
-          <option
-            v-for="sido in region"
-            :key="sido.sidoCode"
-            :sido="sido"
-            :value="sido.sidoCode">
-            {{ sido.sidoName }}
-          </option>
-        </select>
-      </div>
-      <div class="col-lg-2 col-md-2 col-6 p-2">
-        <select
-          class="form-select"
-          name="gugun"
-          id="search-area-gugun"
-          v-model="gugunSelectedOption">
-          <option value="0" selected>구/군 선택</option>
-          <option
-            v-for="g in gugun"
-            :key="g.gugunCode"
-            :g="g"
-            :value="g.gugunCode">
-            {{ g.gugunName }}
-          </option>
-        </select>
-      </div>
-      <div class="col-lg-2 col-md-2 col-12 p-2">
-        <select
-          class="form-select"
-          name="category"
-          id="search-content-id"
-          v-model="categorySelectedOption">
-          <option value="0" selected>관광지 유형</option>
-          <option value="12">관광지</option>
-          <option value="14">문화시설</option>
-          <option value="15">축제공연행사</option>
-          <option value="25">여행코스</option>
-          <option value="28">레포츠</option>
-          <option value="32">숙박</option>
-          <option value="38">쇼핑</option>
-          <option value="39">음식점</option>
-        </select>
-      </div>
-      <div class="col-lg-6 col-md-6 col-12 p-2 d-inline-flex">
-        <input
-          class="form-control inline"
-          type="search"
-          name="keyword"
-          id="search-keyword"
-          placeholder="검색어 입력"
-          aria-label="검색어 입력"
-          v-model="keywordSelectedOption" />
-        <button
-          class="btn btn-outline-primary inline"
-          id="btn-search"
-          @click="search">
-          검색
-        </button>
+  <div class="flex-grow-1 d-flex flex-column">
+    <div class="search-form ps-2 pe-2">
+      <div class="row">
+        <div class="col-lg-2 col-md-2 col-6 p-2">
+          <select
+            class="form-select ps-3"
+            name="sido"
+            id="search-area-sido"
+            v-model="sidoSelectedOption"
+            @change="sidoSelect">
+            <option value="0" selected>시/도 선택</option>
+            <option
+              v-for="sido in region"
+              :key="sido.sidoCode"
+              :sido="sido"
+              :value="sido.sidoCode">
+              {{ sido.sidoName }}
+            </option>
+          </select>
+        </div>
+        <div class="col-lg-2 col-md-2 col-6 p-2">
+          <select
+            class="form-select ps-3"
+            name="gugun"
+            id="search-area-gugun"
+            v-model="gugunSelectedOption">
+            <option value="0" selected>구/군 선택</option>
+            <option
+              v-for="g in gugun"
+              :key="g.gugunCode"
+              :g="g"
+              :value="g.gugunCode">
+              {{ g.gugunName }}
+            </option>
+          </select>
+        </div>
+        <div class="col-lg-2 col-md-2 col-12 p-2">
+          <select
+            class="form-select ps-3"
+            name="category"
+            id="search-content-id"
+            v-model="categorySelectedOption">
+            <option value="0" selected>관광지 유형</option>
+            <option value="12">관광지</option>
+            <option value="14">문화시설</option>
+            <option value="15">축제공연행사</option>
+            <option value="25">여행코스</option>
+            <option value="28">레포츠</option>
+            <option value="32">숙박</option>
+            <option value="38">쇼핑</option>
+            <option value="39">음식점</option>
+          </select>
+        </div>
+        <div class="col-lg-6 col-md-6 col-12 p-2 d-flex">
+          <input
+            class="form-control me-3 ps-3"
+            type="search"
+            name="keyword"
+            id="search-keyword"
+            placeholder="검색어 입력"
+            aria-label="검색어 입력"
+            v-model="keywordSelectedOption" />
+          <button
+            class="btn btn-outline-primary btn-width"
+            id="btn-search"
+            @click="search">
+            검색
+          </button>
+        </div>
       </div>
     </div>
-  </div>
-  <div>
-    <MapComponent :attractions="attractions"></MapComponent>
-  </div>
-  <AttractionModal />
-  <div>
-    <AttractionListItem
-      v-for="(attraction, index) in attractions"
-      :key="index"
-      :attraction="attraction"
-      @detail-view="showModal"></AttractionListItem>
+    <div
+      id="div-map"
+      class="flex-grow-1 d-flex align-items-center justify-content-center">
+      <MapComponent :attractions="attractions"></MapComponent>
+    </div>
+    <div>
+      <AttractionSideBar :attractions="attractions"></AttractionSideBar>
+    </div>
+    <AttractionModal />
   </div>
 </template>
 
 <style scoped>
-.inline {
-  display: inline-block;
+.btn-width {
+  min-width: 80px;
 }
 </style>
