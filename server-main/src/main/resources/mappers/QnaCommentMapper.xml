@@ -61,8 +61,8 @@
     <!-- 댓글 삭제-->
     <delete id="delete" parameterType="int">
         DELETE FROM
-                   qna_comment
+            qna_comment
         WHERE
-            qna_comment_id = #{commentId}
+            qna_comment_id = #{id}
     </delete>
 </mapper>
