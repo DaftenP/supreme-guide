@@ -14,7 +14,7 @@
 
     <!-- 댓글 작성자 조회   -->
     <select id="selectCommentWriter" resultType="com.ssafy.enjoytrips.model.dto.Comment">
-        SELECT qna_comment_id, qna_qna_id, user_user_id
+        SELECT qna_comment_id, qna_id, user_id
         FROM qna_comment
         WHERE qna_comment_id = #{id}
     </select>
@@ -36,8 +36,8 @@
             qna_comment(
                 qna_comment_content,
                 qna_comment_harmful,
-                qna_qna_id,
-                user_user_id)
+                qna_id,
+                user_id)
         VALUES (
             #{content},
             #{harmful},
