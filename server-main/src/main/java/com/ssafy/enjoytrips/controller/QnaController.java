@@ -5,6 +5,7 @@ import com.ssafy.enjoytrips.model.dto.SearchCondition;
 import com.ssafy.enjoytrips.service.QnaService;
 import com.ssafy.utils.TokenProvider;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -13,6 +14,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
+@Log4j2
 @RequestMapping("/qna")
 public class QnaController {
 
@@ -50,8 +52,22 @@ public class QnaController {
 
     // 수정
     @PutMapping("/{qna_id}")
-    public ResponseEntity<?> update(@RequestBody Qna qna) {
+    public ResponseEntity<?> update(@RequestHeader("Authorization") String authorizationHeader, @PathVariable int qna_id,@RequestBody Qna qna) {
         try {
+            if (authorizationHeader == null || !authorizationHeader.startsWith("Bearer ")) {
+                // 헤더가 없거나 Bearer 토큰이 아닌 경우의 처리
+                // 예: 401 Unauthorized 반환
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Unauthorized");
+            }
+
+            String token = authorizationHeader.substring(7);
+            String userId = tokenProvider.getUserId(token);
+
+            if (!qna.getQnaWriter().equals(userId)) {
+                return ResponseEntity.status(HttpStatus.FORBIDDEN).body("수정할 수 있는 권한이 없습니다.");
+            }
+            qna.setQnaWriter(userId);
+
             int result = qnaService.modify(qna);
             return ResponseEntity.ok(result);
         } catch (Exception e) {
@@ -61,8 +77,21 @@ public class QnaController {
 
     // 삭제
     @DeleteMapping("/{qna_id}")
-    public ResponseEntity<?> delete(@PathVariable int qna_id) {
+    public ResponseEntity<?> delete(@RequestHeader("Authorization") String authorizationHeader, @PathVariable int qna_id) {
         try {
+            if (authorizationHeader == null || !authorizationHeader.startsWith("Bearer ")) {
+            // 헤더가 없거나 Bearer 토큰이 아닌 경우의 처리
+            // 예: 401 Unauthorized 반환
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Unauthorized");
+            }
+            String token = authorizationHeader.substring(7);
+            String userId = tokenProvider.getUserId(token);
+
+            Qna qna = qnaService.select(qna_id);
+            log.debug(qna.getQnaId());
+            if (!qna.getQnaWriter().equals(userId)) {
+                return ResponseEntity.status(HttpStatus.FORBIDDEN).body("작성자만 글 삭제를 할 수 있습니다.");
+            }
             int result = qnaService.delete(qna_id);
             return ResponseEntity.ok(result);
         } catch (Exception e){

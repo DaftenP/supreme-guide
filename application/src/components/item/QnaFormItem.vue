@@ -27,15 +27,15 @@ const validate = () => {
   let isValid = true;
   let errMsg = "";
 
-  !props.qna.qna_title
+  !props.qna.qnaTitle
     ? ((isValid = false),
       (errMsg = "제목을 입력해주세요."),
       refTitle.value.focus())
-    : !props.qna.qna_content
+    : !props.qna.qnaContent
     ? ((isValid = false),
       (errMsg = "내용을 입력해주세요."),
       refContent.value.focus())
-    : !props.qna.qna_writer
+    : !props.qna.qnaWriter
     ? ((isValid = false),
       (errMsg = "작성자를 입력해주세요."),
       refWriter.value.focus())
@@ -62,7 +62,7 @@ const goList = () => {
       type="text"
       id="title"
       name="title"
-      v-model="qna.qna_title"
+      v-model="qna.qnaTitle"
       ref="refTitle" />
 
     <label class="form-label pt-3" for="writer">글쓴이</label>
@@ -71,7 +71,7 @@ const goList = () => {
       type="text"
       id="writer"
       name="writer"
-      v-model="qna.qna_writer"
+      v-model="qna.qnaWriter"
       ref="refWriter"
       disabled />
 
@@ -81,7 +81,7 @@ const goList = () => {
       id="content"
       name="content"
       rows="5"
-      v-model="qna.qna_content"
+      v-model="qna.qnaContent"
       ref="refContent">
     </textarea>
 

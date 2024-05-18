@@ -24,28 +24,12 @@ onUpdated(() => {
 
 const router = useRouter();
 const writeArticle = async () => {
-  // postArticle(
-  //   board.value,
-  //   // success
-  //   (resp) => {
-  //     alert("질문 등록이 완료되었습니다.");
-  //     console.log(resp.data);
-  //     goList();
-  //   },
-  //   // fail
-  //   (err) => {
-  //     alert("질문 등록에 실패하였습니다.");
-  //     console.log(err);
-  //   }
-  // );
   try {
     const token = Cookies.get("accessToken");
     const res = await axios({
       method: "post",
       url: `${import.meta.env.VITE_API_BASE_URL}/qna/regist`,
-      data: {
-        qna: qna
-      },
+      data: qna,
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -53,6 +37,7 @@ const writeArticle = async () => {
     alert("질문이 등록되었습니다.");
     console.log(res.data);
     goList();
+    qna.value = res.data;
   } catch (error) {
     alert("질문 등록에 실패하였습니다.");
     console.log(error);
@@ -66,7 +51,7 @@ const goList = () => {
 };
 
 onMounted(() => {
-  qna.qna_writer = userStore.userId;
+  qna.qnaWriter = userStore.userId;
 });
 </script>
 

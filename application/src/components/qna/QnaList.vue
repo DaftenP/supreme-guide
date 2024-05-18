@@ -2,6 +2,8 @@
 import { ref, onBeforeMount, computed } from "vue";
 import { useRouter } from "vue-router";
 import { getAllArticle } from "@/api/board";
+import axios from "axios";
+import Cookies from "vue-cookies";
 
 const router = useRouter();
 const qnas = ref([]);

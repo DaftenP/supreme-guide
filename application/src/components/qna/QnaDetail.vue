@@ -2,12 +2,16 @@
 import { ref, onBeforeMount, onMounted, computed } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import { getArticle, deleteArticle } from "@/api/board";
+import noAuthClient from "@/api/noAuthClient";
+import Cookies from "vue-cookies";
+import axios from "axios";
 
 const route = useRoute();
 const router = useRouter();
 
 const qna = ref({});
 
+const qnaId = route.params.qnaId;
 const goModify = () => {
   router.push({
     name: "QnaModify",
@@ -15,18 +19,33 @@ const goModify = () => {
   });
 };
 
-const deleteBoard = () => {
-  if (confirm("정말로 삭제하시겠습니까?")) {
-    const success = (response) => {
-      alert("삭제되었습니다.");
-      goList();
-    };
+const deleteBoard = async () => {
+  // if (confirm("정말로 삭제하시겠습니까?")) {
+  //   const success = (response) => {
+  //     alert("삭제되었습니다.");
+  //     goList();
+  //   };
 
-    const fail = (error) => {
-      alert("문제가 발생했습니다", error);
-    };
+  //   const fail = (error) => {
+  //     alert("문제가 발생했습니다", error);
+  //   };
 
-    deleteArticle(boardId, success, fail);
+  //   deleteArticle(boardId, success, fail);
+  // }
+  try {
+    const token = Cookies.get("accessToken");
+    const res = await axios({
+      method: "delete",
+      url: `${import.meta.env.VITE_API_BASE_URL}/qna/${qnaId}`,
+      headers: {
+        Authorization: `Bearer ${token}`,
+      }
+    })
+    alert("삭제에 성공하였습니다.");
+    goList();
+  } catch (error) {
+    console.log(error);
+    alert("삭제에 실패하였습니다.")
   }
 };
 
@@ -36,36 +55,21 @@ const goList = () => {
   });
 };
 
-const qnaId = route.params.qnaId;
+
 
 // 게시글 상세 조회
 onBeforeMount( async () => {
-  // try {
-    
-  // } catch (error) {
-  //   consle.log(error);
-  //   alert("문제가 발생했습니다.")
-  // }
-  getArticle(
-    qnaId,
-    (response) => {
-      const b = response.data;
-      qna.value = b;
-      qna.value.computed_content = computed(() => {
-        return qna.value.board_content.replaceAll(`\n`, `<br/>`);
-      });
-      qna.value.computed_date = computed(() => {
-        return qna.value.qna_created_time.replace(
-          /^(\d{4})-(\d{2})-(\d{2}) (\d{2}):(\d{2}):\d{2}$/,
-          "$1.$2.$3 $4:$5"
-        );
-      });
-    },
-    (err) => {
-      alert("문제가 발생했습니다.");
-      console.log(err);
-    }
-  );
+  try { 
+    const res = await noAuthClient({
+      method: "get",
+      url: `${import.meta.env.VITE_API_BASE_URL}/qna/view/${qnaId}`,
+    })
+    console.log(res.data);
+    qna.value = res.data;
+  } catch (error) {
+    consle.log(error);
+    alert("문제가 발생했습니다.")
+  }
 });
 </script>
 
