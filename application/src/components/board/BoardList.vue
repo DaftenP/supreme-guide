@@ -4,7 +4,7 @@ import { useRouter } from "vue-router";
 import { getAllArticle } from "@/api/board";
 
 const router = useRouter();
-const boards = ref([]);
+const qnas = ref([]);
 const key = ref("");
 const word = ref("");
 
@@ -18,13 +18,12 @@ onBeforeMount(() => {
     (resp) => {
       console.log(resp);
       if (resp.status == 200) {
-        boards.value = resp.data;
-        boards.value.filter((board) => {
-          board.computed_date = computed(() => {
-            return board.board_created_time.replace(
-              /^(\d{4})-(\d{2})-(\d{2}) (\d{2}):(\d{2}):\d{2}$/,
-              "$1.$2.$3 $4:$5"
-            );
+        qnas.value = resp.data;
+        qnas.value.filter((qna) => {
+          qna.computed_date = computed(() => {
+            const dateString = qna.qnaCreatetime;
+            const date = new Date(dateString);
+            return date.toLocaleString();
           });
         });
       } else {
@@ -58,7 +57,7 @@ const goDetail = (id) => {
   router.push({
     name: "BoardDetail",
     params: {
-      board_id: id,
+      qnaId: id,
     },
   });
 };
@@ -118,19 +117,17 @@ const goDetail = (id) => {
           <tbody>
             <tr
               class="text-center"
-              v-for="(board, index) in boards"
+              v-for="(qna, index) in qnas"
               :index="index"
-              :board="board"
-              :key="board.boardId">
-              <td>{{ board.board_id }}</td>
+              :qna="qna"
+              :key="qna.qnaId">
+              <td>{{ qna.qnaId }}</td>
               <td>
-                <a href="#" @click="goDetail(board.board_id)">{{
-                  board.board_title
-                }}</a>
+                <a href="#" @click="goDetail(qna.qnaId)">{{ qna.qnaTitle }}</a>
               </td>
-              <td>{{ board.board_view }}</td>
-              <td>{{ board.board_writer }}</td>
-              <td>{{ board.computed_date }}</td>
+              <td>{{ qna.qnaView }}</td>
+              <td>{{ qna.qnaWriter }}</td>
+              <td>{{ qna.qnaCreateDate }}</td>
             </tr>
           </tbody>
         </table>

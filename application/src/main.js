@@ -6,6 +6,9 @@ import { createPinia } from "pinia";
 
 import piniaPluginPersistedstate from "pinia-plugin-persistedstate";
 import Vue3Lottie from "vue3-lottie";
+
+import vueCookies from "vue-cookies";
+
 import App from "./App.vue";
 import router from "./router";
 
@@ -20,5 +23,11 @@ const { VITE_API_KAKAO_MAP_API_KEY } = import.meta.env;
 useKakao(VITE_API_KAKAO_MAP_API_KEY);
 
 app.use(router);
+
 app.use(createPinia().use(piniaPluginPersistedstate));
+
+app.use(vueCookies);
+app.use(createPinia().use(piniaPluginPersistedstate));
+app.$cookies.config("7d"); // 쿠키 만료일 -> 7일 default
+
 app.mount("#app");
