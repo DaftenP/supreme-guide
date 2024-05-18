@@ -31,39 +31,44 @@ const panTo = () => {
 </script>
 
 <template>
-  <KakaoMap
-    :lat="mapStore.lat"
-    :lng="mapStore.lng"
-    @onLoadKakaoMap="onLoadKakaoMap"
-    width="auto"
-    height="700px">
-    <KakaoMapMarker
-      v-for="(attraction, index) in attractions"
-      :key="index"
-      :lat="attraction.latitude"
-      :lng="attraction.longitude"
-      :title="attraction.title"
-      :infoWindow="{
-        content: `<h3>${attraction.title}</h3>`,
-        visible: attraction.visible == true,
-      }"
-      :image="{
-        imageSrc:
-          'https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/marker_red.png',
-        imageWidth: 64,
-        imageHeight: 64,
-        imageOption: {},
-      }"
-      @mouseOverKakaoMapMarker="mouseOverKakaoMapMarker(attraction)"
-      @mouseOutKakaoMapMarker="mouseOutKakaoMapMarker(attraction)" />
-  </KakaoMap>
-  <!-- <div>
-    <button @click="changeLatLng" class="demo-button">
-      좌표값 변경으로 중심좌표 부드러운 이동
-    </button>
-    <button @click="setCenter" class="demo-button">
-      map 객체로 중심좌표 이동
-    </button>
-    <button @click="panTo" class="demo-button">map 객체로 부드러운 이동</button>
-  </div> -->
+  <div id="div-map">
+    <KakaoMap
+      :lat="mapStore.lat"
+      :lng="mapStore.lng"
+      @onLoadKakaoMap="onLoadKakaoMap"
+      width="100%"
+      height="100%">
+      <KakaoMapMarker
+        v-for="(attraction, index) in attractions"
+        :key="index"
+        :lat="attraction.latitude"
+        :lng="attraction.longitude"
+        :title="attraction.title"
+        :infoWindow="{
+          content: `
+            <span class=&quot;border border-2 rounded &quot;>${attraction.title}</span>
+          `,
+          visible: attraction.visible == true,
+        }"
+        :image="{
+          imageSrc:
+            'https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/marker_red.png',
+          imageWidth: 64,
+          imageHeight: 64,
+          imageOption: {},
+        }"
+        @mouseOverKakaoMapMarker="mouseOverKakaoMapMarker(attraction)"
+        @mouseOutKakaoMapMarker="mouseOutKakaoMapMarker(attraction)" />
+    </KakaoMap>
+  </div>
 </template>
+
+<style scoped>
+#div-map {
+  width: 100%;
+  height: 100%;
+}
+.marker-info {
+  background-color: darkblue;
+}
+</style>

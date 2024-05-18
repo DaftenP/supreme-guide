@@ -48,6 +48,9 @@ const router = createRouter({
           name: "AttractionMain",
           component: () =>
             import("@/components/attraction/AttractionSearch.vue"),
+        },
+      ],
+    },
     {
       path: "/auth",
       name: "AuthHome",
