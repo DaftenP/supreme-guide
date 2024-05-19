@@ -39,11 +39,13 @@ public class TripServiceImpl implements TripService {
 	public int regist(Trip trip) throws SQLException {
 		int result = tripDao.regist(trip);
 		tripDao.registItems(trip);
-		for(Hashtag hashtag: trip.getHashtags()) {
-			if (hashtag.getHashtagId() == 0) {
-				tripDao.registHashtag(hashtag);				
+		if (trip.getHashtags() != null) {
+			for (Hashtag hashtag : trip.getHashtags()) {
+				if (hashtag.getHashtagId() == 0) {
+					tripDao.registHashtag(hashtag);
+				}
+				tripDao.registTripHashtag(trip.getTripId(), hashtag.getHashtagId());
 			}
-			tripDao.registTripHashtag(trip.getTripId(), hashtag.getHashtagId());
 		}
 		return result;
 	}
@@ -57,15 +59,12 @@ public class TripServiceImpl implements TripService {
 		return result;
 	}
 
-
 	@Override
 	@Transactional
 	public int delete(int tripId) {
 		tripDao.deleteItems(tripId);
-		int result = tripDao.delete(tripId); 
+		int result = tripDao.delete(tripId);
 		return result;
 	}
-
-	
 
 }

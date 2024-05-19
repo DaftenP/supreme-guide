@@ -51,7 +51,7 @@
  				INNER JOIN
  			user u ON t.user_id = u.user_id
  		<where>
- 			<if test="key != 'none'">
+ 			<if test="key != 'none' and key != ''">
  				${key} LIKE CONCAT('%', #{word}, '%')
  			</if>
 	 	</where>
