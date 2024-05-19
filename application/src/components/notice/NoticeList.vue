@@ -9,8 +9,8 @@ const key = ref("");
 const word = ref("");
 const notices = ref([]);
 const notice = ref({});
-const currentPage = ref(1); // currentPage 변수 추가
-const totalPages = ref(0); // totalPages 변수 추가
+const currentPage = ref(1); 
+const totalPages = ref(0); 
 const searchCondition = ref({
   countPerPage: 5,
   key: "",
@@ -36,9 +36,7 @@ const searchArticle = () => {
     // 검색어 입력 상태에서만 검색 조건을 업데이트하도록 추가
     if (word.value !== "") {
         searchCondition.value.key = key.value;
-        console.log(key.value);
         searchCondition.value.word = word.value;
-        console.log("wwwwwwwww   "+ word.value);
     } else {
         // 검색어가 입력되지 않은 경우 검색 조건 초기화
         searchCondition.value.key = "";
@@ -46,7 +44,6 @@ const searchArticle = () => {
     }
     // 검색 버튼 클릭 시 currentPage를 1로 초기화하여 첫 페이지부터 조회하도록 처리
     searchCondition.value.currentPage = 1;
-    // 공지사항 리스트 조회 함수 호출
     fetchNotices();
 }
 
@@ -86,18 +83,18 @@ const fetchNotices = async () => {
 
 onBeforeMount(fetchNotices);
 
-const searchNotice = async () => {
-    try {
-        const res = await axios({
-            method: "get",
-            url: `${import.meta.env.VITE_API_BASE_URL}/notice/view/${notice.noticeId}`,
-        })
-        notice.value = res.data;
-    } catch(error) {
-        console.log(error);
-        alert("문제가 발생했습니다.");
-    }
-}
+// const searchNotice = async () => {
+//     try {
+//         const res = await axios({
+//             method: "get",
+//             url: `${import.meta.env.VITE_API_BASE_URL}/notice/view/${notice.noticeId}`,
+//         })
+//         notice.value = res.data;
+//     } catch(error) {
+//         console.log(error);
+//         alert("문제가 발생했습니다.");
+//     }
+// }
 
 const goDetail = (id) => {
     console.log(id);

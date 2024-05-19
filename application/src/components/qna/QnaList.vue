@@ -10,43 +10,94 @@ const qnas = ref([]);
 const key = ref("");
 const word = ref("");
 const qna = ref({});
-// const qnaId = ref(0);
+const currentPage = ref(1); 
+const totalPages = ref(0);
+const searchCondition = ref({
+  countPerPage: 5,
+  key: "",
+  word: "",
+  currentPage: 1,
+  offset: 0,
+  limit: true
+});
 
 const movePage = () => {
   router.push({ name: "QnaWrite" });
 };
 
+const changePage = (page) => {
+    if (page >= 1 && page <= totalPages.value) {
+        searchCondition.value.currentPage = page;
+        currentPage.value = page; // 현재 페이지 업데이트
+        fetchNotices();
+    }
+}
+
 // searchArticle구현
+const searchArticle = () => {
+    // 검색어 입력 상태에서만 검색 조건을 업데이트하도록 추가
+    if (word.value !== "") {
+        searchCondition.value.key = key.value;
+        searchCondition.value.word = word.value;
+    } else {
+        // 검색어가 입력되지 않은 경우 검색 조건 초기화
+        searchCondition.value.key = "";
+        searchCondition.value.word = "";
+    }
+    // 검색 버튼 클릭 시 currentPage를 1로 초기화하여 첫 페이지부터 조회하도록 처리
+    searchCondition.value.currentPage = 1;
+    fetchNotices();
+}
 
 
-onBeforeMount( async () => {
+
+const fetchNotices =  async () => {
   try {
-    const res = await axios({
-      method: "get",
-      url: `${import.meta.env.VITE_API_BASE_URL}/qna/all`
-    })
-    qnas.value = res.data;
-    // qnaId.value = res.data.qnaId;
-    console.log(res.data);
+    let url = `${import.meta.env.VITE_API_BASE_URL}/qna/all`;
+    if (searchCondition.value.key && searchCondition.value.word) {
+        if (searchCondition.value.key === "qnaWriter") {
+          searchCondition.value.key = "qna_writer";
+        } 
+        else if (searchCondition.value.key === "qnaContent") {
+          searchCondition.value.key = "qna_content";
+        }
+        else if (searchCondition.value.key === "qnaTitle") {
+          searchCondition.value.key = "qna_title";
+        }
+            url += `?key=${searchCondition.value.key}&word=${searchCondition.value.word}`;
+        }
+        const res = await axios({
+            method: "get",
+            url: url,
+        })
+        console.log(url);
+
+        const startIndex = (searchCondition.value.currentPage - 1) * searchCondition.value.countPerPage;
+        const endIndex = startIndex + searchCondition.value.countPerPage;
+        qnas.value = res.data.slice(startIndex, endIndex).map((item, index) => ({ ...item, index: index + startIndex + 1 }));
+        totalPages.value = Math.ceil(res.data.length / searchCondition.value.countPerPage);
+        console.log(res.data);
   } catch (error) {
     console.log(error);
     alert("리스트를 불러오는 데 문제가 발생했습니다.")
   }
-});
-
-const searchArticle = async () => {
-  try { 
-    const res = await noAuthClient({
-      method: "get",
-      url: `${import.meta.env.VITE_API_BASE_URL}/qna/view/${qnaId}`,
-    })
-    console.log(res.data);
-    qna.value = res.data;
-  } catch (error) {
-    consle.log(error);
-    alert("문제가 발생했습니다.")
-  }
 };
+
+onBeforeMount(fetchNotices);
+
+// const searchArticle = async () => {
+//   try { 
+//     const res = await noAuthClient({
+//       method: "get",
+//       url: `${import.meta.env.VITE_API_BASE_URL}/qna/view/${qnaId}`,
+//     })
+//     console.log(res.data);
+//     qna.value = res.data;
+//   } catch (error) {
+//     consle.log(error);
+//     alert("문제가 발생했습니다.")
+//   }
+// };
 
 const goDetail = (id) => {
   console.log(id);
@@ -130,7 +181,31 @@ const goDetail = (id) => {
         </table>
       </div>
     </div>
+     <nav aria-label="Page navigation example">
+      <ul class="pagination justify-content-center">
+        <!-- 이전 버튼 -->
+        <li class="page-item" :class="{ disabled: currentPage === 1 }">
+          <button class="page-link" @click="changePage(currentPage - 1)" aria-label="Previous">
+            <span aria-hidden="true">&laquo;</span>
+          </button>
+        </li>
+        <!-- 페이지 번호 -->
+        <li class="page-item" v-for="pageNumber in totalPages" :key="pageNumber" :class="{ active: currentPage === pageNumber }">
+          <button class="page-link" @click="changePage(pageNumber)">{{ pageNumber }}</button>
+        </li>
+        <!-- 다음 버튼 -->
+        <li class="page-item" :class="{ disabled: currentPage === totalPages }">
+          <button class="page-link" @click="changePage(currentPage + 1)" aria-label="Next">
+            <span aria-hidden="true">&raquo;</span>
+          </button>
+        </li>
+      </ul>
+    </nav>
   </div>
 </template>
 
-<style scoped></style>
+<style scoped>
+/* 페이지 처리 스타일 */
+.pagination {
+    margin-top: 20px;
+}</style>
