@@ -140,12 +140,14 @@ onBeforeMount(async () => {
         <div class="d-flex justify-content-end">
           <a
             class="btn btn-outline-primary ms-2 pe-4 ps-4"
+            v-if="qna.qnaWriter === userStore.userId"
             href="#"
             @click.prevent="goModify"
             >수정</a
           >
           <a
             class="btn btn-outline-danger ms-2 pe-4 ps-4"
+            v-if="qna.qnaWriter === userStore.userId"
             @click="deleteQna"
             >삭제</a
           >
