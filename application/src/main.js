@@ -14,6 +14,7 @@ import router from "./router";
 
 import "bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
+import "./assets/tailwind.css"
 
 const app = createApp(App).use(Vue3Lottie);
 const pinia = createPinia();

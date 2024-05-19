@@ -3,7 +3,9 @@ import { ref, onBeforeMount, computed, onMounted, onBeforeUnmount } from "vue";
 import { useRouter } from "vue-router";
 import axios from "axios";
 import Cookies from "vue-cookies";
+import { useUserStore } from "@/stores/userStore";
 
+const userStore = useUserStore();
 const router = useRouter();
 const key = ref("");
 const word = ref("");
