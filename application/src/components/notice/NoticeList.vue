@@ -12,7 +12,7 @@ const notice = ref({});
 const currentPage = ref(1); // currentPage 변수 추가
 const totalPages = ref(0); // totalPages 변수 추가
 const searchCondition = ref({
-  countPerPage: 10,
+  countPerPage: 5,
   key: "",
   word: "",
   currentPage: 1,
@@ -27,6 +27,7 @@ const movePage = () => {
 const changePage = (page) => {
     if (page >= 1 && page <= totalPages.value) {
         searchCondition.value.currentPage = page;
+        currentPage.value = page; // 현재 페이지 업데이트
         fetchNotices();
     }
 }
@@ -70,14 +71,18 @@ const fetchNotices = async () => {
             url: url,
         })
         console.log(url);
-        notices.value = res.data;
-        totalPages.value = res.data.totalPages
+
+        const startIndex = (searchCondition.value.currentPage - 1) * searchCondition.value.countPerPage;
+        const endIndex = startIndex + searchCondition.value.countPerPage;
+        notices.value = res.data.slice(startIndex, endIndex).map((item, index) => ({ ...item, index: index + startIndex + 1 }));
+        totalPages.value = Math.ceil(res.data.length / searchCondition.value.countPerPage);
         console.log(res.data);
     } catch (error) {
         console.log(error);
         alert("리스트를 불러오는 데 문제가 발생했습니다.");
     }
 }
+
 
 onBeforeMount(fetchNotices);
 
@@ -180,21 +185,21 @@ const goDetail = (id) => {
     <nav aria-label="Page navigation example">
       <ul class="pagination justify-content-center">
         <!-- 이전 버튼 -->
-<li class="page-item" :class="{ disabled: currentPage === 1 }">
-  <button class="page-link" @click="changePage(currentPage - 1)" aria-label="Previous">
-    <span aria-hidden="true">&laquo;</span>
-  </button>
-</li>
+        <li class="page-item" :class="{ disabled: currentPage === 1 }">
+          <button class="page-link" @click="changePage(currentPage - 1)" aria-label="Previous">
+            <span aria-hidden="true">&laquo;</span>
+          </button>
+        </li>
         <!-- 페이지 번호 -->
-<li class="page-item" v-for="pageNumber in totalPages" :key="pageNumber" :class="{ active: currentPage === pageNumber }">
-  <button class="page-link" @click="changePage(pageNumber)">{{ pageNumber }}</button>
-</li>
+        <li class="page-item" v-for="pageNumber in totalPages" :key="pageNumber" :class="{ active: currentPage === pageNumber }">
+          <button class="page-link" @click="changePage(pageNumber)">{{ pageNumber }}</button>
+        </li>
         <!-- 다음 버튼 -->
-<li class="page-item" :class="{ disabled: currentPage === totalPages }">
-  <button class="page-link" @click="changePage(currentPage + 1)" aria-label="Next">
-    <span aria-hidden="true">&raquo;</span>
-  </button>
-</li>
+        <li class="page-item" :class="{ disabled: currentPage === totalPages }">
+          <button class="page-link" @click="changePage(currentPage + 1)" aria-label="Next">
+            <span aria-hidden="true">&raquo;</span>
+          </button>
+        </li>
       </ul>
     </nav>
   </div>
