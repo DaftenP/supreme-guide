@@ -69,9 +69,9 @@ onBeforeMount(getTrips);
 const goDetail = (id) => {
   console.log(id);
   router.push({
-    name: "QnaDetail",
+    name: "TripDetail",
     params: {
-      qnaId: id,
+      tripId: id,
     },
   });
 };

@@ -47,7 +47,7 @@ const goNotice = () => {
 
 const goTrip = () => {
   router.push({
-    name: "Trip",
+    name: "TripList",
   });
 };
 
