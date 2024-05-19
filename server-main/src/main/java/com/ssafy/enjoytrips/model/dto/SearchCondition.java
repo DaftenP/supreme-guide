@@ -1,5 +1,10 @@
 package com.ssafy.enjoytrips.model.dto;
 
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter
+@Setter
 public class SearchCondition {
 
 	public final int countPerPage = 200;
@@ -12,7 +17,9 @@ public class SearchCondition {
 
 	private String orderByDir = "asc";
 
-	private int currentPage = 1;
+ 	private int currentPage; // 한 페이지당 개수
+
+	private int offset; // 시작위치
 
 	private boolean limit = true;
 
@@ -44,61 +51,6 @@ public class SearchCondition {
 		this(key, word, "none");
 	}
 
-	public String getKey() {
-		return key;
-	}
-
-	public void setKey(String key) {
-		this.key = key;
-	}
-
-	public String getWord() {
-		return word;
-	}
-
-	public void setWord(String word) {
-		this.word = word;
-	}
-
-	public String getOrderBy() {
-		return orderBy;
-	}
-
-	public void setOrderBy(String orderBy) {
-		this.orderBy = orderBy;
-	}
-
-	public String getOrderByDir() {
-		return orderByDir;
-	}
-
-	public void setOrderByDir(String orderByDir) {
-		this.orderByDir = orderByDir;
-	}
-
-	public int getCurrentPage() {
-		return currentPage;
-	}
-
-	public void setCurrentPage(int currentPage) {
-		this.currentPage = currentPage;
-	}
-
-	public boolean isLimit() {
-		return limit;
-	}
-
-	public void setLimit(boolean limit) {
-		this.limit = limit;
-	}
-
-	public int getCountPerPage() {
-		return countPerPage;
-	}
-
-	public int getOffset() {
-		return (this.currentPage - 1) * countPerPage;
-	}
 
 	@Override
 	public String toString() {

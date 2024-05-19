@@ -1,5 +1,5 @@
 <script setup>
-import { ref, onBeforeMount, computed } from "vue";
+import { ref, onBeforeMount, computed, onMounted, onBeforeUnmount } from "vue";
 import { useRouter } from "vue-router";
 import axios from "axios";
 import Cookies from "vue-cookies";
@@ -9,32 +9,83 @@ const key = ref("");
 const word = ref("");
 const notices = ref([]);
 const notice = ref({});
-// const noticeId = ref(0);
+const currentPage = ref(1); // currentPage 변수 추가
+const totalPages = ref(0); // totalPages 변수 추가
+const searchCondition = ref({
+  countPerPage: 10,
+  key: "",
+  word: "",
+  currentPage: 1,
+  offset: 0,
+  limit: true
+});
 
 const movePage = () => {
     router.push({ name: "NoticeWrite"});
 }
 
-onBeforeMount( async () => {
+const changePage = (page) => {
+    if (page >= 1 && page <= totalPages.value) {
+        searchCondition.value.currentPage = page;
+        fetchNotices();
+    }
+}
+
+const searchArticle = () => {
+    // 검색어 입력 상태에서만 검색 조건을 업데이트하도록 추가
+    if (word.value !== "") {
+        searchCondition.value.key = key.value;
+        console.log(key.value);
+        searchCondition.value.word = word.value;
+        console.log("wwwwwwwww   "+ word.value);
+    } else {
+        // 검색어가 입력되지 않은 경우 검색 조건 초기화
+        searchCondition.value.key = "";
+        searchCondition.value.word = "";
+    }
+    // 검색 버튼 클릭 시 currentPage를 1로 초기화하여 첫 페이지부터 조회하도록 처리
+    searchCondition.value.currentPage = 1;
+    // 공지사항 리스트 조회 함수 호출
+    fetchNotices();
+}
+
+
+const fetchNotices = async () => {
     try {
+      let url = `${import.meta.env.VITE_API_BASE_URL}/notice/all`;
+      if (searchCondition.value.key && searchCondition.value.word) {
+        if (searchCondition.value.key === "noticeWriter") {
+          searchCondition.value.key = "notice_writer";
+        } 
+        else if (searchCondition.value.key === "noticeContent") {
+          searchCondition.value.key = "notice_content";
+        }
+        else if (searchCondition.value.key === "noticeTitle") {
+          searchCondition.value.key = "notice_title";
+        }
+            url += `?key=${searchCondition.value.key}&word=${searchCondition.value.word}`;
+        }
         const res = await axios({
             method: "get",
-            url: `${import.meta.env.VITE_API_BASE_URL}/notice/all`
+            url: url,
         })
+        console.log(url);
         notices.value = res.data;
-        // noticeId.value = res.data.noticeId;
+        totalPages.value = res.data.totalPages
         console.log(res.data);
     } catch (error) {
         console.log(error);
         alert("리스트를 불러오는 데 문제가 발생했습니다.");
     }
-})
+}
+
+onBeforeMount(fetchNotices);
 
 const searchNotice = async () => {
     try {
         const res = await axios({
             method: "get",
-            url: `${import.meta.env.VITE_API_BASE_URL}/notice/view/${noticeId}`,
+            url: `${import.meta.env.VITE_API_BASE_URL}/notice/view/${notice.noticeId}`,
         })
         notice.value = res.data;
     } catch(error) {
@@ -101,7 +152,6 @@ const goDetail = (id) => {
         <table class="table table-hover">
           <thead>
             <tr class="text-center">
-              <th scope="col">글번호</th>
               <th scope="col">제목</th>
               <th scope="col">조회수</th>
               <th scope="col">작성자</th>
@@ -115,7 +165,7 @@ const goDetail = (id) => {
               :index="index"
               :notice="notice"
               :key="notice.noticeId">
-              <td>{{ notice.noticeId }}</td>
+              
               <td>
                 <a @click="goDetail(notice.noticeId)">{{ notice.noticeTitle }}</a>
               </td>
@@ -127,6 +177,26 @@ const goDetail = (id) => {
         </table>
       </div>
     </div>
+    <nav aria-label="Page navigation example">
+      <ul class="pagination justify-content-center">
+        <!-- 이전 버튼 -->
+<li class="page-item" :class="{ disabled: currentPage === 1 }">
+  <button class="page-link" @click="changePage(currentPage - 1)" aria-label="Previous">
+    <span aria-hidden="true">&laquo;</span>
+  </button>
+</li>
+        <!-- 페이지 번호 -->
+<li class="page-item" v-for="pageNumber in totalPages" :key="pageNumber" :class="{ active: currentPage === pageNumber }">
+  <button class="page-link" @click="changePage(pageNumber)">{{ pageNumber }}</button>
+</li>
+        <!-- 다음 버튼 -->
+<li class="page-item" :class="{ disabled: currentPage === totalPages }">
+  <button class="page-link" @click="changePage(currentPage + 1)" aria-label="Next">
+    <span aria-hidden="true">&raquo;</span>
+  </button>
+</li>
+      </ul>
+    </nav>
   </div>
 </template>
 
@@ -134,5 +204,8 @@ const goDetail = (id) => {
 
 
 <style scoped>
-
+/* 페이지 처리 스타일 */
+.pagination {
+    margin-top: 20px;
+}
 </style>

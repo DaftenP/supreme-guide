@@ -15,6 +15,7 @@ public class NoticeServiceImpl implements NoticeService{
     private final NoticeDao noticeDao;
     @Override
     public List<Notice> list(SearchCondition searchCondition) {
+
         return noticeDao.list(searchCondition);
     }
 

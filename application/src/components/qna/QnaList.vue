@@ -105,7 +105,6 @@ const goDetail = (id) => {
         <table class="table table-hover">
           <thead>
             <tr class="text-center">
-              <th scope="col">글번호</th>
               <th scope="col">제목</th>
               <th scope="col">조회수</th>
               <th scope="col">작성자</th>
@@ -119,7 +118,7 @@ const goDetail = (id) => {
               :index="index"
               :qna="qna"
               :key="qna.qnaId">
-              <td>{{ qna.qnaId }}</td>
+             
               <td>
                 <a @click="goDetail(qna.qnaId)">{{ qna.qnaTitle }}</a>
               </td>
