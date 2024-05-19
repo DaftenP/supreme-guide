@@ -69,7 +69,7 @@ const logout = () => {
         <span class="navbar-toggler-icon"></span>
       </button>
       <div class="collapse navbar-collapse" id="navbarNav">
-        <ul class="navbar-nav">
+        <ul class="navbar-nav me-auto">
           <li class="nav-item">
             <button class="nav-link" @click="goAttraction">관광지 검색</button>
           </li>
@@ -79,7 +79,8 @@ const logout = () => {
           <li class="nav-item">
             <button class="nav-link" @click="goNotice">공지사항</button>
           </li>
-          <!-- 로그인 상태에 따라 다른 버튼을 표시 -->
+        </ul>
+        <ul class="navbar-nav ms-auto">
           <li class="nav-item" v-if="userStore.isLoggedIn">
             <button class="nav-link" @click="logout">로그아웃</button>
           </li>
@@ -89,14 +90,15 @@ const logout = () => {
           <li class="nav-item" v-if="!userStore.isLoggedIn">
             <button class="nav-link" @click="goJoin">회원가입</button>
           </li>
-          <li v-if="userStore.isLoggedIn">
-            <span>{{ userStore.userId }}</span>
+          <li class="nav-item" v-if="userStore.isLoggedIn">
+            <span class="navbar-text">{{ userStore.userId }}님 환영합니다.</span>
           </li>
         </ul>
       </div>
     </div>
   </nav>
 </template>
+
 
 <style scoped>
 .navbar-nav .nav-item:hover .nav-link {
@@ -110,4 +112,24 @@ const logout = () => {
 .navbar-toggler-icon {
   background-color: #007bff;
 }
+
+.nav-link {
+  cursor: pointer;
+}
+
+.navbar-text {
+  padding-left: 15px;
+  color: #333;
+  font-weight: bold;
+  line-height: 1.5;
+}
+
+/* Ensures alignment of all navbar items */
+.navbar-nav .nav-item,
+.navbar-nav .navbar-text {
+  display: flex;
+  align-items: center;
+}
 </style>
+
+

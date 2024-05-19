@@ -4,36 +4,33 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.ssafy.enjoytrips.model.dao.NoticeDao">
-    <!--    // 전체 조회
-        List<Notice> list();
-        // 개별 조회
-        Notice select(int noticeId);
-        // 수정
-        int modify(Notice notice);
-        // 삭제
-        int delete(int noticeId);
-        // 등록
-        int regist(Notice notice);
-        // 조회수 증가
-        int updateView(int noticeId);  -->
 
-    <select id="list" parameterType="searchCondition" resultType="notice">
+    <resultMap id="noticeResultMap" type="notice">
+        <id property="noticeId" column="notice_id"/>
+        <result property="noticeTitle" column="notice_title"/>
+        <result property="noticeContent" column="notice_content"/>
+        <result property="noticeView" column="notice_view"/>
+        <result property="noticeWriter" column="notice_writer"/>
+        <result property="noticeCreateDate" column="notice_createdDate"/>
+    </resultMap>
+
+
+    <select id="list" parameterType="searchCondition" resultMap="noticeResultMap">
         SELECT
         notice_id, notice_title, notice_content, notice_view, notice_writer, notice_createdDate
         FROM
         notice
         <where>
             <if test="key != 'none'">
-                ${key} LIKE CONCAT('%', #{word}, '%')
+                 ${key} LIKE CONCAT('%', #{word}, '%')
             </if>
         </where>
-            <if test="orderBy != 'none'">
-                ORDER BY ${orderBy} ${orderByDir}
-            </if>
-
-            <if test="limit">
-                LIMIT #{offset}, #{countPerPage}
-            </if>
+        <if test="orderBy != 'none'">
+            ORDER BY ${orderBy} ${orderByDir}
+        </if>
+        <if test="limit">
+            LIMIT #{offset}, #{countPerPage}
+        </if>
 
         ;
     </select>
