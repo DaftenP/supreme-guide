@@ -3,7 +3,9 @@ import { ref, onBeforeMount, computed, onMounted, onBeforeUnmount } from "vue";
 import { useRouter } from "vue-router";
 import axios from "axios";
 import Cookies from "vue-cookies";
+import { useUserStore } from "@/stores/userStore";
 
+const userStore = useUserStore();
 const router = useRouter();
 const key = ref("");
 const word = ref("");
@@ -124,6 +126,7 @@ const goDetail = (id) => {
             <button
               type="button"
               class="btn btn-outline-primary btn-sm"
+              v-if="userStore.userId!=''"
               @click="movePage">
               공지사항 등록
             </button>

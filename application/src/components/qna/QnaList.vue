@@ -4,7 +4,9 @@ import { useRouter } from "vue-router";
 import axios from "axios";
 import Cookies from "vue-cookies";
 import noAuthClient from "@/api/noAuthClient";
+import { useUserStore } from "@/stores/userStore";
 
+const userStore = useUserStore();
 const router = useRouter();
 const qnas = ref([]);
 const key = ref("");
@@ -126,6 +128,7 @@ const goDetail = (id) => {
             <button
               type="button"
               class="btn btn-outline-primary btn-sm"
+              v-if="userStore.userId!=''"
               @click="movePage">
               질문 등록
             </button>
