@@ -124,6 +124,7 @@ const goDetail = (id) => {
             <button
               type="button"
               class="btn btn-outline-primary btn-sm"
+              v-if="userStore.userId!=''"
               @click="movePage">
               공지사항 등록
             </button>
