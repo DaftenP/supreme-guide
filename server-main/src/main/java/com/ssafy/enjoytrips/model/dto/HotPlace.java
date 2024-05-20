@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.web.multipart.MultipartFile;
 
 @Getter
 @Setter
@@ -20,6 +21,7 @@ public class HotPlace {
     private int category;
     private String image;
     private String writer;
+    private MultipartFile imageFile; // 파일 업로드를 위한 필드 추가
 }
 
 //hotplace_id int PK

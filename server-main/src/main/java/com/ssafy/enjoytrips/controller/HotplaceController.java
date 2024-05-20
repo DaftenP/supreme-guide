@@ -5,10 +5,12 @@ import com.ssafy.enjoytrips.model.dto.SearchCondition;
 import com.ssafy.enjoytrips.service.HotPlaceService;
 import com.ssafy.utils.TokenProvider;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.apache.coyote.Response;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -19,6 +21,9 @@ public class HotplaceController {
 
     private final HotPlaceService hotPlaceService;
     private final TokenProvider tokenProvider;
+
+    @Value("${com.ssafy.enjoytrips.upload.path}") // properties파일에 경로 설정
+    private String uploadPath;
 
     // 전체 조회
     @GetMapping("/all")
@@ -103,7 +108,7 @@ public class HotplaceController {
             String token = authorizationHeader.substring(7);
             String userId = tokenProvider.getUserId(token);
             hotPlace.setWriter(userId);
-            int result = hotPlaceService.regist(hotPlace);
+            int result = hotPlaceService.regist(hotPlace, uploadPath);
             return ResponseEntity.ok(result);
         } catch (Exception e) {
             return exceptionHandling(e);

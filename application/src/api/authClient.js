@@ -1,12 +1,11 @@
 import axios from "axios";
-// @ts-ignore
-import jwtDecode from "jwt-decode";
+
+import VueJwtDecode from "vue-jwt-decode";
 import Cookies from "vue-cookies";
 
 import settingCookie from "@/utils/settingCookie";
 
 const authClient = axios.create({
-  // baseURL: import.meta.env.VITE_API_BASE_URL,
   headers: {
     "Content-type": "application/json",
   },
@@ -16,8 +15,8 @@ const authClient = axios.create({
 const checkToken = async () => {
   console.log("check token!!!!!");
   let token = await settingCookie("get-access");
-  const exp = jwtDecode(token);
-  if (Date.now() / 1000 > exp.exp) {
+  const decodedToken = VueJwtDecode.decode(token);
+  if (Date.now() / 1000 > decodedToken.exp) {
     console.log("해당 토큰은 만료되었습니다.");
     await getNewToken();
   }
@@ -45,6 +44,7 @@ const getNewToken = async () => {
     alert("Error refreshing token");
   }
 };
+
 // axios 요청 전 수행해야할 작업
 authClient.interceptors.request.use(
   async (config) => {
@@ -52,10 +52,10 @@ authClient.interceptors.request.use(
     console.log("Initial token: ", token);
 
     if (token) {
-      const exp = jwtDecode(token);
-      console.log("Token expiry: ", exp);
+      const decodedToken = VueJwtDecode.decode(token);
+      console.log("Token expiry: ", decodedToken.exp);
 
-      if (Date.now() / 1000 > exp) {
+      if (Date.now() / 1000 > decodedToken.exp) {
         console.log("Expired token: ", token);
         token = await getNewToken();
         console.log("New token: ", token);
