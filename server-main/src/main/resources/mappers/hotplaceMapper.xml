@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ssafy.enjoytrips.model.dao.HotplaceDao">
+
+    <resultMap id="hotplaceResultMap" type="hotPlace">
+        <id property="hotplaceId" column="hotplace_id"/>
+        <result property="hotplaceName" column="hotplace_name" />
+        <result property="latitude" column="hotplace_lat" />
+        <result property="longitude" column="hotplace_lng" />
+        <result property="addr1" column="hotplace_addr1"/>
+        <result property="addr2" column="hotplace_addr2"/>
+        <result property="comment" column="hotplace_comment" />
+        <result property="category" column="hotplace_category"/>
+        <result property="image" column="hotplace_image"/>
+        <result property="writer" column="hotplace_writer"/>
+    </resultMap>
+    <!-- 전체 조회 -->
+    <select id="list" parameterType="searchCondition" resultMap="hotplaceResultMap">
+        SELECT
+            hotplace_id, hotplace_name, hotplace_comment, hotplace_addr1, hotplace_addr2, hotplace_category, hotplace_image, hotplace_writer
+        FROM
+            hotplace
+        <where>
+            <if test="key != 'none'">
+                ${key} LIKE CONCAT('%', #{word}, '%')
+            </if>
+        </where>
+        <if test="orderBy != 'none'">
+            ORDER BY ${orderBy} ${orderByDir}
+        </if>
+
+        <if test="limit">
+            LIMIT #{offset}, #{countPerPage}
+        </if>
+        ;
+    </select>
+
+    <!--  개별 조회  -->
+    <select id="select" parameterType="int" resultMap="hotplaceResultMap">
+        SELECT
+            *
+        FROM
+            hotplace
+        WHERE hotplace_id = #{hotplaceId}
+    </select>
+
+    <!--  수정  -->
+    <update id="modify" parameterType="hotPlace">
+        UPDATE hotplace
+        SET hotplace_comment = #{comment}, hotplace_image = #{image}
+    </update>
+
+    <!--  등록  -->
+    <insert id="regist" parameterType="hotPlace">
+        INSERT INTO hotplace(hotplace_id, hotplace_name, hotplace_lng, hotplace_lat, hotplace_addr1, hotplace_addr2, hotplace_comment, hotplace_category, hotplace_image, hotplace_writer)
+        VALUES (#{hotplaceId}, #{hotplaceName}, #{longitude}, #{latitude}, #{addr1}, #{addr2}, #{comment}, #{category}, #{image}, #{writer})
+    </insert>
+
+    <!--  삭제  -->
+    <delete id="delete" parameterType="int">
+        DELETE
+        FROM hotplace
+        WHERE hotplace_id = #{hotplaceId}
+    </delete>
+
+    <!--  댓글 가져오기  -->
+<!--    <select id="selectComment" parameterType="int" resultType="comment">-->
+<!--        SELECT-->
+
+<!--        FROM-->
+
+<!--        WHERE-->
+<!--    </select>-->
+
+</mapper>

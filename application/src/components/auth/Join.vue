@@ -1,37 +1,88 @@
 <template>
   <div class="flex min-h-full justify-center items-center px-6 py-12 lg:px-8">
     <div class="sm:mx-auto sm:w-full sm:max-w-sm">
-      <h2 class="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">Sign up for an account</h2>
-      <Vue3Lottie :animationData="WelcomeJson"  />
+      <h2
+        class="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">
+        Sign up for an account
+      </h2>
+      <Vue3Lottie :animationData="WelcomeJson" />
     </div>
     <div class="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
       <form @submit.prevent="joinUser" class="space-y-6">
         <div>
-          <label for="name" class="block text-sm font-medium leading-6 text-gray-900">Name</label>
-          <input id="name" type="text" v-model="name" class="pl-1 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" />
+          <label
+            for="name"
+            class="block text-sm font-medium leading-6 text-gray-900"
+            >Name</label
+          >
+          <input
+            id="name"
+            type="text"
+            v-model="name"
+            class="pl-1 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" />
           <span>{{ nameMessage }}</span>
         </div>
         <div>
-          <label for="id" class="block text-sm font-medium leading-6 text-gray-900">ID</label>
-          <input id="id" type="text" v-model="id" class="pl-1 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" @blur="checkId" />
+          <label
+            for="id"
+            class="block text-sm font-medium leading-6 text-gray-900"
+            >ID</label
+          >
+          <input
+            id="id"
+            type="text"
+            v-model="id"
+            class="pl-1 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+            @blur="checkId" />
           <span>{{ idMessage }}</span>
         </div>
         <div class="mt-2">
-          <button type="button" @click="checkId" class="block w-full py-1.5 px-3 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500">아이디 중복체크</button>
+          <button
+            type="button"
+            @click="checkId"
+            class="block w-full py-1.5 px-3 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500">
+            아이디 중복체크
+          </button>
         </div>
         <div>
-          <label for="password" class="block text-sm font-medium leading-6 text-gray-900">Password</label>
-          <input id="password" type="password" v-model="password" class="pl-1 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" @change="onChangePassword" />
+          <label
+            for="password"
+            class="block text-sm font-medium leading-6 text-gray-900"
+            >Password</label
+          >
+          <input
+            id="password"
+            type="password"
+            v-model="password"
+            class="pl-1 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+            @change="onChangePassword" />
           <span>{{ passwordMessage }}</span>
         </div>
         <div>
-          <label for="confirmPassword" class="block text-sm font-medium leading-6 text-gray-900">Confirm Password</label>
-          <input id="confirmPassword" type="password" v-model="confirmPassword" class="pl-1 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" @change="onChangePasswordConfirm" />
+          <label
+            for="confirmPassword"
+            class="block text-sm font-medium leading-6 text-gray-900"
+            >Confirm Password</label
+          >
+          <input
+            id="confirmPassword"
+            type="password"
+            v-model="confirmPassword"
+            class="pl-1 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+            @change="onChangePasswordConfirm" />
           <span>{{ passwordConfirmMessage }}</span>
         </div>
         <div>
-          <label for="email" class="block text-sm font-medium leading-6 text-gray-900">Email Address</label>
-          <input id="email" type="email" v-model="email" class="pl-1 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" />
+          <label
+            for="email"
+            class="block text-sm font-medium leading-6 text-gray-900"
+            >Email Address</label
+          >
+          <input
+            id="email"
+            type="email"
+            v-model="email"
+            class="pl-1 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" />
           <span>{{ emailMessage }}</span>
         </div>
         <!-- 우선 관리자 제외 -->
@@ -40,7 +91,11 @@
           <input id="admin" type="number" v-model="admin" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" />
         </div> -->
         <div>
-          <button type="submit" class="w-full py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">Sign up</button>
+          <button
+            type="submit"
+            class="w-full py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+            Sign up
+          </button>
         </div>
       </form>
     </div>
@@ -50,7 +105,6 @@
 <script setup>
 import { ref } from "vue";
 import { useRouter } from "vue-router";
-import axios from "axios";
 import noAuthClient from "@/api/noAuthClient";
 import { Vue3Lottie } from "vue3-lottie";
 import WelcomeJson from "@/assets/animations/Welcome.json";
@@ -71,8 +125,7 @@ const emailMessage = ref("");
 const onChangePassword = (e) => {
   password.value = e.target.value;
   // 유효성 검사 로직
-  const passwordRegex =
-    /^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{8,25}$/;
+  const passwordRegex = /^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{8,25}$/;
   if (!passwordRegex.test(password.value)) {
     passwordMessage.value =
       "숫자+영문자+특수문자 조합으로 8자리 이상 입력해주세요!";
@@ -96,7 +149,7 @@ const checkId = async () => {
   console.log(id.value);
   if (id.value !== "") {
     try {
-      const res = await axios({
+      const res = await noAuthClient({
         method: "get",
         url: `${import.meta.env.VITE_API_BASE_URL}/auth/validate/id/${
           id.value
@@ -117,7 +170,7 @@ const joinUser = async (e) => {
   // 회원가입 로직
   if (id.value && password.value && name.value && email.value) {
     try {
-      const res = await axios({
+      const res = await noAuthClient({
         method: "post",
         url: `${import.meta.env.VITE_API_BASE_URL}/auth/join`,
         data: {
@@ -125,7 +178,6 @@ const joinUser = async (e) => {
           pw: password.value,
           name: name.value,
           email: email.value,
-          admin: admin.value,
         },
       });
       console.log(res.data);
