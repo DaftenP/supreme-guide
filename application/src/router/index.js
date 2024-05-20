@@ -42,15 +42,15 @@ const router = createRouter({
       path: "/attraction",
       name: "Attraction",
       component: () => import("@/views/AttractionView.vue"),
-      redirect: "AttractionMain",
-      children: [
-        {
-          path: "",
-          name: "AttractionMain",
-          component: () =>
-            import("@/components/attraction/AttractionSearch.vue"),
-        },
-      ],
+      // redirect: "AttractionMain",
+      // children: [
+      //   {
+      //     path: "",
+      //     name: "AttractionMain",
+      //     component: () =>
+      //       import("@/components/attraction/AttractionSearch.vue"),
+      //   },
+      // ],
     },
 
     {
@@ -68,6 +68,11 @@ const router = createRouter({
           path: ":tripId",
           name: "TripDetail",
           component: () => import("@/components/trip/TripDetail.vue"),
+        },
+        {
+          path: "regist",
+          name: "TripWrite",
+          component: () => import("@/components/trip/TripWrite.vue"),
         },
       ],
     },

@@ -80,7 +80,9 @@ const panTo = () => {
         }"
         @mouseOverKakaoMapMarker="mouseOverKakaoMapMarker(attraction)"
         @mouseOutKakaoMapMarker="mouseOutKakaoMapMarker(attraction)" />
+
       <KakaoMapMarkerPolyline
+        v-if="tripList"
         :markerList="markerList"
         :showMarkerOrder="true"
         strokeColor="#C74C5E"

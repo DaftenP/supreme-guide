@@ -6,6 +6,7 @@ const mapStore = useMapStore();
 
 const props = defineProps({
   attraction: Object,
+  type: String,
 });
 
 const goTo = () => {
@@ -33,6 +34,12 @@ const goTo = () => {
         data-bs-toggle="modal"
         data-bs-target="#attractionModal">
         상세정보
+      </button>
+      <button
+        v-if="type"
+        class="btn btn-outline-primary"
+        @click="$emit('addItem', attraction)">
+        추가
       </button>
     </div>
   </div>

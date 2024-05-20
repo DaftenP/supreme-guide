@@ -23,7 +23,7 @@ const searchCondition = ref({
 });
 
 const movePage = () => {
-  router.push({ name: "QnaWrite" });
+  router.push({ name: "TripWrite" });
 };
 
 const changePage = (page) => {
