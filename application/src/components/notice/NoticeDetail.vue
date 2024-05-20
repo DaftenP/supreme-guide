@@ -1,9 +1,9 @@
 <script setup>
 import { ref, onBeforeMount, onMounted, computed } from "vue";
 import { useRoute, useRouter } from "vue-router";
-import Cookies from "vue-cookies";
-import axios from "axios";
 import { useUserStore } from "@/stores/userStore";
+import noAuthClient from "@/api/noAuthClient";
+import authClient from "@/api/authClient";
 
 const userStore = useUserStore();
 const route = useRoute();
@@ -24,13 +24,9 @@ const goModify = () => {
 // 삭제
 const deleteNotice = async () => {
   try {
-    const token = Cookies.get("accessToken");
-    const res = await axios({
+    const res = await authClient({
       method: "delete",
       url: `${import.meta.env.VITE_API_BASE_URL}/notice/${noticeId}`,
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
     });
     alert("삭제에 성공하였습니다.");
     goList();
@@ -43,7 +39,7 @@ const deleteNotice = async () => {
 // 상세 조회
 onBeforeMount(async () => {
   try {
-    const res = await axios({
+    const res = await noAuthClient({
       method: "get",
       url: `${import.meta.env.VITE_API_BASE_URL}/notice/view/${noticeId}`,
     });

@@ -5,6 +5,7 @@ import noAuthClient from "@/api/noAuthClient";
 import Cookies from "vue-cookies";
 import axios from "axios";
 import { useUserStore } from "@/stores/userStore";
+import authClient from "@/api/authClient";
 
 const userStore = useUserStore();
 const route = useRoute();
@@ -28,13 +29,9 @@ const goModify = () => {
 
 const deleteQna = async () => {
   try {
-    const token = Cookies.get("accessToken");
-    const res = await axios({
+    const res = await authClient({
       method: "delete",
       url: `${import.meta.env.VITE_API_BASE_URL}/qna/${qnaId}`,
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
     });
     alert("삭제에 성공하였습니다.");
     goList();
@@ -52,16 +49,12 @@ const goList = () => {
 
 const registerComment = async () => {
   try {
-    const token = Cookies.get("accessToken");
-    const res = await axios({
+    const res = await authClient({
       method: "post",
       url: `${import.meta.env.VITE_API_BASE_URL}/qna/comment/regist`,
       data: {
         articleId: qnaId,
         content: newComment.commentContent,
-      },
-      headers: {
-        Authorization: `Bearer ${token}`,
       },
     });
     alert("댓글 등록에 성공하였습니다.");
@@ -91,21 +84,17 @@ const fetchComments = async () => {
 // 댓글 삭제
 const deleteComment = async (commentId) => {
   try {
-      const token = Cookies.get("accessToken");
-      const res = await axios({
-        method: "delete",
-        url :`${import.meta.env.VITE_API_BASE_URL}/qna/comment/${commentId}`,
-        headers: {
-          "Authorization": `Bearer ${token}`,
-        }
-      })
-      alert("댓글을 삭제하였습니다.")
-      await fetchComments(); // 댓글 목록 갱신
+    const res = await authClient({
+      method: "delete",
+      url: `${import.meta.env.VITE_API_BASE_URL}/qna/comment/${commentId}`,
+    });
+    alert("댓글을 삭제하였습니다.");
+    await fetchComments(); // 댓글 목록 갱신
   } catch (error) {
     console.log(error);
     alert("문제가 발생했습니다.");
   }
-}
+};
 
 // 게시글 상세 조회 및 댓글 목록 조회
 onBeforeMount(async () => {
@@ -163,27 +152,24 @@ onBeforeMount(async () => {
               class="form-control"
               id="newComment"
               rows="3"
-              v-model="newComment.commentContent"
-            ></textarea>
+              v-model="newComment.commentContent"></textarea>
           </div>
           <button type="submit" class="btn btn-primary">댓글 등록</button>
         </form>
-        <hr/>
+        <hr />
         <ul class="list-group mb-3">
           <li
             class="list-group-item"
             v-for="comment in comments"
-            :key="comment.qnaCommentId"
-          >
+            :key="comment.qnaCommentId">
             <strong>{{ comment.userId }}:</strong> {{ comment.content }}
-        
-        <button
-          v-if="comment.userId === userStore.userId"
-          class="btn btn-sm btn-outline-danger ms-2"
-          @click="deleteComment(comment.id)"
-        >
-          삭제
-        </button>
+
+            <button
+              v-if="comment.userId === userStore.userId"
+              class="btn btn-sm btn-outline-danger ms-2"
+              @click="deleteComment(comment.id)">
+              삭제
+            </button>
           </li>
         </ul>
       </div>

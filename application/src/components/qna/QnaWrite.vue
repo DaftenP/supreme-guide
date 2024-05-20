@@ -11,28 +11,24 @@ const userStore = useUserStore();
 
 // data
 const qna = reactive({
-    qnaTitle: "",
-    qnaWriter:"",
-    qnaContent: "",
-    list: [],
+  qnaTitle: "",
+  qnaWriter: "",
+  qnaContent: "",
+  list: [],
 });
 
 // LifeCycle
 onUpdated(() => {
-    console.log(`정보: ${JSON.stringify(qna)}` );
+  console.log(`정보: ${JSON.stringify(qna)}`);
 });
 
 const router = useRouter();
 const writeArticle = async () => {
   try {
-    const token = Cookies.get("accessToken");
-    const res = await axios({
+    const res = await authClient({
       method: "post",
       url: `${import.meta.env.VITE_API_BASE_URL}/qna/regist`,
       data: qna,
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
     });
     alert("질문이 등록되었습니다.");
     console.log(res.data);
@@ -64,10 +60,7 @@ onMounted(() => {
         </h2>
       </div>
       <div class="col-lg-10 text-start">
-        <QnaFormItem
-          type="create"
-          :qna="qna"
-          @evt-process="writeArticle" />
+        <QnaFormItem type="create" :qna="qna" @evt-process="writeArticle" />
       </div>
     </div>
   </div>

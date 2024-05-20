@@ -105,7 +105,6 @@
 <script setup>
 import { ref } from "vue";
 import { useRouter } from "vue-router";
-import axios from "axios";
 import noAuthClient from "@/api/noAuthClient";
 import { Vue3Lottie } from "vue3-lottie";
 import WelcomeJson from "@/assets/animations/Welcome.json";
@@ -150,7 +149,7 @@ const checkId = async () => {
   console.log(id.value);
   if (id.value !== "") {
     try {
-      const res = await axios({
+      const res = await noAuthClient({
         method: "get",
         url: `${import.meta.env.VITE_API_BASE_URL}/auth/validate/id/${
           id.value
@@ -171,7 +170,7 @@ const joinUser = async (e) => {
   // 회원가입 로직
   if (id.value && password.value && name.value && email.value) {
     try {
-      const res = await axios({
+      const res = await noAuthClient({
         method: "post",
         url: `${import.meta.env.VITE_API_BASE_URL}/auth/join`,
         data: {
