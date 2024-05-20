@@ -37,9 +37,4 @@ public class HotPlaceServiceImpl implements HotPlaceService{
     public int delete(int hotplaceId) {
         return hotplaceDao.delete(hotplaceId);
     }
-
-    @Override
-    public int updateView(int hotplaceId) {
-        return hotplaceDao.updateView(hotplaceId);
-    }
 }

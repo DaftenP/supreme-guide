@@ -21,3 +21,14 @@ public class HotPlace {
     private String image;
     private String writer;
 }
+
+//hotplace_id int PK
+//hotplace_name varchar(255)
+//hotplace_lng decimal(20,17)
+//hotplace_lat decimal(20,17)
+//hotplace_addr1 varchar(100)
+//hotplace_addr2 varchar(50)
+//hotplace_comment text
+//hotplace_category int
+//hotplace_image text
+//hotplace_writer varchar(20)

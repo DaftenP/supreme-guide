@@ -71,21 +71,4 @@
     </select>
 
 
-    <!--    <resultMap id="commentResultMap" type="comment">-->
-<!--        <id property="commentId" column="qna_comment_id" />-->
-<!--        <result property="commentContent" column="qna_comment_content" />-->
-<!--        <result property="commentHarmful" column="qna_comment_harmful" />-->
-<!--        <result property="qnaId" column="qna_qna_id"/>-->
-<!--        <result property="userId" column="user_user_id" />-->
-<!--    </resultMap>-->
-
-<!--    <select id="selectComment" parameterType="int" resultMap="commentResultMap">-->
-<!--        SELECT-->
-<!--            qna_comment_id, qna_comment_content, qna_comment_harmful, qna_qna_id, user_user_id-->
-<!--        FROM-->
-<!--            qna_comment-->
-<!--        WHERE-->
-<!--            qna_qna_id = #{qnaId}-->
-<!--    </select>-->
-
 </mapper>

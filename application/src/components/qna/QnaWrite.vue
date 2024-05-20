@@ -6,7 +6,6 @@ import { useRouter } from "vue-router";
 
 import { useUserStore } from "@/stores/userStore";
 import authClient from "@/api/authClient";
-import Cookies from "vue-cookies";
 const userStore = useUserStore();
 
 // data

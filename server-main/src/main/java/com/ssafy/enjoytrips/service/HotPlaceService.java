@@ -16,6 +16,5 @@ public interface HotPlaceService {
     int modify(HotPlace hotPlace);
     // 삭제
     int delete(int hotplaceId);
-    // 조회수 업데이트
-    int updateView(int hotplaceId);
+
 }

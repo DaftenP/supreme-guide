@@ -47,7 +47,7 @@ public class HotplaceController {
     }
     // 수정
     @PutMapping
-    public ResponseEntity<?> modify(@RequestHeader("Authoriation") String authorizationHeader, @RequestBody HotPlace hotplace) {
+    public ResponseEntity<?> modify(@RequestHeader("Authorization") String authorizationHeader, @RequestBody HotPlace hotplace) {
         try {
             if (authorizationHeader == null || !authorizationHeader.startsWith("Bearer ")) {
                 // 헤더가 없거나 Bearer 토큰이 아닌 경우의 처리
@@ -60,6 +60,7 @@ public class HotplaceController {
             if (!hotplace.getWriter().equals(userId)) {
                 return ResponseEntity.status(HttpStatus.FORBIDDEN).body("수정할 권한이 없습니다.");
             }
+            hotplace.setWriter(userId);
             int result = hotPlaceService.modify(hotplace);
             return ResponseEntity.ok(result);
         } catch (Exception e) {
@@ -99,7 +100,9 @@ public class HotplaceController {
                 // 예: 401 Unauthorized 반환
                 return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Unauthorized");
             }
-
+            String token = authorizationHeader.substring(7);
+            String userId = tokenProvider.getUserId(token);
+            hotPlace.setWriter(userId);
             int result = hotPlaceService.regist(hotPlace);
             return ResponseEntity.ok(result);
         } catch (Exception e) {

@@ -1,6 +1,7 @@
 package com.ssafy.enjoytrips.model.dao;
 
 import com.ssafy.enjoytrips.model.dto.HotPlace;
+import com.ssafy.enjoytrips.model.dto.Comment;
 import com.ssafy.enjoytrips.model.dto.SearchCondition;
 import org.apache.ibatis.annotations.Mapper;
 
@@ -18,7 +19,7 @@ public interface HotplaceDao {
     int modify(HotPlace hotplace);
     // 글 삭제
     int delete(int hotplaceId);
-    // 조회수 증가
-    int updateView(int hotplaceId);
+    // 댓글
+    List<Comment> selectComment(int hotplaceId);
 
 }
