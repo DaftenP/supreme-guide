@@ -1,8 +1,5 @@
 <script setup>
 import { ref } from "vue";
-import MapComponent from "../commons/MapComponent.vue";
-import AttractionModal from "../modal/AttractionModal.vue";
-import AttractionSideBar from "@/components/attraction/AttractionSideBar.vue";
 import { getRegion, getAllAttraction, getAttraction } from "@/api/attraction";
 import { useMapStore } from "@/stores/map";
 
@@ -11,7 +8,6 @@ const mapStore = useMapStore();
 // data
 const region = ref([]);
 const gugun = ref([]);
-const attractions = ref([]);
 const sidoSelectedOption = ref(0);
 const gugunSelectedOption = ref(0);
 const categorySelectedOption = ref(0);
@@ -51,10 +47,10 @@ const search = () => {
     // success
     (resp) => {
       console.log(resp.data);
-      attractions.value = resp.data;
-      if (attractions.value.length > 0) {
-        mapStore.lat = attractions.value[0].latitude;
-        mapStore.lng = attractions.value[0].longitude;
+      mapStore.attractions = resp.data;
+      if (mapStore.attractions.length > 0) {
+        mapStore.lat = mapStore.attractions[0].latitude;
+        mapStore.lng = mapStore.attractions[0].longitude;
       }
     },
     // fail
@@ -78,17 +74,17 @@ getRegion(
 </script>
 
 <template>
-  <div class="flex-grow-1 d-flex flex-column">
+  <div class="d-flex flex-column">
     <div class="search-form ps-2 pe-2">
-      <div class="row">
-        <div class="col-lg-2 col-md-2 col-6 p-2">
+      <div class="row col-12">
+        <div class="col-lg-2 col-md-6 col-sm-6 p-2">
           <select
             class="form-select ps-3"
             name="sido"
             id="search-area-sido"
             v-model="sidoSelectedOption"
             @change="sidoSelect">
-            <option value="0" selected>시/도 선택</option>
+            <option value="0" selected>시/도</option>
             <option
               v-for="sido in region"
               :key="sido.sidoCode"
@@ -98,13 +94,13 @@ getRegion(
             </option>
           </select>
         </div>
-        <div class="col-lg-2 col-md-2 col-6 p-2">
+        <div class="col-lg-2 col-md-6 col-sm-6 p-2">
           <select
             class="form-select ps-3"
             name="gugun"
             id="search-area-gugun"
             v-model="gugunSelectedOption">
-            <option value="0" selected>구/군 선택</option>
+            <option value="0" selected>구/군</option>
             <option
               v-for="g in gugun"
               :key="g.gugunCode"
@@ -114,13 +110,13 @@ getRegion(
             </option>
           </select>
         </div>
-        <div class="col-lg-2 col-md-2 col-12 p-2">
+        <div class="col-lg-2 col-md-12 col-sm-12 p-2">
           <select
             class="form-select ps-3"
             name="category"
             id="search-content-id"
             v-model="categorySelectedOption">
-            <option value="0" selected>관광지 유형</option>
+            <option value="0" selected>유형</option>
             <option value="12">관광지</option>
             <option value="14">문화시설</option>
             <option value="15">축제공연행사</option>
@@ -131,7 +127,7 @@ getRegion(
             <option value="39">음식점</option>
           </select>
         </div>
-        <div class="col-lg-6 col-md-6 col-12 p-2 d-flex">
+        <div class="col-lg-6 col-md-12 col-sm-12 p-2 d-flex">
           <input
             class="form-control me-3 ps-3"
             type="search"
@@ -149,15 +145,6 @@ getRegion(
         </div>
       </div>
     </div>
-    <div
-      id="div-map"
-      class="flex-grow-1 d-flex align-items-center justify-content-center">
-      <MapComponent :attractions="attractions"></MapComponent>
-    </div>
-    <div>
-      <AttractionSideBar :attractions="attractions"></AttractionSideBar>
-    </div>
-    <AttractionModal />
   </div>
 </template>
 

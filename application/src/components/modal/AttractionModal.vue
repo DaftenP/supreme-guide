@@ -38,7 +38,7 @@ const modalOpen = () => {
               :src="
                 mapStore.attractionInfo.firstImage
                   ? mapStore.attractionInfo.firstImage
-                  : 'src/assets/img/no-img.png'
+                  : 'http://localhost:5173/src/assets/img/no-img.png'
               " />
           </div>
           <div></div>

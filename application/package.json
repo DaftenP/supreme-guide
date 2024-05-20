@@ -20,7 +20,8 @@
     "vue-jwt-decode": "^0.1.0",
     "vue-router": "^4.3.0",
     "vue3-kakao-maps": "^2.3.6",
-    "vue3-lottie": "^3.3.0"
+    "vue3-lottie": "^3.3.0",
+    "vuedraggable": "^4.1.0"
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^5.0.4",

@@ -37,20 +37,51 @@ const router = createRouter({
         },
       ],
     },
+
     {
       path: "/attraction",
       name: "Attraction",
       component: () => import("@/views/AttractionView.vue"),
-      redirect: "AttractionMain",
+      // redirect: "AttractionMain",
+      // children: [
+      //   {
+      //     path: "",
+      //     name: "AttractionMain",
+      //     component: () =>
+      //       import("@/components/attraction/AttractionSearch.vue"),
+      //   },
+      // ],
+    },
+
+    {
+      path: "/trip",
+      name: "Trip",
+      component: () => import("@/views/TripView.vue"),
+      redirect: "TripList",
       children: [
         {
           path: "",
-          name: "AttractionMain",
-          component: () =>
-            import("@/components/attraction/AttractionSearch.vue"),
+          name: "TripList",
+          component: () => import("@/components/trip/TripList.vue"),
+        },
+        {
+          path: ":tripId",
+          name: "TripDetail",
+          component: () => import("@/components/trip/TripDetail.vue"),
+        },
+        {
+          path: "regist",
+          name: "TripWrite",
+          component: () => import("@/components/trip/TripWrite.vue"),
+        },
+        {
+          path: "modify",
+          name: "TripModify",
+          component: () => import("@/components/trip/TripModify.vue"),
         },
       ],
     },
+
     {
       path: "/auth",
       name: "AuthHome",
@@ -69,6 +100,7 @@ const router = createRouter({
         },
       ],
     },
+
     {
       path: "/notice",
       name: "NoticeHome",
@@ -97,6 +129,7 @@ const router = createRouter({
         },
       ],
     },
+
     {
       path: "/hotplace",
       name: "HotplaceHome",
