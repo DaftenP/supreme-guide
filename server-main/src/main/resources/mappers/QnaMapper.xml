@@ -59,8 +59,8 @@
             c.qna_comment_id AS id,
             c.qna_comment_content AS content,
             c.qna_comment_harmful AS harmful,
-            c.qna_id AS articleId,
-            c.user_id,
+            q.qna_id AS articleId,
+            u.user_id,
             u.user_name
         FROM
             qna q

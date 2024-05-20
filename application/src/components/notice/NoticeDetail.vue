@@ -3,61 +3,63 @@ import { ref, onBeforeMount, onMounted, computed } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import Cookies from "vue-cookies";
 import axios from "axios";
+import { useUserStore } from "@/stores/userStore";
 
+const userStore = useUserStore();
 const route = useRoute();
 const router = useRouter();
 
 const notice = ref({});
 
 const noticeId = route.params.noticeId;
-console.log("detail     "+noticeId);
+console.log("detail     " + noticeId);
 
 const goModify = () => {
-    router.push({
-        name: "NoticeModify",
-        params: { noticeId: notice.value.noticeId },
-    })
-}
+  router.push({
+    name: "NoticeModify",
+    params: { noticeId: notice.value.noticeId },
+  });
+};
 
 // 삭제
 const deleteNotice = async () => {
-    try {
-        const token = Cookies.get("accessToken");
-        const res = await axios({
-            method: "delete",
-            url: `${import.meta.env.VITE_API_BASE_URL}/notice/${noticeId}`,
-            headers: {
-                Authorization: `Bearer ${token}`,
-            }
-        })
-        alert("삭제에 성공하였습니다.");
-        goList();
-    } catch (error) {
-        console.log(error);
-        alert("삭제 권한이 없습니다.");
-    }
-}
+  try {
+    const token = Cookies.get("accessToken");
+    const res = await axios({
+      method: "delete",
+      url: `${import.meta.env.VITE_API_BASE_URL}/notice/${noticeId}`,
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    alert("삭제에 성공하였습니다.");
+    goList();
+  } catch (error) {
+    console.log(error);
+    alert("삭제 권한이 없습니다.");
+  }
+};
 
 // 상세 조회
-onBeforeMount( async () => {
-    try {
-        const res = await axios({
-            method: "get",
-            url: `${import.meta.env.VITE_API_BASE_URL}/notice/view/${noticeId}`,
-        })
-        console.log(res.data);
-        notice.value = res.data;
-    } catch (error) {
-        console.log(error);
-        alert("공지사항 조회에 문제가 발생하였습니다.");
-    }
-})
+onBeforeMount(async () => {
+  try {
+    const res = await axios({
+      method: "get",
+      url: `${import.meta.env.VITE_API_BASE_URL}/notice/view/${noticeId}`,
+    });
+    console.log(res.data);
+    notice.value = res.data;
+  } catch (error) {
+    console.log(error);
+    alert("공지사항 조회에 문제가 발생하였습니다.");
+  }
+});
 
 const goList = () => {
-    router.push({
-        name: "NoticeList",
-    })
-}
+  router.push({
+    name: "NoticeList",
+  });
+};
 </script>
 
 <template>
@@ -89,12 +91,16 @@ const goList = () => {
         <div class="d-flex justify-content-end">
           <a
             class="btn btn-outline-primary ms-2 pe-4 ps-4"
+            v-if="notice.noticeWriter === userStore.userId"
             @click.prevent="goModify"
+            href="#"
             >수정</a
           >
           <a
             class="btn btn-outline-danger ms-2 pe-4 ps-4"
-            @click="deleteNotice()"
+            v-if="notice.noticeWriter === userStore.userId"
+            @click.prevent="deleteNotice"
+            href="#"
             >삭제</a
           >
           <button class="btn btn-outline-dark ms-2 pe-4 ps-4" @click="goList">
@@ -106,6 +112,4 @@ const goList = () => {
   </div>
 </template>
 
-<style scoped>
-
-</style>
+<style scoped></style>
