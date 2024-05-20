@@ -136,6 +136,7 @@ public class QnaController {
             String token = authorizationHeader.substring(7);
             String userId = tokenProvider.getUserId(token);
             log.debug("Extracted userId from token: " + userId);
+
             System.out.println("UserID!!!!!!!!!!!!"+userId);
             if (userId == null) {
                 log.error("userId is null after token extraction.");
