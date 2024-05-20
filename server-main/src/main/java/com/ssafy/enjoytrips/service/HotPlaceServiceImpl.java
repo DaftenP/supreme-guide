@@ -2,6 +2,7 @@ package com.ssafy.enjoytrips.service;
 
 import com.ssafy.enjoytrips.model.dao.HotplaceDao;
 import com.ssafy.enjoytrips.model.dto.HotPlace;
+import com.ssafy.enjoytrips.model.dto.SearchCondition;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -13,8 +14,8 @@ public class HotPlaceServiceImpl implements HotPlaceService{
 
     private final HotplaceDao hotplaceDao;
     @Override
-    public List<HotPlace> list() {
-        return hotplaceDao.list();
+    public List<HotPlace> list(SearchCondition searchCondition) {
+        return hotplaceDao.list(searchCondition);
     }
 
     @Override

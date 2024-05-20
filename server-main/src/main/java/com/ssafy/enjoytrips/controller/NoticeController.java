@@ -56,9 +56,8 @@ public class NoticeController {
                 // 예: 401 Unauthorized 반환
                 return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Unauthorized");
             }
-            String token = authorizationHeader.substring(7);
-            String userId = tokenProvider.getUserId(token);
-            notice.setNoticeWriter(userId);
+//            String token = authorizationHeader.substring(7);
+//            String userId = tokenProvider.getUserId(token);
 
             int result = noticeService.regist(notice);
             return ResponseEntity.ok(result);
@@ -83,8 +82,6 @@ public class NoticeController {
                 return ResponseEntity.status(HttpStatus.FORBIDDEN).body("수정할 권한이 없습니다.");
             }
 
-            notice.setNoticeWriter(userId);
-
             int result = noticeService.modify(notice);
             return ResponseEntity.ok(result);
         } catch (Exception e){
@@ -107,7 +104,7 @@ public class NoticeController {
 
             Notice notice = noticeService.select(notice_id);
             if (!notice.getNoticeWriter().equals(userId)) {
-                return ResponseEntity.status(HttpStatus.FORBIDDEN).body("작성자만 수정이 가능합니다.");
+                return ResponseEntity.status(HttpStatus.FORBIDDEN).body("작성자만 삭제가 가능합니다.");
             }
             int result = noticeService.delete(notice_id);
             return ResponseEntity.ok(result);

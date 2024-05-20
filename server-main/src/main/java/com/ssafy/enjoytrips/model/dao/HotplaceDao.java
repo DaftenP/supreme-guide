@@ -1,6 +1,7 @@
 package com.ssafy.enjoytrips.model.dao;
 
 import com.ssafy.enjoytrips.model.dto.HotPlace;
+import com.ssafy.enjoytrips.model.dto.SearchCondition;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
@@ -8,7 +9,7 @@ import java.util.List;
 @Mapper
 public interface HotplaceDao {
     // 전체 조회
-    List<HotPlace> list();
+    List<HotPlace> list(SearchCondition searchCondition);
     // 개별 조회
     HotPlace select(int hotplaceId);
     // 글 등록

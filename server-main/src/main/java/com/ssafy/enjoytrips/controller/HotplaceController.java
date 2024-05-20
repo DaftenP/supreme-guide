@@ -6,11 +6,9 @@ import com.ssafy.enjoytrips.service.HotPlaceService;
 import com.ssafy.utils.TokenProvider;
 import lombok.RequiredArgsConstructor;
 import org.apache.coyote.Response;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -26,7 +24,7 @@ public class HotplaceController {
     @GetMapping("/all")
     public ResponseEntity<?> list(SearchCondition searchCondition) {
         try {
-            List<HotPlace> list = hotPlaceService.list();
+            List<HotPlace> list = hotPlaceService.list(searchCondition);
             return ResponseEntity.ok(list);
         } catch (Exception e) {
             return ResponseEntity.noContent().build();
@@ -48,10 +46,66 @@ public class HotplaceController {
         }
     }
     // 수정
+    @PutMapping
+    public ResponseEntity<?> modify(@RequestHeader("Authoriation") String authorizationHeader, @RequestBody HotPlace hotplace) {
+        try {
+            if (authorizationHeader == null || !authorizationHeader.startsWith("Bearer ")) {
+                // 헤더가 없거나 Bearer 토큰이 아닌 경우의 처리
+                // 예: 401 Unauthorized 반환
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Unauthorized");
+            }
+            String token = authorizationHeader.substring(7);
+            String userId = tokenProvider.getUserId(token);
+
+            if (!hotplace.getWriter().equals(userId)) {
+                return ResponseEntity.status(HttpStatus.FORBIDDEN).body("수정할 권한이 없습니다.");
+            }
+            int result = hotPlaceService.modify(hotplace);
+            return ResponseEntity.ok(result);
+        } catch (Exception e) {
+            return exceptionHandling(e);
+        }
+    }
 
     // 삭제
+    @DeleteMapping("/{hotplace_id}")
+    public ResponseEntity<?> delete(@RequestHeader("Authorization") String authorizationHeader, @PathVariable int hotplace_id) {
+        try {
+            if (authorizationHeader == null || !authorizationHeader.startsWith("Bearer ")) {
+                // 헤더가 없거나 Bearer 토큰이 아닌 경우의 처리
+                // 예: 401 Unauthorized 반환
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Unauthorized");
+            }
+            String token = authorizationHeader.substring(7);
+            String userId = tokenProvider.getUserId(token);
+
+            HotPlace hotplace = hotPlaceService.select(hotplace_id);
+            if (!hotplace.getWriter().equals(userId)) {
+                return ResponseEntity.status(HttpStatus.FORBIDDEN).body("작성자만 삭제가 가능합니다.");
+            }
+            int result = hotPlaceService.delete(hotplace_id);
+            return ResponseEntity.ok(result);
+        } catch (Exception e) {
+            return exceptionHandling(e);
+        }
+    }
 
     // 등록
+    @PostMapping("/regist")
+    public ResponseEntity<?> regist(@RequestHeader("Authorization") String authorizationHeader, @RequestBody HotPlace hotPlace) {
+        try {
+            if (authorizationHeader == null || !authorizationHeader.startsWith("Bearer ")) {
+                // 헤더가 없거나 Bearer 토큰이 아닌 경우의 처리
+                // 예: 401 Unauthorized 반환
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Unauthorized");
+            }
+
+            int result = hotPlaceService.regist(hotPlace);
+            return ResponseEntity.ok(result);
+        } catch (Exception e) {
+            return exceptionHandling(e);
+        }
+    }
 
     // exception handling
     private ResponseEntity<String> exceptionHandling(Exception e) {
