@@ -21,7 +21,7 @@ const userStore = useUserStore();
 const route = useRoute();
 const router = useRouter();
 
-const comments = ref([]);
+const comments = computed(() => tripStore.trip.tripComments);
 
 // data
 const tripId = route.params.tripId;
@@ -35,7 +35,7 @@ const computedEndDate = computed(() => {
 });
 
 const newComment = reactive({
-  commentContent: "",
+  content: "",
 });
 
 const goModify = () => {
@@ -64,12 +64,42 @@ const goList = () => {
   });
 };
 
-const registComment = async () => {};
-
-const fetchComments = async () => {};
+const registComment = async () => {
+  postComment(
+    { ...newComment, articleId: tripId },
+    (res) => {
+      alert("댓글 등록이 완료 되었습니다.");
+      tripStore.trip.tripComments.push({
+        ...newComment,
+        articleId: tripId,
+        userId: userStore.userId,
+        id: res.data,
+      });
+      newComment.content = "";
+    },
+    (err) => {
+      console.log(err);
+      alert("댓글 등록에 실패 하였습니다.");
+    }
+  );
+};
 
 // 댓글 삭제
-const removeComment = async (commentId) => {};
+const removeComment = async (commentId) => {
+  deleteComment(
+    commentId,
+    (res) => {
+      alert("댓글이 삭제 되었습니다.");
+      tripStore.trip.tripComments = tripStore.trip.tripComments.filter(
+        (el) => el.id != commentId
+      );
+    },
+    (err) => {
+      console.log(err);
+      alert("댓글 삭제에 실패 하였습니다.");
+    }
+  );
+};
 
 const getTrip = () => {
   getArticle(
@@ -168,7 +198,7 @@ onBeforeMount(async () => {
               class="form-control"
               id="newComment"
               rows="3"
-              v-model="newComment.commentContent"></textarea>
+              v-model="newComment.content"></textarea>
           </div>
           <button type="submit" class="btn btn-primary">댓글 등록</button>
         </form>
