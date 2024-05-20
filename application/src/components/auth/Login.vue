@@ -29,7 +29,7 @@ const loginUser = async (e) => {
       Cookies.set("accessToken", res.data.accessToken);
       Cookies.set("refreshToken", res.data.refreshToken);
       const decode = VueJwtDecode.decode(res.data.accessToken);
-
+      console.log(decode);
       userStore.setUserId(decode.userId);
       alert("로그인에 성공했습니다.");
       router.push("/");

@@ -1,8 +1,6 @@
 <script setup>
 import { ref, onBeforeMount, computed } from "vue";
 import { useRouter } from "vue-router";
-import axios from "axios";
-import Cookies from "vue-cookies";
 import noAuthClient from "@/api/noAuthClient";
 import { useUserStore } from "@/stores/userStore";
 
@@ -12,7 +10,7 @@ const qnas = ref([]);
 const key = ref("");
 const word = ref("");
 const qna = ref({});
-const currentPage = ref(1); 
+const currentPage = ref(1);
 const totalPages = ref(0);
 const searchCondition = ref({
   countPerPage: 5,
@@ -20,7 +18,7 @@ const searchCondition = ref({
   word: "",
   currentPage: 1,
   offset: 0,
-  limit: true
+  limit: true,
 });
 
 const movePage = () => {
@@ -28,78 +26,66 @@ const movePage = () => {
 };
 
 const changePage = (page) => {
-    if (page >= 1 && page <= totalPages.value) {
-        searchCondition.value.currentPage = page;
-        currentPage.value = page; // 현재 페이지 업데이트
-        fetchNotices();
-    }
-}
+  if (page >= 1 && page <= totalPages.value) {
+    searchCondition.value.currentPage = page;
+    currentPage.value = page; // 현재 페이지 업데이트
+    fetchNotices();
+  }
+};
 
 // searchArticle구현
 const searchArticle = () => {
-    // 검색어 입력 상태에서만 검색 조건을 업데이트하도록 추가
-    if (word.value !== "") {
-        searchCondition.value.key = key.value;
-        searchCondition.value.word = word.value;
-    } else {
-        // 검색어가 입력되지 않은 경우 검색 조건 초기화
-        searchCondition.value.key = "";
-        searchCondition.value.word = "";
-    }
-    // 검색 버튼 클릭 시 currentPage를 1로 초기화하여 첫 페이지부터 조회하도록 처리
-    searchCondition.value.currentPage = 1;
-    fetchNotices();
-}
+  // 검색어 입력 상태에서만 검색 조건을 업데이트하도록 추가
+  if (word.value !== "") {
+    searchCondition.value.key = key.value;
+    searchCondition.value.word = word.value;
+  } else {
+    // 검색어가 입력되지 않은 경우 검색 조건 초기화
+    searchCondition.value.key = "";
+    searchCondition.value.word = "";
+  }
+  // 검색 버튼 클릭 시 currentPage를 1로 초기화하여 첫 페이지부터 조회하도록 처리
+  searchCondition.value.currentPage = 1;
+  fetchNotices();
+};
 
-
-
-const fetchNotices =  async () => {
+const fetchNotices = async () => {
   try {
     let url = `${import.meta.env.VITE_API_BASE_URL}/qna/all`;
     if (searchCondition.value.key && searchCondition.value.word) {
-        if (searchCondition.value.key === "qnaWriter") {
-          searchCondition.value.key = "qna_writer";
-        } 
-        else if (searchCondition.value.key === "qnaContent") {
-          searchCondition.value.key = "qna_content";
-        }
-        else if (searchCondition.value.key === "qnaTitle") {
-          searchCondition.value.key = "qna_title";
-        }
-            url += `?key=${searchCondition.value.key}&word=${searchCondition.value.word}`;
-        }
-        const res = await axios({
-            method: "get",
-            url: url,
-        })
-        console.log(url);
+      if (searchCondition.value.key === "qnaWriter") {
+        searchCondition.value.key = "qna_writer";
+      } else if (searchCondition.value.key === "qnaContent") {
+        searchCondition.value.key = "qna_content";
+      } else if (searchCondition.value.key === "qnaTitle") {
+        searchCondition.value.key = "qna_title";
+      }
+      url += `?key=${searchCondition.value.key}&word=${searchCondition.value.word}`;
+    }
+    const res = await noAuthClient({
+      method: "get",
+      url: url,
+    });
+    console.log(url);
 
-        const startIndex = (searchCondition.value.currentPage - 1) * searchCondition.value.countPerPage;
-        const endIndex = startIndex + searchCondition.value.countPerPage;
-        qnas.value = res.data.slice(startIndex, endIndex).map((item, index) => ({ ...item, index: index + startIndex + 1 }));
-        totalPages.value = Math.ceil(res.data.length / searchCondition.value.countPerPage);
-        console.log(res.data);
+    const startIndex =
+      (searchCondition.value.currentPage - 1) *
+      searchCondition.value.countPerPage;
+    const endIndex = startIndex + searchCondition.value.countPerPage;
+    qnas.value = res.data
+      .slice(startIndex, endIndex)
+      .map((item, index) => ({ ...item, index: index + startIndex + 1 }));
+    totalPages.value = Math.ceil(
+      res.data.length / searchCondition.value.countPerPage
+    );
+    console.log(res.data);
   } catch (error) {
     console.log(error);
-    alert("리스트를 불러오는 데 문제가 발생했습니다.")
+    alert("리스트를 불러오는 데 문제가 발생했습니다.");
   }
 };
 
 onBeforeMount(fetchNotices);
-
-// const searchArticle = async () => {
-//   try { 
-//     const res = await noAuthClient({
-//       method: "get",
-//       url: `${import.meta.env.VITE_API_BASE_URL}/qna/view/${qnaId}`,
-//     })
-//     console.log(res.data);
-//     qna.value = res.data;
-//   } catch (error) {
-//     consle.log(error);
-//     alert("문제가 발생했습니다.")
-//   }
-// };
 
 const goDetail = (id) => {
   console.log(id);
@@ -107,11 +93,9 @@ const goDetail = (id) => {
     name: "QnaDetail",
     params: {
       qnaId: id,
-      
     },
-    
   });
-}; 
+};
 </script>
 
 <template>
@@ -128,7 +112,7 @@ const goDetail = (id) => {
             <button
               type="button"
               class="btn btn-outline-primary btn-sm"
-              v-if="userStore.userId!=''"
+              v-if="userStore.userId != ''"
               @click="movePage">
               질문 등록
             </button>
@@ -172,7 +156,6 @@ const goDetail = (id) => {
               :index="index"
               :qna="qna"
               :key="qna.qnaId">
-             
               <td>
                 <a @click="goDetail(qna.qnaId)">{{ qna.qnaTitle }}</a>
               </td>
@@ -184,21 +167,33 @@ const goDetail = (id) => {
         </table>
       </div>
     </div>
-     <nav aria-label="Page navigation example">
+    <nav aria-label="Page navigation example">
       <ul class="pagination justify-content-center">
         <!-- 이전 버튼 -->
         <li class="page-item" :class="{ disabled: currentPage === 1 }">
-          <button class="page-link" @click="changePage(currentPage - 1)" aria-label="Previous">
+          <button
+            class="page-link"
+            @click="changePage(currentPage - 1)"
+            aria-label="Previous">
             <span aria-hidden="true">&laquo;</span>
           </button>
         </li>
         <!-- 페이지 번호 -->
-        <li class="page-item" v-for="pageNumber in totalPages" :key="pageNumber" :class="{ active: currentPage === pageNumber }">
-          <button class="page-link" @click="changePage(pageNumber)">{{ pageNumber }}</button>
+        <li
+          class="page-item"
+          v-for="pageNumber in totalPages"
+          :key="pageNumber"
+          :class="{ active: currentPage === pageNumber }">
+          <button class="page-link" @click="changePage(pageNumber)">
+            {{ pageNumber }}
+          </button>
         </li>
         <!-- 다음 버튼 -->
         <li class="page-item" :class="{ disabled: currentPage === totalPages }">
-          <button class="page-link" @click="changePage(currentPage + 1)" aria-label="Next">
+          <button
+            class="page-link"
+            @click="changePage(currentPage + 1)"
+            aria-label="Next">
             <span aria-hidden="true">&raquo;</span>
           </button>
         </li>
@@ -210,5 +205,6 @@ const goDetail = (id) => {
 <style scoped>
 /* 페이지 처리 스타일 */
 .pagination {
-    margin-top: 20px;
-}</style>
+  margin-top: 20px;
+}
+</style>

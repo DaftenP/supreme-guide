@@ -11,15 +11,16 @@
         <result property="noticeContent" column="notice_content"/>
         <result property="noticeView" column="notice_view"/>
         <result property="noticeWriter" column="notice_writer"/>
-        <result property="noticeCreateDate" column="notice_createdDate"/>
+        <result property="noticeCreateDate" column="notice_create_date"/>
     </resultMap>
 
 
     <select id="list" parameterType="searchCondition" resultMap="noticeResultMap">
         SELECT
-        	notice_id, notice_title, notice_content, notice_view, notice_writer, notice_create_date
+          notice_id, notice_title, notice_content, notice_view, notice_writer, notice_create_date
+
         FROM
-        notice
+          notice
         <where>
             <if test="key != 'none'">
                  ${key} LIKE CONCAT('%', #{word}, '%')

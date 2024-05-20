@@ -129,6 +129,35 @@ const router = createRouter({
         },
       ],
     },
+
+    {
+      path: "/hotplace",
+      name: "HotplaceHome",
+      component: () => import("@/views/HotPlaceView.vue"),
+      redirect: "/",
+      children: [
+        {
+          path: "all",
+          name: "HotplaceList",
+          component: () => import("@/components/hotplace/HotPlaceList.vue"),
+        },
+        {
+          path: "view/:hotplaceId",
+          name: "HotPlaceDetail",
+          component: () => import("@/components/hotplace/HotPlaceDetail.vue"),
+        },
+        {
+          path: "modify/:hotplaceId",
+          name: "HotPlaceModify",
+          component: () => import("@/components/hotplace/HotPlaceModify.vue"),
+        },
+        {
+          path: "/regist",
+          name: "HotPlaceWrite",
+          component: () => import("@/components/hotplace/HotPlaceWrite.vue"),
+        },
+      ],
+    },
   ],
 });
 
