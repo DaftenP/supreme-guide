@@ -8,24 +8,25 @@ import { useUserStore } from "@/stores/userStore";
 import { getArticle } from "@/api/trip";
 import MapComponent from "@/components/commons/MapComponent.vue";
 import { useMapStore } from "@/stores/map";
+import { useTripStore } from "@/stores/trip";
 
+const tripStore = useTripStore();
 const mapStore = useMapStore();
 const userStore = useUserStore();
 const route = useRoute();
 const router = useRouter();
 
-const trip = ref({});
 const comments = ref([]);
 
 // data
 const tripId = route.params.tripId;
 
 const computedStartDate = computed(() => {
-  return trip.value.tripStartDate;
+  return tripStore.trip.tripStartDate;
 });
 
 const computedEndDate = computed(() => {
-  return trip.value.tripEndDate;
+  return tripStore.trip.tripEndDate;
 });
 
 const newComment = reactive({
@@ -35,7 +36,7 @@ const newComment = reactive({
 const goModify = () => {
   router.push({
     name: "TripModify",
-    params: { tripId: trip.value.tripId },
+    params: { tripId: tripStore.trip.tripId },
   });
 };
 
@@ -93,7 +94,7 @@ const fetchComments = async () => {
       url: `${import.meta.env.VITE_API_BASE_URL}/trip/view/${tripId}`,
     });
     console.log(res.data);
-    trip.value = res.data;
+    tripStore.trip = res.data;
     comments.value = res.data.list;
   } catch (error) {
     console.log(error);
@@ -124,8 +125,8 @@ const getTrip = () => {
   getArticle(
     tripId,
     (resp) => {
-      trip.value = resp.data;
-      console.log(trip.value);
+      tripStore.trip = resp.data;
+      console.log(tripStore.trip);
     },
     (err) => {
       console.log(err);
@@ -137,9 +138,9 @@ const getTrip = () => {
 // 게시글 상세 조회 및 댓글 목록 조회
 onBeforeMount(async () => {
   await getTrip();
-  if (trip.value.tripItems) {
-    mapStore.lat = trip.value.tripItems[0].latitude;
-    mapStore.lng = trip.value.tripItems[0].longitude;
+  if (tripStore.trip.tripItems) {
+    mapStore.lat = tripStore.trip.tripItems[0].latitude;
+    mapStore.lng = tripStore.trip.tripItems[0].longitude;
   }
 });
 </script>
@@ -153,22 +154,22 @@ onBeforeMount(async () => {
         </h2>
       </div>
       <div class="col-lg-12">
-        <h1>{{ trip.tripName }}</h1>
+        <h1>{{ tripStore.trip.tripName }}</h1>
         <div class="d-flex justify-content-between">
           <div>
             <label for="writer">작성자 :</label>
-            {{ trip.userName }}
+            {{ tripStore.trip.userName }}
           </div>
           <div>
-            {{ trip.tripCreateDate }}
+            {{ tripStore.trip.tripCreateDate }}
             <label class="ms-1" for="view">조회 </label>
-            {{ trip.tripView }}
+            {{ tripStore.trip.tripView }}
           </div>
         </div>
         <hr />
         <div class="d-flex row pd-0 mg-0">
           <div class="col-lg-6 col-md-12">
-            <MapComponent :tripList="trip.tripItems"></MapComponent>
+            <MapComponent :tripList="tripStore.trip.tripItems"></MapComponent>
           </div>
           <div class="col-lg-6 col-md-12">
             <div>
@@ -179,10 +180,12 @@ onBeforeMount(async () => {
             </div>
             <div>
               <span>설명 : </span>
-              <span v-html="trip.tripContent"></span>
+              <span v-html="tripStore.trip.tripContent"></span>
             </div>
             <div>
-              <li v-for="item in trip.tripItems" :key="item.contentId">
+              <li
+                v-for="item in tripStore.trip.tripItems"
+                :key="item.contentId">
                 {{ item.title }}
               </li>
             </div>
@@ -192,14 +195,14 @@ onBeforeMount(async () => {
         <div class="d-flex justify-content-end">
           <a
             class="btn btn-outline-primary ms-2 pe-4 ps-4"
-            v-if="trip.tripWriter === userStore.userId"
+            v-if="tripStore.trip.userId === userStore.userId"
             href="#"
             @click.prevent="goModify"
             >수정</a
           >
           <a
             class="btn btn-outline-danger ms-2 pe-4 ps-4"
-            v-if="trip.tripWriter === userStore.userId"
+            v-if="tripStore.trip.tripWriter === userStore.userId"
             @click="deleteTrip"
             >삭제</a
           >

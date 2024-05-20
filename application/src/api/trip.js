@@ -12,7 +12,6 @@ export const getArticle = (board_id, success, fail) => {
 };
 
 export const postArticle = async (article, success, fail) => {
-  console.log(article);
   try {
     const res = await authClient({
       method: "post",
@@ -25,28 +24,65 @@ export const postArticle = async (article, success, fail) => {
   }
 };
 
-export const postComment = (article, success, fail) => {
-  axios
-    .post(`/comment/regist`, JSON.stringify(article))
-    .then(success)
-    .catch(fail);
+export const postComment = async (article, success, fail) => {
+  try {
+    const res = await authClient({
+      method: "post",
+      url: `${import.meta.env.VITE_API_BASE_URL}/trip/comment/regist`,
+      data: article,
+    });
+    success(res);
+  } catch (err) {
+    fail(err);
+  }
 };
 
-export const putArticle = (article, success, fail) => {
-  axios.put(`/modify`, JSON.stringify(article)).then(success).catch(fail);
+export const putArticle = async (article, success, fail) => {
+  try {
+    const res = await authClient({
+      method: "put",
+      url: `${import.meta.env.VITE_API_BASE_URL}/trip/modify`,
+      data: article,
+    });
+    success(res);
+  } catch (err) {
+    fail(err);
+  }
 };
 
-export const putComment = (article, success, fail) => {
-  axios
-    .put(`/comment/modify`, JSON.stringify(article))
-    .then(success)
-    .catch(fail);
+export const putComment = async (article, success, fail) => {
+  try {
+    const res = await authClient({
+      method: "put",
+      url: `${import.meta.env.VITE_API_BASE_URL}/trip/comment/regist`,
+      data: article,
+    });
+    success(res);
+  } catch (err) {
+    fail(err);
+  }
 };
 
-export const deleteArticle = (board_id, success, fail) => {
-  axios.delete(`/delete/${board_id}`).then(success).catch(fail);
+export const deleteArticle = async (board_id, success, fail) => {
+  try {
+    const res = await authClient({
+      method: "delete",
+      url: `${import.meta.env.VITE_API_BASE_URL}/trip/${board_id}`,
+    });
+    success(res);
+  } catch (err) {
+    fail(err);
+  }
 };
 
-export const deleteComment = (comment_id, success, fail) => {
-  axios.delete(`/comment/delete/${comment_id}`).then(success).catch(fail);
+export const deleteComment = async (comment_id, success, fail) => {
+  try {
+    const res = await authClient({
+      method: "delete",
+      url: `${import.meta.env.VITE_API_BASE_URL}/trip/comment/${comment_id}`,
+    });
+    success(res);
+  } catch (err) {
+    fail(err);
+  }
 };

@@ -74,6 +74,11 @@ const router = createRouter({
           name: "TripWrite",
           component: () => import("@/components/trip/TripWrite.vue"),
         },
+        {
+          path: "modify",
+          name: "TripModify",
+          component: () => import("@/components/trip/TripModify.vue"),
+        },
       ],
     },
 

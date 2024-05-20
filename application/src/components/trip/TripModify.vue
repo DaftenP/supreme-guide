@@ -1,17 +1,19 @@
 <script setup>
 import TripFormItem from "@/components/item/TripFormItem.vue";
-import { ref, onMounted, onUpdated } from "vue";
+import axios from "axios";
+import { ref, onMounted, reactive, onUpdated } from "vue";
 import { useRoute, useRouter } from "vue-router";
-import { postArticle } from "@/api/trip";
+import { putArticle } from "@/api/trip";
 import { useUserStore } from "@/stores/userStore";
+import authClient from "@/api/authClient";
+import Cookies from "vue-cookies";
+import { useTripStore } from "@/stores/trip";
 
+// data
 const userStore = useUserStore();
 const tripStore = useTripStore();
 const route = useRoute();
 const router = useRouter();
-
-// data
-const trip = ref({});
 
 // LifeCycle
 onUpdated(() => {
@@ -24,12 +26,8 @@ const goList = () => {
   });
 };
 
-onMounted(() => {
-  trip.value.userId = userStore.userId;
-});
-
-const writeArticle = async (param) => {
-  await postArticle(param, (res) => {
+const modifyArticle = async (param) => {
+  await putArticle(param, (res) => {
     alert("등록 완료");
     goList();
   }),
@@ -49,7 +47,10 @@ const writeArticle = async (param) => {
         </h2>
       </div>
       <div class="col-lg-10 text-start">
-        <TripFormItem type="create" :trip="trip" @evt-process="writeArticle" />
+        <TripFormItem
+          type="modify"
+          :trip="tripStore.trip"
+          @evt-process="modifyArticle" />
       </div>
     </div>
   </div>

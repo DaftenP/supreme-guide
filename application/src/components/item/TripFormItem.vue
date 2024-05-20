@@ -1,23 +1,33 @@
 <script setup>
-import { ref, defineProps } from "vue";
+import { ref, defineProps, onMounted } from "vue";
 import MapComponent from "@/components/commons/MapComponent.vue";
 import AttractionSearch from "@/components/attraction/AttractionSearch.vue";
 import AttractionListItem from "@/components/item/AttractionListItem.vue";
 import AttractionModal from "@/components/modal/AttractionModal.vue";
 import { useMapStore } from "@/stores/map";
 import { getAttraction } from "@/api/attraction";
+import { useRoute, useRouter } from "vue-router";
 import draggable from "vuedraggable";
+import { useTripStore } from "@/stores/trip";
 
+const tripStore = useTripStore();
 const mapStore = useMapStore();
 const props = defineProps({
   trip: Object,
   type: String,
 });
+const router = useRouter();
 const emit = defineEmits(["evtProcess"]);
 const tripItems = ref([]);
 const refTitle = ref(null);
 const refContent = ref(null);
 const refWriter = ref(null);
+
+onMounted(() => {
+  tripItems.value = tripStore.trip.tripItems;
+  mapStore.lat = tripItems.value[0].latitude;
+  mapStore.lng = tripItems.value[0].longitude;
+});
 
 // methods
 const getModal = (id) => {
@@ -50,7 +60,7 @@ const validate = () => {
     ? ((isValid = false),
       (errMsg = "내용을 입력해주세요."),
       refContent.value.focus())
-    : tripItems.length == 0
+    : tripItems.value.length == 0
     ? ((isValid = false), (errMsg = "여행지를 입력해주세요."))
     : (isValid = true);
   if (!isValid) {
@@ -69,6 +79,10 @@ const goList = () => {
   router.push({
     name: "TripList",
   });
+};
+
+const delItem = (tar) => {
+  tripItems.value = tripItems.value.filter((el) => el != tar);
 };
 </script>
 
@@ -103,6 +117,9 @@ const goList = () => {
           <template #item="{ element }">
             <div class="list">
               {{ element.title }}
+              <button class="btn btn-outline-danger" @click="delItem(element)">
+                X
+              </button>
             </div>
           </template>
         </draggable>
