@@ -41,14 +41,14 @@
             :height="'100%'"
             @update:image="updateImage" />
         </div>
-        <button type="submit">등록</button>
+        <button type="submit" @click="submitForm">등록</button>
       </form>
     </div>
   </div>
 </template>
 
 <script setup>
-import { ref, onMounted, nextTick } from "vue";
+import { ref, onMounted, nextTick, reactive } from "vue";
 import { useRouter } from 'vue-router';
 import MapComponent from "@/components/commons/MapComponent2.vue";
 import PhotoUpload from "../item/PhotoUpload.vue";
@@ -66,7 +66,7 @@ const KAKAO_API_KEY = import.meta.env.VITE_API_KAKAO_MAP_REST_KEY;
 const map = ref(null);
 const markers = ref([]);
 const router = useRouter();
-let infowindow = null;
+let infowindow = new kakao.maps.InfoWindow(); // 전역 변수로 선언
 
 const updateImage = (base64String) => {
   image.value = base64String;
@@ -79,27 +79,19 @@ const goList = () => {
 }
 
 const createMarker = (place) => {
-  console.log("hihi");
-  const marker = {
-    lat: place.latitude,
-    lng: place.longitude,
-    infoWindow: `<div style="padding:5px;">${place.place_name}</div>`,
-  };
+  const marker = new kakao.maps.Marker({
+    position: new kakao.maps.LatLng(place.latitude, place.longitude),
+    map: map.value,
+  });
+
+  kakao.maps.event.addListener(marker, 'click', () => {
+    // 인포윈도우의 내용 업데이트
+    infowindow.setContent('<div style="padding:5px;font-size:12px;">' + place.place_name + '</div>');
+    // 인포윈도우 표시
+    infowindow.open(map.value, marker);
+  });
+
   markers.value.push(marker);
-
-  // kakao.maps.event.addListener(marker, 'click', () => {
-  //   selectPlace(place);
-  //   if (infowindow) {
-  //     infowindow.close();
-  //   }
-  //   infowindow = new kakao.maps.InfoWindow({
-  //     content: `<div style="padding:5px;">${place.place_name}</div>`,
-  //   });
-  //   infowindow.open(map.value, marker);
-  //   map.value.panTo(new kakao.maps.LatLng(place.latitude, place.longitude));
-  // });
-
-  // markers.value.push(marker);
 };
 
 const onClickMapMarker = (marker) => {
@@ -108,10 +100,10 @@ const onClickMapMarker = (marker) => {
   if (map.value) {
     const position = new kakao.maps.LatLng(marker.lat, marker.lng);
     map.value.panTo(position);
-    const infowindow = new kakao.maps.InfoWindow({
-      content: marker.infoWindow,
-    });
-    infowindow.open(map.value, marker.marker);
+    // const infowindow = new kakao.maps.InfoWindow({
+    //   content: marker.infoWindow,
+    // });
+    // infowindow.open(map.value, marker.marker);
   }
 };
 
@@ -182,19 +174,21 @@ const selectPlace = (place) => {
 };
 
 const submitForm = async () => {
-  const formData = {
-    title: title.value,
+  const hotplace= reactive ({
+    hotplaceName: title.value,
     category: category.value,
-    description: description.value,
+    comment : description.value,
     image: image.value,
     place: selectedPlace.value,
-  };
+    latitude: selectedPlace.value.latitude, // 선택한 장소의 위도
+    longitude: selectedPlace.value.longitude, // 선택한 장소의 경도
+  });
 
   try {
     const res = await authClient({
       method: "post",
       url: `${import.meta.env.VITE_API_BASE_URL}/hotplace/regist`,
-      data: formData,
+      data: hotplace,
     });
     alert("핫플레이스가 성공적으로 등록되었습니다.");
   } catch (error) {

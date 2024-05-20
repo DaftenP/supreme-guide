@@ -108,6 +108,7 @@ public class HotplaceController {
             String token = authorizationHeader.substring(7);
             String userId = tokenProvider.getUserId(token);
             hotPlace.setWriter(userId);
+
             int result = hotPlaceService.regist(hotPlace, uploadPath);
             return ResponseEntity.ok(result);
         } catch (Exception e) {
