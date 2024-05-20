@@ -24,9 +24,11 @@ const refContent = ref(null);
 const refWriter = ref(null);
 
 onMounted(() => {
-  tripItems.value = tripStore.trip.tripItems;
-  mapStore.lat = tripItems.value[0].latitude;
-  mapStore.lng = tripItems.value[0].longitude;
+  if (props.type === "modify") {
+    tripItems.value = tripStore.trip.tripItems;
+    mapStore.lat = tripItems.value[0].latitude;
+    mapStore.lng = tripItems.value[0].longitude;
+  }
 });
 
 // methods

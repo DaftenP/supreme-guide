@@ -6,7 +6,6 @@ import { postArticle } from "@/api/trip";
 import { useUserStore } from "@/stores/userStore";
 
 const userStore = useUserStore();
-const tripStore = useTripStore();
 const route = useRoute();
 const router = useRouter();
 

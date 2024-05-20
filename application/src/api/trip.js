@@ -54,7 +54,7 @@ export const putComment = async (article, success, fail) => {
   try {
     const res = await authClient({
       method: "put",
-      url: `${import.meta.env.VITE_API_BASE_URL}/trip/comment/regist`,
+      url: `${import.meta.env.VITE_API_BASE_URL}/trip/comment/modify`,
       data: article,
     });
     success(res);

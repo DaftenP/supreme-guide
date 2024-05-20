@@ -3,9 +3,14 @@ import { ref, computed, onBeforeMount, reactive } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import noAuthClient from "@/api/noAuthClient";
 import Cookies from "vue-cookies";
-import axios from "axios";
 import { useUserStore } from "@/stores/userStore";
-import { getArticle } from "@/api/trip";
+import {
+  getArticle,
+  deleteArticle,
+  postComment,
+  putComment,
+  deleteComment,
+} from "@/api/trip";
 import MapComponent from "@/components/commons/MapComponent.vue";
 import { useMapStore } from "@/stores/map";
 import { useTripStore } from "@/stores/trip";
@@ -41,21 +46,16 @@ const goModify = () => {
 };
 
 const deleteTrip = async () => {
-  try {
-    const token = Cookies.get("accessToken");
-    const res = await axios({
-      method: "delete",
-      url: `${import.meta.env.VITE_API_BASE_URL}/trip/${tripId}`,
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
-    alert("삭제에 성공하였습니다.");
-    goList();
-  } catch (error) {
-    console.log(error);
-    alert("작성자만 글을 삭제할 수 있습니다.");
-  }
+  await deleteArticle(
+    tripId,
+    (resp) => {
+      alert("삭제가 완료 되었습니다.");
+      goList();
+    },
+    (err) => {
+      alert("삭제에 실패 하였습니다.");
+    }
+  );
 };
 
 const goList = () => {
@@ -64,62 +64,12 @@ const goList = () => {
   });
 };
 
-const registerComment = async () => {
-  try {
-    const token = Cookies.get("accessToken");
-    const res = await axios({
-      method: "post",
-      url: `${import.meta.env.VITE_API_BASE_URL}/trip/comment/regist`,
-      data: {
-        articleId: tripId,
-        content: newComment.commentContent,
-      },
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
-    alert("댓글 등록에 성공하였습니다.");
-    newComment.commentContent = "";
-    await fetchComments(); // 댓글 목록 갱신
-  } catch (error) {
-    console.log(error);
-    alert("댓글 등록에 실패하였습니다.");
-  }
-};
+const registComment = async () => {};
 
-const fetchComments = async () => {
-  try {
-    const res = await noAuthClient({
-      method: "get",
-      url: `${import.meta.env.VITE_API_BASE_URL}/trip/view/${tripId}`,
-    });
-    console.log(res.data);
-    tripStore.trip = res.data;
-    comments.value = res.data.list;
-  } catch (error) {
-    console.log(error);
-    alert("문제가 발생했습니다.");
-  }
-};
+const fetchComments = async () => {};
 
 // 댓글 삭제
-const deleteComment = async (commentId) => {
-  try {
-    const token = Cookies.get("accessToken");
-    const res = await axios({
-      method: "delete",
-      url: `${import.meta.env.VITE_API_BASE_URL}/trip/comment/${commentId}`,
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
-    alert("댓글을 삭제하였습니다.");
-    await fetchComments(); // 댓글 목록 갱신
-  } catch (error) {
-    console.log(error);
-    alert("문제가 발생했습니다.");
-  }
-};
+const removeComment = async (commentId) => {};
 
 const getTrip = () => {
   getArticle(
@@ -202,7 +152,7 @@ onBeforeMount(async () => {
           >
           <a
             class="btn btn-outline-danger ms-2 pe-4 ps-4"
-            v-if="tripStore.trip.tripWriter === userStore.userId"
+            v-if="tripStore.trip.userId == userStore.userId"
             @click="deleteTrip"
             >삭제</a
           >
@@ -211,7 +161,7 @@ onBeforeMount(async () => {
           </button>
         </div>
         <h3>댓글</h3>
-        <form @submit.prevent="registerComment">
+        <form @submit.prevent="registComment">
           <div class="mb-3">
             <label for="newComment" class="form-label">댓글 작성</label>
             <textarea
@@ -233,7 +183,7 @@ onBeforeMount(async () => {
             <button
               v-if="comment.userId === userStore.userId"
               class="btn btn-sm btn-outline-danger ms-2"
-              @click="deleteComment(comment.id)">
+              @click="removeComment(comment.id)">
               삭제
             </button>
           </li>

@@ -28,10 +28,11 @@ public class TripController {
 
 	private TripService tripService;
 	private CommentService tripCommentService;
-    private final TokenProvider tokenProvider;
+	private final TokenProvider tokenProvider;
 
 	public TripController(TripService tripService,
-			@Qualifier(value = "tripCommentServiceImpl") CommentService tripCommentService, TokenProvider tokenProvider) {
+			@Qualifier(value = "tripCommentServiceImpl") CommentService tripCommentService,
+			TokenProvider tokenProvider) {
 		this.tripService = tripService;
 		this.tripCommentService = tripCommentService;
 		this.tokenProvider = tokenProvider;
@@ -65,18 +66,16 @@ public class TripController {
 			@RequestBody Trip trip) {
 		try {
 			if (authorizationHeader == null || !authorizationHeader.startsWith("Bearer ")) {
-                // 헤더가 없거나 Bearer 토큰이 아닌 경우의 처리
-                // 예: 401 Unauthorized 반환
-                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Unauthorized");
-            }
+				return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Unauthorized");
+			}
 
-            String token = authorizationHeader.substring(7);
-            String userId = tokenProvider.getUserId(token);
+			String token = authorizationHeader.substring(7);
+			String userId = tokenProvider.getUserId(token);
 
-            if (!trip.getUserId().equals(userId)) {
-                return ResponseEntity.status(HttpStatus.FORBIDDEN).body("수정할 수 있는 권한이 없습니다.");
-            }
-            trip.setUserId(userId);
+			if (userId == null) {
+				return ResponseEntity.status(HttpStatus.FORBIDDEN).body("권한이 없습니다.");
+			}
+			trip.setUserId(userId);
 			return ResponseEntity.ok(tripService.regist(trip));
 		} catch (Exception e) {
 			return exceptionHandling(e);
@@ -88,6 +87,17 @@ public class TripController {
 	public ResponseEntity<?> modify(@RequestHeader("Authorization") String authorizationHeader,
 			@RequestBody Trip trip) {
 		try {
+			if (authorizationHeader == null || !authorizationHeader.startsWith("Bearer ")) {
+				return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Unauthorized");
+			}
+
+			String token = authorizationHeader.substring(7);
+			String userId = tokenProvider.getUserId(token);
+
+			if (userId == null) {
+				return ResponseEntity.status(HttpStatus.FORBIDDEN).body("권한이 없습니다.");
+			}
+			trip.setUserId(userId);
 			return ResponseEntity.ok(tripService.modify(trip));
 		} catch (Exception e) {
 			return exceptionHandling(e);
@@ -98,6 +108,16 @@ public class TripController {
 	@DeleteMapping("/{id}")
 	public ResponseEntity<?> delete(@RequestHeader("Authorization") String authorizationHeader, @PathVariable int id) {
 		try {
+			if (authorizationHeader == null || !authorizationHeader.startsWith("Bearer ")) {
+				return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Unauthorized");
+			}
+
+			String token = authorizationHeader.substring(7);
+			String userId = tokenProvider.getUserId(token);
+
+			if (userId == null) {
+				return ResponseEntity.status(HttpStatus.FORBIDDEN).body("권한이 없습니다.");
+			}
 			return ResponseEntity.ok(tripService.delete(id));
 		} catch (Exception e) {
 			return exceptionHandling(e);
@@ -111,6 +131,17 @@ public class TripController {
 	public ResponseEntity<?> registComment(@RequestHeader("Authorization") String authorizationHeader,
 			@RequestBody Comment comment) {
 		try {
+			if (authorizationHeader == null || !authorizationHeader.startsWith("Bearer ")) {
+				return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Unauthorized");
+			}
+
+			String token = authorizationHeader.substring(7);
+			String userId = tokenProvider.getUserId(token);
+
+			if (userId == null) {
+				return ResponseEntity.status(HttpStatus.FORBIDDEN).body("권한이 없습니다.");
+			}
+			comment.setUserId(userId);
 			return ResponseEntity.ok(tripCommentService.register(comment));
 		} catch (Exception e) {
 			return exceptionHandling(e);
@@ -122,6 +153,17 @@ public class TripController {
 	public ResponseEntity<?> modifyComment(@RequestHeader("Authorization") String authorizationHeader,
 			@RequestBody Comment comment) {
 		try {
+			if (authorizationHeader == null || !authorizationHeader.startsWith("Bearer ")) {
+				return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Unauthorized");
+			}
+
+			String token = authorizationHeader.substring(7);
+			String userId = tokenProvider.getUserId(token);
+
+			if (userId == null) {
+				return ResponseEntity.status(HttpStatus.FORBIDDEN).body("권한이 없습니다.");
+			}
+			comment.setUserId(userId);
 			return ResponseEntity.ok(tripCommentService.modify(comment));
 		} catch (Exception e) {
 			return exceptionHandling(e);
@@ -133,6 +175,16 @@ public class TripController {
 	public ResponseEntity<?> deleteComment(@RequestHeader("Authorization") String authorizationHeader,
 			@PathVariable int id) {
 		try {
+			if (authorizationHeader == null || !authorizationHeader.startsWith("Bearer ")) {
+				return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Unauthorized");
+			}
+
+			String token = authorizationHeader.substring(7);
+			String userId = tokenProvider.getUserId(token);
+
+			if (userId == null) {
+				return ResponseEntity.status(HttpStatus.FORBIDDEN).body("권한이 없습니다.");
+			}
 			return ResponseEntity.ok(tripCommentService.delete(id));
 		} catch (Exception e) {
 			return exceptionHandling(e);
