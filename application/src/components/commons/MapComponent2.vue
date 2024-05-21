@@ -98,6 +98,7 @@ defineExpose({
       @onLoadKakaoMap="onLoadKakaoMap"
       width="100%"
       height="100%">
+      <KakaoMapMarker :lat="mapStore.lat" :lng="mapStore.lng" />
       <KakaoMapMarker
         v-for="(marker, index) in newMarkerList"
         :key="index"

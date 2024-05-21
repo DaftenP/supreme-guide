@@ -26,24 +26,32 @@ const searchPlaces = () => {
 // 키워드 검색 완료 시 호출되는 콜백 함수
 const placesSearchCB = (data, status) => {
   if (status === kakao.maps.services.Status.OK) {
-    const newMarkerList = [];
     const bounds = new kakao.maps.LatLngBounds();
+    const geocoder = new kakao.maps.services.Geocoder();
 
     for (let marker of data) {
       const markerItem = {
         lat: marker.y,
         lng: marker.x,
-        infoWindow: {
-          content: marker.place_name,
-          visible: false,
-        },
+        address: "",
+        title: marker.place_name,
+        visible: false,
       };
-      newMarkerList.push(markerItem);
+
+      // 위도, 경도를 주소로 변환
+      geocoder.coord2Address(marker.x, marker.y, (result, status) => {
+        if (status === kakao.maps.services.Status.OK) {
+          markerItem.address = result[0].address.address_name;
+        } else {
+          markerItem.address = "주소 검색 실패";
+        }
+      });
+
+      newMarkerList.value.push(markerItem);
       bounds.extend(new kakao.maps.LatLng(Number(marker.y), Number(marker.x)));
     }
 
-    console.log("```````````hihi```````````");
-    markerList.value = newMarkerList;
+    markerList.value = newMarkerList.value;
     console.log(markerList.value);
     map.value.setBounds(bounds);
   } else {
@@ -52,15 +60,10 @@ const placesSearchCB = (data, status) => {
 };
 
 const onClickMapMarker = (markerItem) => {
-  console.log("item-----" + markerItem.value);
-  if (
-    markerItem.infoWindow?.visible !== null &&
-    markerItem.infoWindow !== undefined
-  ) {
-    markerItem.infoWindow.visible = !markerItem.infoWindow.visible;
-  } else {
-    markerItem.infoWindow.visible = true;
-  }
+  // Map Store의 상태 업데이트
+  mapStore.lat = markerItem.lat;
+  mapStore.lng = markerItem.lng;
+  mapStore.attractionInfo = markerItem;
 };
 
 const mouseOverKakaoMapMarker = (param) => {

@@ -172,7 +172,7 @@ onBeforeMount(fetchHotPlaces);
                     </p>
                   </div>
                   <p class="text-sm font-medium text-gray-900">
-                    {{ hotplace.category }}
+                    {{ hotplace.writer }}
                   </p>
                 </div>
               </div>

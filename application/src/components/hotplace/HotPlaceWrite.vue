@@ -63,6 +63,11 @@ const submitForm = async () => {
     console.error(error);
     alert("핫플레이스 등록에 실패했습니다.");
   }
+  goList();
+};
+
+const goList = () => {
+  router.push({ name: "HotplaceList" });
 };
 </script>
 

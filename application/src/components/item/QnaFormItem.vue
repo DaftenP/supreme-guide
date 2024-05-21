@@ -15,10 +15,6 @@ const emit = defineEmits(["evtProcess"]);
 
 const { qna } = toRefs(props);
 
-const emitProcess = () => {
-  emit("evt-process", qna.value);
-};
-
 const refTitle = ref(null);
 const refContent = ref(null);
 const refWriter = ref(null);
