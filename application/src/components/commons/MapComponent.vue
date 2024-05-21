@@ -40,7 +40,7 @@ const mouseOverKakaoMapMarker = (param) => {
 const mouseOutKakaoMapMarker = (param) => {
   param.visible = false;
 };
-
+// /
 const panTo = () => {
   if (map.value) {
     // 지도 중심을 부드럽게 이동시킵니다
@@ -58,7 +58,7 @@ const panTo = () => {
       @onLoadKakaoMap="onLoadKakaoMap"
       width="100%"
       height="100%"
-      level="7">
+      level="11">
       <KakaoMapMarker
         v-for="(attraction, index) in attractions"
         :key="index"

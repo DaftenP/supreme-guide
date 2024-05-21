@@ -1,5 +1,5 @@
 <script setup>
-import { ref, defineProps } from "vue";
+import { ref, computed, defineProps, defineEmits } from "vue";
 import AttractionListItem from "@/components/item/AttractionListItem.vue";
 import { useMapStore } from "@/stores/map";
 import { getAttraction } from "@/api/attraction";
@@ -7,7 +7,9 @@ import { getAttraction } from "@/api/attraction";
 const mapStore = useMapStore();
 const props = defineProps({
   attractions: Object,
+  checkboxes: Object,
 });
+const emit = defineEmits(["updateCheckbox"]);
 
 const getModal = (id) => {
   getAttraction(
@@ -19,6 +21,9 @@ const getModal = (id) => {
       console.log(err);
     }
   );
+};
+const updateCheckbox = (id, checked) => {
+  emit("updateCheckbox", id, checked);
 };
 </script>
 
@@ -49,6 +54,16 @@ const getModal = (id) => {
     </div>
 
     <div class="offcanvas-body">
+      <div>
+        <span v-for="checkbox in checkboxes" :key="checkbox.id">
+          <input
+            type="checkbox"
+            :id="checkbox.id"
+            :checked="checkbox.checked"
+            @change="updateCheckbox(checkbox.id, $event.target.checked)" />
+          <label :for="`checkbox-${checkbox.id}`">{{ checkbox.label }}</label>
+        </span>
+      </div>
       <div>
         <AttractionListItem
           v-for="(attraction, index) in attractions"
