@@ -58,7 +58,7 @@ public class HotplaceController {
     }
     // 수정
     @PutMapping
-    public ResponseEntity<?> modify(@RequestHeader("Authorization") String authorizationHeader, @RequestBody HotPlace hotplace) {
+    public ResponseEntity<?> modify(@RequestHeader("Authorization") String authorizationHeader, @RequestBody HotPlace hotPlace) {
         try {
             if (authorizationHeader == null || !authorizationHeader.startsWith("Bearer ")) {
                 // 헤더가 없거나 Bearer 토큰이 아닌 경우의 처리
@@ -68,11 +68,16 @@ public class HotplaceController {
             String token = authorizationHeader.substring(7);
             String userId = tokenProvider.getUserId(token);
 
-            if (!hotplace.getWriter().equals(userId)) {
-                return ResponseEntity.status(HttpStatus.FORBIDDEN).body("수정할 권한이 없습니다.");
+            String fileName="";
+            // 파일 저장
+            if (hotPlace.getImage() != null && !hotPlace.getImage().isEmpty()) {
+                fileName = fileUtil.saveFile(hotPlace.getImage(), uploadPath);
             }
-            hotplace.setWriter(userId);
-            int result = hotPlaceService.modify(hotplace);
+            hotPlace.setImage(fileName);
+
+
+            hotPlace.setWriter(userId);
+            int result = hotPlaceService.modify(hotPlace);
             return ResponseEntity.ok(result);
         } catch (Exception e) {
             return exceptionHandling(e);

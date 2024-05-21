@@ -33,7 +33,7 @@ public class HotPlaceServiceImpl implements HotPlaceService{
     }
 
     @Override
-    public int modify(HotPlace hotPlace) {
+    public int modify(HotPlace hotPlace) throws Exception {
         return hotplaceDao.modify(hotPlace);
     }
 
