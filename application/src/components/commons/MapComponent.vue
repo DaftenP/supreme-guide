@@ -10,7 +10,6 @@ import { useMapStore } from "@/stores/map";
 const mapStore = useMapStore();
 
 const map = ref();
-const markerList = ref([]);
 const props = defineProps({
   attractions: Object,
   searchPlaces: String,

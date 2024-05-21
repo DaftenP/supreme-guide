@@ -23,4 +23,17 @@ import HeaderNav from "./components/commons/HeaderNav.vue";
   display: block;
   height: 3px;
 }
+
+@font-face {
+  font-family: 'CustomFont'; /* 사용할 글꼴의 이름을 지정합니다. */
+  src: url('/fonts/font1.ttf') format('truetype'); /* font1.ttf의 경로를 지정합니다. */
+}
+
+#app {
+  background-image: url('/images/new-background.jpg');
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+}
+
 </style>
