@@ -143,17 +143,17 @@ const router = createRouter({
         },
         {
           path: "view/:hotplaceId",
-          name: "HotPlaceDetail",
+          name: "HotplaceDetail",
           component: () => import("@/components/hotplace/HotPlaceDetail.vue"),
         },
         {
           path: "modify/:hotplaceId",
-          name: "HotPlaceModify",
+          name: "HotplaceModify",
           component: () => import("@/components/hotplace/HotPlaceModify.vue"),
         },
         {
-          path: "/regist",
-          name: "HotPlaceWrite",
+          path: "regist",
+          name: "HotplaceWrite",
           component: () => import("@/components/hotplace/HotPlaceWrite.vue"),
         },
       ],

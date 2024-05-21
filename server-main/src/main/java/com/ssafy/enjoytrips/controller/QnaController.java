@@ -20,7 +20,6 @@ import java.util.List;
 @Log4j2
 @RequestMapping("/qna")
 public class QnaController {
-
 	private final QnaService qnaService;
 	private final QnaCommentServiceImpl qnaCommentService;
 	private final TokenProvider tokenProvider;
@@ -200,6 +199,7 @@ public class QnaController {
 	public ResponseEntity<?> deleteComment(@RequestHeader("Authorization") String authorizationHeader,
 			@PathVariable int qna_comment_id) {
 		try {
+
 //            if (authorizationHeader == null || !authorizationHeader.startsWith("Bearer ")) {
 //                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Unauthorized");
 //            }

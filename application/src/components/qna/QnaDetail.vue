@@ -2,8 +2,6 @@
 import { ref, onBeforeMount, reactive } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import noAuthClient from "@/api/noAuthClient";
-import Cookies from "vue-cookies";
-import axios from "axios";
 import { useUserStore } from "@/stores/userStore";
 import authClient from "@/api/authClient";
 

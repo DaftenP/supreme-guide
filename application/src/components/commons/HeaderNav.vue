@@ -3,9 +3,9 @@ import { Vue3Lottie } from "vue3-lottie";
 import { useRouter } from "vue-router";
 import { ref } from "vue";
 import { useUserStore } from "@/stores/userStore";
-import Cookies from "vue-cookies";
 import BearJson from "@/assets/animations/Bear.json";
 import TripJson from "@/assets/animations/Trip.json";
+import settingCookie from "@/utils/settingCookie";
 const router = useRouter();
 const userStore = useUserStore();
 
@@ -45,6 +45,11 @@ const goNotice = () => {
   });
 };
 
+
+const goHotPlace = () => {
+  router.push({
+    name: "HotplaceList",
+
 const goTrip = () => {
   router.push({
     name: "TripList",
@@ -53,8 +58,7 @@ const goTrip = () => {
 
 const logout = () => {
   userStore.setUserId("");
-  Cookies.remove("accessToken");
-  Cookies.remove("refreshToken");
+  settingCookie("remove");
   alert("로그아웃 되었습니다.");
   router.push({ name: "home" });
 };
@@ -90,6 +94,7 @@ const toggleMenu = () => {
           @click="goTrip"
           class="text-sm font-semibold leading-6 text-gray-900 hover:text-indigo-600 transition duration-300">
           여행
+
         </button>
         <button
           @click="goQna"
@@ -101,6 +106,13 @@ const toggleMenu = () => {
           class="text-sm font-semibold leading-6 text-gray-900 hover:text-indigo-600 transition duration-300">
           공지사항
         </button>
+
+        <button
+          @click="goHotPlace"
+          class="text-sm font-semibold leading-6 text-gray-900 hover:text-indigo-600 transition duration-300">
+          핫플레이스
+        </button>
+
       </div>
       <div
         class="hidden lg:flex lg:flex-1 lg:justify-end items-center space-x-6">
@@ -199,6 +211,11 @@ const toggleMenu = () => {
                 @click="goNotice"
                 class="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:text-indigo-600 transition duration-300">
                 공지사항
+              </button>
+              <button
+                @click="goHotPlace"
+                class="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:text-indigo-600 transition duration-300">
+                핫플레이스
               </button>
             </div>
             <div class="py-6">

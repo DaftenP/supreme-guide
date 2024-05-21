@@ -1,35 +1,17 @@
 <script setup>
-import {
-  KakaoMap,
-  KakaoMapMarker,
-  KakaoMapMarkerPolyline,
-} from "vue3-kakao-maps";
-import { ref, computed, defineProps, onBeforeMount } from "vue";
+import { KakaoMap, KakaoMapMarker } from "vue3-kakao-maps";
+import { ref, computed, defineProps } from "vue";
 import { useMapStore } from "@/stores/map";
 
 const mapStore = useMapStore();
 
 const map = ref();
 const markerList = ref([]);
+const newMarkerList = ref([]);
+const address = ref("");
 const props = defineProps({
   attractions: Object,
   searchPlaces: String,
-  tripList: Object,
-});
-
-const markerList = computed(() => {
-  return props.tripList
-    ? props.tripList.map((el, idx) => ({
-        lat: el.latitude,
-        lng: el.longitude,
-        order:
-          idx == 0
-            ? "출발"
-            : idx == props.tripList.length - 1
-            ? "도착"
-            : idx + 1,
-      }))
-    : ref([]);
 });
 
 const onLoadKakaoMap = (mapRef) => {
@@ -80,6 +62,7 @@ const placesSearchCB = (data, status) => {
 };
 
 const onClickMapMarker = (markerItem) => {
+  console.log("item-----" + markerItem.lat + ", " + markerItem.lng);
   // Map Store의 상태 업데이트
   mapStore.lat = markerItem.lat;
   mapStore.lng = markerItem.lng;
@@ -114,19 +97,20 @@ defineExpose({
       :lng="mapStore.lng"
       @onLoadKakaoMap="onLoadKakaoMap"
       width="100%"
-      height="100%"
-      level="7">
+      height="100%">
+      <KakaoMapMarker :lat="mapStore.lat" :lng="mapStore.lng" />
       <KakaoMapMarker
-        v-for="(attraction, index) in attractions"
+        v-for="(marker, index) in newMarkerList"
         :key="index"
-        :lat="attraction.latitude"
-        :lng="attraction.longitude"
-        :title="attraction.title"
+        :lat="marker.lat"
+        :lng="marker.lng"
+        :title="marker.title"
+        :clickable="true"
         :infoWindow="{
           content: `
-            <span class=&quot;border border-2 rounded &quot;>${attraction.title}</span>
+            <span class=&quot;border border-2 rounded &quot;>${marker.title}</span>
           `,
-          visible: attraction.visible == true,
+          visible: marker.visible == true,
         }"
         :image="{
           imageSrc:
@@ -135,18 +119,9 @@ defineExpose({
           imageHeight: 64,
           imageOption: {},
         }"
-        @mouseOverKakaoMapMarker="mouseOverKakaoMapMarker(attraction)"
-        @mouseOutKakaoMapMarker="mouseOutKakaoMapMarker(attraction)"
-        @onClickKakaoMapMarker="onClickMapMarker(attraction)" />
-
-      <KakaoMapMarkerPolyline
-        v-if="tripList"
-        :markerList="markerList"
-        :showMarkerOrder="true"
-        strokeColor="#C74C5E"
-        :strokeOpacity="1"
-        strokeStyle="shortdot" />
-
+        @onClickKakaoMapMarker="onClickMapMarker(marker)"
+        @mouseOverKakaoMapMarker="mouseOverKakaoMapMarker(marker)"
+        @mouseOutKakaoMapMarker="mouseOutKakaoMapMarker(marker)" />
     </KakaoMap>
   </div>
 </template>

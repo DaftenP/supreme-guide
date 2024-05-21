@@ -4,8 +4,6 @@ import { ref, onMounted } from "vue";
 import { useRouter, useRoute } from "vue-router";
 import noAuthClient from "@/api/noAuthClient";
 import authClient from "@/api/authClient";
-import axios from "axios";
-import Cookies from "vue-cookies";
 
 const router = useRouter();
 const route = useRoute();
