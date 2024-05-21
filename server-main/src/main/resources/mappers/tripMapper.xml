@@ -109,6 +109,7 @@
  			c.trip_comment_content AS content, 
  			c.trip_comment_harmful AS harmful, 
  			c.trip_id AS articleId, 
+ 			c.trip_comment_create_date AS createDate,
  			c.user_id,
  			u.user_name
  		FROM

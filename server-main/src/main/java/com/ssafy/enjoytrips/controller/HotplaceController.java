@@ -3,6 +3,7 @@ package com.ssafy.enjoytrips.controller;
 import com.ssafy.enjoytrips.model.dto.HotPlace;
 import com.ssafy.enjoytrips.model.dto.SearchCondition;
 import com.ssafy.enjoytrips.service.HotPlaceService;
+import com.ssafy.utils.CommentPurifier;
 import com.ssafy.utils.TokenProvider;
 import lombok.RequiredArgsConstructor;
 import org.apache.coyote.Response;
@@ -19,6 +20,7 @@ public class HotplaceController {
 
     private final HotPlaceService hotPlaceService;
     private final TokenProvider tokenProvider;
+    private final CommentPurifier commentPurifier;
 
     // 전체 조회
     @GetMapping("/all")

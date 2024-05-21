@@ -59,6 +59,7 @@
             c.qna_comment_id AS id,
             c.qna_comment_content AS content,
             c.qna_comment_harmful AS harmful,
+            c.qna_comment_create_date AS createDate,
             q.qna_id AS articleId,
             u.user_id,
             u.user_name

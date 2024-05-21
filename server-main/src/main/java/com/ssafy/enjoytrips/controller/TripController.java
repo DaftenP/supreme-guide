@@ -20,22 +20,25 @@ import com.ssafy.enjoytrips.model.dto.SearchCondition;
 import com.ssafy.enjoytrips.model.dto.Trip;
 import com.ssafy.enjoytrips.service.CommentService;
 import com.ssafy.enjoytrips.service.TripService;
+import com.ssafy.utils.CommentPurifier;
 import com.ssafy.utils.TokenProvider;
 
 @RestController
 @RequestMapping("/trip")
 public class TripController {
 
-	private TripService tripService;
-	private CommentService tripCommentService;
+	private final TripService tripService;
+	private final CommentService tripCommentService;
 	private final TokenProvider tokenProvider;
+	private final CommentPurifier commentPurifier;
 
 	public TripController(TripService tripService,
-			@Qualifier(value = "tripCommentServiceImpl") CommentService tripCommentService,
-			TokenProvider tokenProvider) {
+			@Qualifier(value = "tripCommentServiceImpl") CommentService tripCommentService, TokenProvider tokenProvider,
+			CommentPurifier commentPurifier) {
 		this.tripService = tripService;
 		this.tripCommentService = tripCommentService;
 		this.tokenProvider = tokenProvider;
+		this.commentPurifier = commentPurifier;
 	}
 
 	// 여행계획 전체 조회
@@ -142,6 +145,14 @@ public class TripController {
 				return ResponseEntity.status(HttpStatus.FORBIDDEN).body("권한이 없습니다.");
 			}
 			comment.setUserId(userId);
+			try {
+				ResponseEntity<String> check = commentPurifier.check(comment);
+				if (!"null".equals(check.getBody())) {
+					comment.setHarmful(true);
+				}
+			} catch (Exception e) {
+				System.out.println("API 서버 통신 오류!!");
+			}
 			return ResponseEntity.ok(tripCommentService.register(comment));
 		} catch (Exception e) {
 			return exceptionHandling(e);
@@ -164,6 +175,14 @@ public class TripController {
 				return ResponseEntity.status(HttpStatus.FORBIDDEN).body("권한이 없습니다.");
 			}
 			comment.setUserId(userId);
+			try {
+				ResponseEntity<String> check = commentPurifier.check(comment);
+				if (!"null".equals(check.getBody())) {
+					comment.setHarmful(true);
+				}
+			} catch (Exception e) {
+				System.out.println("API 서버 통신 오류!!");
+			}
 			return ResponseEntity.ok(tripCommentService.modify(comment));
 		} catch (Exception e) {
 			return exceptionHandling(e);
