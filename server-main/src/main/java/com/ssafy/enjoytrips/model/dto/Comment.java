@@ -17,6 +17,7 @@ public class Comment {
 	private String userId;
 	private String userName;	//user table 과 조인해서 가져올 것
 	private int articleId;	// 연결된 게시글
+	private String createDate;
 	
 }
 

@@ -26,7 +26,7 @@ async def check(article: Article):
     for sentence in content_sentence:
         if not model.sentence_predict(sentence):
             return {'msg': f'부적절한 내용 입니다. ({sentence})'}
-    return {"msg": ""}
+    return None
 
 
 if __name__ == "__main__":
