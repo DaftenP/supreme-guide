@@ -16,7 +16,8 @@ public class TripCommentServiceImpl implements CommentService{
 
 	@Override
 	public int register(Comment comment) {
-		return commentDao.regist(comment);
+		commentDao.regist(comment);
+		return comment.getId(); 
 	}
 
 	@Override

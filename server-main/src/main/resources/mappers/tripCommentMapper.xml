@@ -5,7 +5,7 @@
 <mapper namespace="com.ssafy.enjoytrips.model.dao.TripCommentDao">
 
 	<!-- 댓글 등록 -->
-	<insert id="regist" parameterType="comment">
+	<insert id="regist" parameterType="comment" useGeneratedKeys="true" keyProperty="id">
 		INSERT INTO 
 			trip_comment (
 				trip_comment_content,
@@ -20,6 +20,10 @@
 			#{userId}
 		)
 		;
+		<selectKey resultType="int" keyProperty="id" order="AFTER">
+            select last_insert_id()
+            ;
+        </selectKey>
 	</insert>
 	
 	<!-- 댓글 수정 -->

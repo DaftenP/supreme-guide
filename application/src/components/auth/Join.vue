@@ -184,8 +184,7 @@ const joinUser = async (e) => {
       alert("회원가입에 성공했습니다.");
       router.push("/");
     } catch (error) {
-      const err = error.response;
-      console.log(err);
+      console.log(error);
     }
   } else {
     alert("유효성 검사를 다시 해주세요.");

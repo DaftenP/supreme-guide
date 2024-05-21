@@ -1,6 +1,10 @@
 <script setup>
-import { KakaoMap, KakaoMapMarker } from "vue3-kakao-maps";
-import { ref, computed, defineProps } from "vue";
+import {
+  KakaoMap,
+  KakaoMapMarker,
+  KakaoMapMarkerPolyline,
+} from "vue3-kakao-maps";
+import { ref, computed, defineProps, onBeforeMount } from "vue";
 import { useMapStore } from "@/stores/map";
 
 const mapStore = useMapStore();
@@ -10,6 +14,22 @@ const markerList = ref([]);
 const props = defineProps({
   attractions: Object,
   searchPlaces: String,
+  tripList: Object,
+});
+
+const markerList = computed(() => {
+  return props.tripList
+    ? props.tripList.map((el, idx) => ({
+        lat: el.latitude,
+        lng: el.longitude,
+        order:
+          idx == 0
+            ? "출발"
+            : idx == props.tripList.length - 1
+            ? "도착"
+            : idx + 1,
+      }))
+    : ref([]);
 });
 
 const onLoadKakaoMap = (mapRef) => {
@@ -94,7 +114,8 @@ defineExpose({
       :lng="mapStore.lng"
       @onLoadKakaoMap="onLoadKakaoMap"
       width="100%"
-      height="100%">
+      height="100%"
+      level="7">
       <KakaoMapMarker
         v-for="(attraction, index) in attractions"
         :key="index"
@@ -117,6 +138,15 @@ defineExpose({
         @mouseOverKakaoMapMarker="mouseOverKakaoMapMarker(attraction)"
         @mouseOutKakaoMapMarker="mouseOutKakaoMapMarker(attraction)"
         @onClickKakaoMapMarker="onClickMapMarker(attraction)" />
+
+      <KakaoMapMarkerPolyline
+        v-if="tripList"
+        :markerList="markerList"
+        :showMarkerOrder="true"
+        strokeColor="#C74C5E"
+        :strokeOpacity="1"
+        strokeStyle="shortdot" />
+
     </KakaoMap>
   </div>
 </template>

@@ -7,7 +7,7 @@
     <!-- 글 조회  -->
     <select id="list" parameterType="searchCondition" resultType="qna">
         SELECT
-        qna_id, qna_title, qna_content, qna_view, qna_create_date, qna_writer
+        	qna_id, qna_title, qna_content, qna_view, qna_create_date, qna_writer
         FROM
         qna
         <where>
@@ -59,6 +59,7 @@
             c.qna_comment_id AS id,
             c.qna_comment_content AS content,
             c.qna_comment_harmful AS harmful,
+            c.qna_comment_create_date AS createDate,
             q.qna_id AS articleId,
             u.user_id,
             u.user_name

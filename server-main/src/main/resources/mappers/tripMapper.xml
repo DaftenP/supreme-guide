@@ -11,9 +11,9 @@
         <result column="user_id" property="userId"/>
         <result column="user_name" property="userName"/>
         <result column="trip_content" property="tripContent"/>
-        <result column="trip_startDate" property="tripStartDate"/>
-        <result column="trip_endDate" property="tripEndDate"/>
-        <result column="trip_createdDate" property="tripCreatedDate"/>
+        <result column="trip_start_date" property="tripStartDate"/>
+        <result column="trip_end_date" property="tripEndDate"/>
+        <result column="trip_create_date" property="tripCreateDate"/>
         <collection property="tripItems" ofType="attraction">
         	<id column="content_id" property="contentId"/>
         	<result column="content_type_id" property="category"/>
@@ -51,7 +51,7 @@
  				INNER JOIN
  			user u ON t.user_id = u.user_id
  		<where>
- 			<if test="key != 'none'">
+ 			<if test="key != 'none' and key != ''">
  				${key} LIKE CONCAT('%', #{word}, '%')
  			</if>
 	 	</where>
@@ -98,6 +98,8 @@
  			attraction_info a ON i.attraction_info_content_id = a.content_id
  		WHERE
  			trip_id = #{tripId}
+ 		ORDER BY 
+ 			i.trip_item_order ASC
  		;
  	</select>
  	
@@ -107,6 +109,7 @@
  			c.trip_comment_content AS content, 
  			c.trip_comment_harmful AS harmful, 
  			c.trip_id AS articleId, 
+ 			c.trip_comment_create_date AS createDate,
  			c.user_id,
  			u.user_name
  		FROM

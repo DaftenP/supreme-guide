@@ -45,9 +45,14 @@ const goNotice = () => {
   });
 };
 
+
 const goHotPlace = () => {
   router.push({
     name: "HotplaceList",
+
+const goTrip = () => {
+  router.push({
+    name: "TripList",
   });
 };
 
@@ -83,7 +88,13 @@ const toggleMenu = () => {
         <button
           @click="goAttraction"
           class="text-sm font-semibold leading-6 text-gray-900 hover:text-indigo-600 transition duration-300">
-          관광지 검색
+          관광지
+        </button>
+        <button
+          @click="goTrip"
+          class="text-sm font-semibold leading-6 text-gray-900 hover:text-indigo-600 transition duration-300">
+          여행
+
         </button>
         <button
           @click="goQna"
@@ -95,11 +106,13 @@ const toggleMenu = () => {
           class="text-sm font-semibold leading-6 text-gray-900 hover:text-indigo-600 transition duration-300">
           공지사항
         </button>
+
         <button
           @click="goHotPlace"
           class="text-sm font-semibold leading-6 text-gray-900 hover:text-indigo-600 transition duration-300">
           핫플레이스
         </button>
+
       </div>
       <div
         class="hidden lg:flex lg:flex-1 lg:justify-end items-center space-x-6">

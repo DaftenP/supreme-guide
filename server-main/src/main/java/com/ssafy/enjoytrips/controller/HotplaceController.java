@@ -4,6 +4,7 @@ import com.ssafy.enjoytrips.model.dto.HotPlace;
 import com.ssafy.enjoytrips.model.dto.SearchCondition;
 import com.ssafy.enjoytrips.service.HotPlaceService;
 import com.ssafy.enjoytrips.util.FileUtil;
+import com.ssafy.utils.CommentPurifier;
 import com.ssafy.utils.TokenProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -26,6 +27,9 @@ public class HotplaceController {
 
     @Value("${com.ssafy.enjoytrips.upload.path}") // properties파일에 경로 설정
     private String uploadPath;
+
+    private final CommentPurifier commentPurifier;
+
 
     // 전체 조회
     @GetMapping("/all")
