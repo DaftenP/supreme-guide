@@ -1,5 +1,5 @@
 <script setup>
-import { ref, defineProps, onMounted } from "vue";
+import { ref, onMounted } from "vue";
 import MapComponent from "@/components/commons/MapComponent.vue";
 import AttractionSearch from "@/components/attraction/AttractionSearch.vue";
 import AttractionListItem from "@/components/item/AttractionListItem.vue";

@@ -4,7 +4,7 @@ import {
   KakaoMapMarker,
   KakaoMapMarkerPolyline,
 } from "vue3-kakao-maps";
-import { ref, computed, defineProps, onBeforeMount } from "vue";
+import { ref, computed, onBeforeMount } from "vue";
 import { useMapStore } from "@/stores/map";
 
 const mapStore = useMapStore();
@@ -72,10 +72,9 @@ const panTo = () => {
           visible: attraction.visible == true,
         }"
         :image="{
-          imageSrc:
-            'https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/marker_red.png',
-          imageWidth: 64,
-          imageHeight: 64,
+          imageSrc: `/src/assets/img/marker-icons/${attraction.category}.png`,
+          imageWidth: 48,
+          imageHeight: 48,
           imageOption: {},
         }"
         @mouseOverKakaoMapMarker="mouseOverKakaoMapMarker(attraction)"

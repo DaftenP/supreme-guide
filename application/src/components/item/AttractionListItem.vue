@@ -1,5 +1,5 @@
 <script setup>
-import { ref, defineProps } from "vue";
+import { ref } from "vue";
 import { useMapStore } from "@/stores/map";
 
 const mapStore = useMapStore();
