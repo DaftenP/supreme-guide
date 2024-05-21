@@ -49,7 +49,8 @@ const goNotice = () => {
 const goHotPlace = () => {
   router.push({
     name: "HotplaceList",
-
+  })
+}
 const goTrip = () => {
   router.push({
     name: "TripList",

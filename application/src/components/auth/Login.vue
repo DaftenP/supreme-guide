@@ -7,7 +7,7 @@ import VueJwtDecode from "vue-jwt-decode";
 import noAuthClient from "@/api/noAuthClient";
 import { useUserStore } from "@/stores/userStore";
 import { Vue3Lottie } from "vue3-lottie";
-import LoginJson from "@/assets/animations/login.json";
+import LoginJson from "@/assets/animations/Login.json";
 
 const router = useRouter();
 const userStore = useUserStore();
