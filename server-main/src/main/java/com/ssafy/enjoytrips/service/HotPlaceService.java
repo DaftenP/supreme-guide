@@ -11,7 +11,7 @@ public interface HotPlaceService {
     // 개별 조회
     HotPlace select(int hotplaceId);
     // 등록
-    int regist(HotPlace hotPlace, String uploadPath) throws Exception;
+    int regist(HotPlace hotPlace) throws Exception;
     // 수정
     int modify(HotPlace hotPlace);
     // 삭제

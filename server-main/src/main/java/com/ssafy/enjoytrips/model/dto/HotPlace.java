@@ -21,7 +21,6 @@ public class HotPlace {
     private int category;
     private String image;
     private String writer;
-    private MultipartFile imageFile; // 파일 업로드를 위한 필드 추가
 }
 
 //hotplace_id int PK

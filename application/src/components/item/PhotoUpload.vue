@@ -40,7 +40,7 @@ export default {
           const base64String = reader.result;
           this.selectedFile = file; // 변경점
           this.imagePreview = base64String;
-          console.log(base64String);
+          this.$emit("update:image", base64String); // 추가된 부분
         };
         reader.readAsDataURL(file);
       }
@@ -49,6 +49,7 @@ export default {
       URL.revokeObjectURL(this.imagePreview);
       this.selectedFile = null;
       this.imagePreview = null;
+      this.$emit("update:image", null); // 이미지 제거 시 이벤트 발생
     },
   },
 };

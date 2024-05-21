@@ -10,6 +10,9 @@ const userStore = useUserStore();
 const hotplaces = ref([]);
 const key = ref("");
 const word = ref("");
+const IMAGE_URL = import.meta.env.VITE_IMAGE_BASE_URL;
+console.log(IMAGE_URL);
+
 const searchCondition = ref({
   countPerPage: 6,
   key: "",
@@ -73,7 +76,11 @@ const fetchHotPlaces = async () => {
     const endIndex = startIndex + searchCondition.value.countPerPage;
     hotplaces.value = res.data
       .slice(startIndex, endIndex)
-      .map((item, index) => ({ ...item, index: index + startIndex + 1 }));
+      .map((item, index) => ({
+        ...item,
+        index: index + startIndex + 1,
+        image: `/${IMAGE_URL}/${item.image}`,
+      }));
     totalPages.value = Math.ceil(
       res.data.length / searchCondition.value.countPerPage
     );

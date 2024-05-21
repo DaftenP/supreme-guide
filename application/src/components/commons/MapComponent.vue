@@ -6,12 +6,61 @@ import { useMapStore } from "@/stores/map";
 const mapStore = useMapStore();
 
 const map = ref();
+const markerList = ref([]);
 const props = defineProps({
   attractions: Object,
+  searchPlaces: String,
 });
 
 const onLoadKakaoMap = (mapRef) => {
   map.value = mapRef;
+};
+
+const searchPlaces = () => {
+  // 장소 검색 객체를 생성합니다.
+  const ps = new kakao.maps.services.Places();
+  // 키워드로 장소를 검색합니다.
+  ps.keywordSearch(props.searchPlaces, placesSearchCB);
+};
+
+// 키워드 검색 완료 시 호출되는 콜백 함수
+const placesSearchCB = (data, status) => {
+  if (status === kakao.maps.services.Status.OK) {
+    const newMarkerList = [];
+    const bounds = new kakao.maps.LatLngBounds();
+
+    for (let marker of data) {
+      const markerItem = {
+        lat: marker.y,
+        lng: marker.x,
+        infoWindow: {
+          content: marker.place_name,
+          visible: false,
+        },
+      };
+      newMarkerList.push(markerItem);
+      bounds.extend(new kakao.maps.LatLng(Number(marker.y), Number(marker.x)));
+    }
+
+    console.log("```````````hihi```````````");
+    markerList.value = newMarkerList;
+    console.log(markerList.value);
+    map.value.setBounds(bounds);
+  } else {
+    console.error("검색 실패:", status);
+  }
+};
+
+const onClickMapMarker = (markerItem) => {
+  console.log("item-----" + markerItem.value);
+  if (
+    markerItem.infoWindow?.visible !== null &&
+    markerItem.infoWindow !== undefined
+  ) {
+    markerItem.infoWindow.visible = !markerItem.infoWindow.visible;
+  } else {
+    markerItem.infoWindow.visible = true;
+  }
 };
 
 const mouseOverKakaoMapMarker = (param) => {
@@ -28,6 +77,11 @@ const panTo = () => {
     map.value.panTo(new kakao.maps.LatLng(33.45058, 126.574942));
   }
 };
+
+// searchPlaces 함수를 외부에 노출
+defineExpose({
+  searchPlaces,
+});
 </script>
 
 <template>
@@ -58,7 +112,8 @@ const panTo = () => {
           imageOption: {},
         }"
         @mouseOverKakaoMapMarker="mouseOverKakaoMapMarker(attraction)"
-        @mouseOutKakaoMapMarker="mouseOutKakaoMapMarker(attraction)" />
+        @mouseOutKakaoMapMarker="mouseOutKakaoMapMarker(attraction)"
+        @onClickKakaoMapMarker="onClickMapMarker(attraction)" />
     </KakaoMap>
   </div>
 </template>

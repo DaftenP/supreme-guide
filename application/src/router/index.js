@@ -119,7 +119,7 @@ const router = createRouter({
           component: () => import("@/components/hotplace/HotPlaceModify.vue"),
         },
         {
-          path: "/regist",
+          path: "regist",
           name: "HotplaceWrite",
           component: () => import("@/components/hotplace/HotPlaceWrite.vue"),
         },

@@ -3,6 +3,7 @@ package com.ssafy.enjoytrips.controller;
 import com.ssafy.enjoytrips.model.dto.HotPlace;
 import com.ssafy.enjoytrips.model.dto.SearchCondition;
 import com.ssafy.enjoytrips.service.HotPlaceService;
+import com.ssafy.enjoytrips.util.FileUtil;
 import com.ssafy.utils.TokenProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -21,6 +22,7 @@ public class HotplaceController {
 
     private final HotPlaceService hotPlaceService;
     private final TokenProvider tokenProvider;
+    private final FileUtil fileUtil;
 
     @Value("${com.ssafy.enjoytrips.upload.path}") // properties파일에 경로 설정
     private String uploadPath;
@@ -107,9 +109,16 @@ public class HotplaceController {
             }
             String token = authorizationHeader.substring(7);
             String userId = tokenProvider.getUserId(token);
+            String fileName="";
             hotPlace.setWriter(userId);
 
-            int result = hotPlaceService.regist(hotPlace, uploadPath);
+            // 파일 저장
+            if (hotPlace.getImage() != null && !hotPlace.getImage().isEmpty()) {
+                fileName = fileUtil.saveFile(hotPlace.getImage(), uploadPath);
+            }
+            hotPlace.setImage(fileName);
+
+            int result = hotPlaceService.regist(hotPlace);
             return ResponseEntity.ok(result);
         } catch (Exception e) {
             return exceptionHandling(e);

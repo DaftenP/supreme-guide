@@ -28,14 +28,8 @@ public class HotPlaceServiceImpl implements HotPlaceService{
     }
 
     @Override
-    public int regist(HotPlace hotPlace, String uploadPath) throws Exception {
-        MultipartFile imageFile = hotPlace.getImageFile();
-        if (imageFile != null && !imageFile.isEmpty()) {
-            String fileName = fileUtil.saveFile(imageFile, uploadPath);
-            hotPlace.setImage(fileName);
-        }
-        // db에 hotplace객체 저장 로직
-        return 1;
+    public int regist(HotPlace hotPlace) throws Exception {
+        return hotplaceDao.regist(hotPlace);
     }
 
     @Override
