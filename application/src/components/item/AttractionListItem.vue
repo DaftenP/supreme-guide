@@ -30,7 +30,7 @@ const goTo = () => {
       <a>{{ attraction.addr1 + attraction.addr2 }}</a>
       <button
         class="btn btn-outline-danger"
-        @click="$emit('detailView', attraction.contentId)"
+        @click="$emit('detailView', attraction.contentId, attraction.title)"
         data-bs-toggle="modal"
         data-bs-target="#attractionModal">
         상세정보

@@ -3,6 +3,7 @@ import { ref, computed, defineProps, defineEmits } from "vue";
 import AttractionListItem from "@/components/item/AttractionListItem.vue";
 import { useMapStore } from "@/stores/map";
 import { getAttraction } from "@/api/attraction";
+import { getBlog } from "@/api/blogSearch";
 
 const mapStore = useMapStore();
 const props = defineProps({
@@ -11,11 +12,21 @@ const props = defineProps({
 });
 const emit = defineEmits(["updateCheckbox"]);
 
-const getModal = (id) => {
+const getModal = (id, title) => {
   getAttraction(
     id,
     (resp) => {
       mapStore.attractionInfo = resp.data;
+    },
+    (err) => {
+      console.log(err);
+    }
+  );
+  getBlog(
+    title,
+    5,
+    (resp) => {
+      mapStore.blogList = resp.data;
     },
     (err) => {
       console.log(err);

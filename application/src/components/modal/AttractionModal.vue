@@ -3,10 +3,6 @@ import { ref } from "vue";
 import { useMapStore } from "@/stores/map";
 
 const mapStore = useMapStore();
-
-const modalOpen = () => {
-  mapStore.modalCheck = !mapStore.modalCheck;
-};
 </script>
 
 <template>
@@ -47,6 +43,13 @@ const modalOpen = () => {
           <div>{{ mapStore.attractionInfo.zipcode }}</div>
           <div>{{ mapStore.attractionInfo.tel }}</div>
           <div>{{ mapStore.attractionInfo.description }}</div>
+          <div v-for="item in mapStore.blogList.items">
+            <div v-html="item.bloggername"></div>
+            <div v-html="item.description"></div>
+            <div v-html="item.link"></div>
+            <div v-html="item.postdate"></div>
+            <div v-html="item.title"></div>
+          </div>
         </div>
       </div>
     </div>
