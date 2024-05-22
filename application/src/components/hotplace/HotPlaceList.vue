@@ -111,31 +111,25 @@ onBeforeMount(fetchHotPlaces);
         <h2 class="text-center font-style">HotPlace</h2>
       </div>
       <div class="row align-self-center mb-2">
-        <div class="col-md-2 text-start">
-          <button
-            type="button"
-            class="btn btn-outline-primary btn-sm"
-            v-if="userStore.userId != ''"
-            @click="goWrite">
-            핫플레이스 등록
-          </button>
-        </div>
-        <div class="input-group my-4">
-          <select class="form-select" v-model="key">
-            <option value="qna_title">제목</option>
-            <option value="qna_content">내용</option>
-            <option value="qna_writer">작성자</option>
-          </select>
-          <input
-            type="text"
-            class="form-control"
-            placeholder="검색어를 입력해 주세요"
-            v-model="word" />
-          <button class="btn btn-dark" type="button" @click="searchArticle">
-            <font-awesome-icon
-              :icon="['fas', 'magnifying-glass']"
-              style="color: #fcfcfc" />
-          </button>
+        <div class="d-flex column p-2">
+          <div class="col-6"></div>
+          <div class="col-6 d-flex">
+            <select class="form-select" v-model="key">
+              <option value="qna_title">제목</option>
+              <option value="qna_content">내용</option>
+              <option value="qna_writer">작성자</option>
+            </select>
+            <input
+              type="text"
+              class="form-control"
+              placeholder="검색어를 입력해 주세요"
+              v-model="word" />
+            <button class="btn btn-dark" type="button" @click="searchArticle">
+              <font-awesome-icon
+                :icon="['fas', 'magnifying-glass']"
+                style="color: #fcfcfc" />
+            </button>
+          </div>
         </div>
 
         <v-row class="mt-8">
@@ -171,6 +165,20 @@ onBeforeMount(fetchHotPlaces);
         </v-row>
       </div>
     </div>
+    <div class="col-md-2 text-start">
+      <button
+        type="button"
+        class="btn btn-sm"
+        id="font-small"
+        v-if="userStore.userId != ''"
+        @click="goWrite">
+        핫플레이스 등록
+        <font-awesome-icon
+          :icon="['fas', 'arrow-right']"
+          style="color: black" />
+      </button>
+    </div>
+
     <nav aria-label="Page navigation example">
       <ul class="pagination justify-content-center">
         <!-- 이전 버튼 -->
@@ -214,5 +222,10 @@ onBeforeMount(fetchHotPlaces);
 .font-style {
   font-family: "CustomFont";
   font-size: 50px;
+}
+
+#font-small {
+  font-family: "CustomFont3";
+  font-size: 20px;
 }
 </style>
