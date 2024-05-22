@@ -48,6 +48,7 @@ const deleteHotplace = async () => {
 // 핫플레이스 정보 가져오기
 const fetchHotPlaces = async () => {
   try {
+    console.log(hotplaceId);
     const res = await noAuthClient({
       method: "get",
       url: `${import.meta.env.VITE_API_BASE_URL}/hotplace/view/${hotplaceId}`,
@@ -72,7 +73,7 @@ const deleteComment = async (commentId) => {
       url: `${import.meta.env.VITE_API_BASE_URL}/hotplace/comment/${commentId}`,
     });
     alert("댓글을 삭제하였습니다.");
-    await fetchComments(); // 댓글 목록 갱신
+    await fetchHotPlaces(); // 댓글 목록 갱신
   } catch (error) {
     console.log(error);
     alert("문제가 발생했습니다.");
@@ -139,33 +140,47 @@ onBeforeMount(async () => {
         <button @click="goList">목록으로</button>
       </div>
       <div class="comments">
-  <h2>댓글</h2>
-  <ul>
-      <li v-for="comment in comments" :key="comment.qnaCommentId">
-        <div class="comment">
-          <p>{{ comment.commentContent }}</p>
-          <span>작성자: {{ comment.userId }}</span>
-          <button v-if="comment.userId === userStore.userId" @click.stop="deleteComment(comment.qnaCommentId)">삭제</button>
-        </div>
-      </li>
-    </ul>
-  <form @submit.prevent="registComment">
-    
-    <div class="comment-form">
-      <textarea v-model="newComment.commentContent" placeholder="댓글을 입력하세요"></textarea>
-      <button type="submit">댓글 추가</button>
-    </div>
-  </form>
-  <ul>
+        <h2>댓글</h2>
+        <!-- <ul>
+          <li v-for="comment in comments" :key="comment.qnaCommentId">
+            <div class="comment">
+              <p>{{ comment.commentContent }}</p>
+              <span>작성자: {{ comment.userId }}</span>
+              <button
+                v-if="comment.userId === userStore.userId"
+                @click.stop="deleteComment(comment.qnaCommentId)"
+              >
+                삭제
+              </button>
+            </div>
+          </li>
+        </ul> -->
+        <form @submit.prevent="registComment">
+          <div class="comment-form">
+            <textarea
+              v-model="newComment.commentContent"
+              placeholder="댓글을 입력하세요"
+            ></textarea>
+            <button type="submit">댓글 추가</button>
+          </div>
+        </form>
+        <ul>
           <li v-for="comment in comments" :key="comment.hotplaceCommentId">
             <div class="comment">
-              <span><strong>{{ comment.userId }}:</strong> {{ comment.content }}</span>
-              <button v-if="comment.userId === userStore.userId" @click="deleteComment(comment.id)">삭제</button>
+              <span
+                ><strong>{{ comment.userId }}:</strong>
+                {{ comment.content }}</span
+              >
+              <button
+                v-if="comment.userId === userStore.userId"
+                @click="deleteComment(comment.id)"
+              >
+                삭제
+              </button>
             </div>
           </li>
         </ul>
-</div>
-
+      </div>
     </div>
     <div class="right-panel">
       <MapComponent></MapComponent>

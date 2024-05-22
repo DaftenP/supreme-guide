@@ -75,7 +75,7 @@
             c.hotplace_comment_content AS content,
             c.hotplace_comment_harmful AS harmful,
             c.hotplace_comment_create_date AS createDate,
-            q.hotplace_id AS articleId,
+            h.hotplace_id AS articleId,
             u.user_id,
             u.user_name
         FROM

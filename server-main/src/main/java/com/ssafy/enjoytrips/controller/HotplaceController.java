@@ -53,12 +53,15 @@ public class HotplaceController {
     public ResponseEntity<?> select(@PathVariable int hotplace_id) {
         try {
             HotPlace hotplace = hotPlaceService.select(hotplace_id);
+            log.debug("controller는 잘 됨");
             if (hotplace != null) {
                 return ResponseEntity.ok(hotplace);
             } else {
+                log.debug("안됨");
                 return ResponseEntity.noContent().build();
             }
         } catch (Exception e) {
+            log.debug(e.getMessage());
             return ResponseEntity.internalServerError().build();
         }
     }
