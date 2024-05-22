@@ -87,75 +87,46 @@ onMounted(async () => {
 </script>
 
 <template>
-  <div class="container">
-    <div class="left-panel">
-      <MapComponent ref="mapComponentRef"></MapComponent>
-    </div>
-    <div class="right-panel">
-      <div class="search-box">
-        <input v-model="searchQuery" placeholder="장소 검색" />
-        <button @click="searchPlaces">검색</button>
-
-        <ul v-if="places.length">
-          <li
-            v-for="place in places"
-            :key="place.id"
-            @click="selectPlace(place)"
-            :class="{
-              selected: selectedPlace && selectedPlace.id === place.id,
-            }"
-          >
-            {{ place.place_name }}
-          </li>
-        </ul>
+  <div class="container my-5">
+    <div class="row justify-content-center">
+      <div class="col-md-6">
+        <MapComponent :searchPlaces="searchQuery" ref="mapComponentRef"></MapComponent>
       </div>
-      <form @submit.prevent="modifyHotplace">
-        <div class="form-group">
-          <label for="title">제목</label>
-          <input type="text" id="title" v-model="hotplace.hotplaceName" required />
+      <div class="col-md-6">
+        <div class="search-box mb-4">
+          <input v-model="searchQuery" placeholder="장소 검색" class="form-control" />
+          <button @click="searchPlaces" class="btn btn-primary mt-2">검색</button>
         </div>
-        <div class="col-lg-2 col-md-2 col-12 p-2">
-          <label for="type">관광지</label>
-          <select
-            class="form-select ps-3"
-            name="category"
-            id="search-content-id"
-            v-model="hotplace.category"
-          >
-            <option value="0" selected>관광지 유형</option>
-            <option value="12">관광지</option>
-            <option value="14">문화시설</option>
-            <option value="15">축제공연행사</option>
-            <option value="25">여행코스</option>
-            <option value="28">레포츠</option>
-            <option value="32">숙박</option>
-            <option value="38">쇼핑</option>
-            <option value="39">음식점</option>
-          </select>
-        </div>
-        <div class="form-group">
-          <label for="description">설명</label>
-          <textarea
-            id="description"
-            v-model="hotplace.comment"
-            required
-          ></textarea>
-        </div>
-        <div class="form-group">
-          <label for="ssss">선택한 장소</label>
-          <div>{{ mapStore.attractionInfo.title }}</div>
-          <div>{{ mapStore.attractionInfo.address }}</div>
-        </div>
-        <div class="form-group">
-          <label>이미지 첨부</label>
-          <PhotoUpload
-            :width="'100%'"
-            :height="'100%'"
-            @update:image="updateImage"
-          />
-        </div>
-        <button type="submit">수정</button>
-      </form>
+        <form @submit.prevent="modifyHotplace" class="form-needs">
+          <div class="form-group mb-3">
+            <label for="title">장소명</label>
+            <input type="text" id="title" v-model="hotplace.hotplaceName" class="form-control" required />
+          </div>
+          <div class="form-group mb-3">
+            <label for="type">관광지 유형</label>
+            <select class="form-select" v-model="category" required>
+              <option disabled value="">선택해주세요</option>
+              <option value="12">관광지</option>
+              <option value="14">문화시설</option>
+              <option value="15">축제공연행사</option>
+              <option value="25">여행코스</option>
+              <option value="28">레포츠</option>
+              <option value="32">숙박</option>
+              <option value="38">쇼핑</option>
+              <option value="39">음식점</option>
+            </select>
+          </div>
+          <div class="form-group mb-3">
+            <label for="description">설명</label>
+            <textarea id="description" v-model="hotplace.comment" class="form-control" required></textarea>
+          </div>
+          <div class="form-group mb-3">
+            <label>이미지 첨부</label>
+            <PhotoUpload :width="'100%'" :height="'100%'" @update:image="updateImage" />
+          </div>
+          <button type="submit" class="btn btn-success">등록</button>
+        </form>
+      </div>
     </div>
   </div>
 </template>
@@ -165,8 +136,18 @@ onMounted(async () => {
   height: 600px !important;
 }
 .container {
-  display: flex;
+  max-width: 960px;
+  margin: auto;
 }
+.form-needs .form-group label {
+  font-weight: bold;
+}
+.form-needs .form-group input,
+.form-needs .form-group select,
+.form-needs .form-group textarea {
+  margin-top: 0.5rem;
+}
+
 .left-panel {
   width: 50%;
   padding: 20px;

@@ -182,7 +182,7 @@ const posts = [
     :data-aos-delay="index * 100"
     @click="navigateToHotplaceDetail(hotplace.hotplaceId)">
     <img :src="`${IMAGE_URL}/${hotplace.image}`" alt="hotplace image" class="box-image" />
-    <h3 class="box-title">{{ hotplace.hotplaceName }}</h3>
+    <!-- <h3 class="box-title">{{ hotplace.hotplaceName }}</h3> -->
   </div>
 </div>
 
@@ -329,7 +329,7 @@ const posts = [
 .box-container {
   overflow: hidden;
   position: absolute;
-  bottom: -30%; /* 이미지와 겹치도록 박스 위치 조정 */
+  bottom: -40%; /* 이미지와 겹치도록 박스 위치 조정 */
   left: 50%;
   transform: translate(-50%, 60%); /* Y 축으로 90% 이동하여 겹침 효과 */
   display: flex;
