@@ -7,7 +7,10 @@ import { library } from "@fortawesome/fontawesome-svg-core";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 import { faUser, faEnvelope, fas } from "@fortawesome/free-solid-svg-icons";
 import AOS from "aos";
-// import Vuetify from "vuetify";
+import "vuetify/styles";
+import { createVuetify } from "vuetify";
+import * as components from "vuetify/components";
+import * as directives from "vuetify/directives";
 import "aos/dist/aos.css";
 
 library.add(faUser, faEnvelope, fas);
@@ -28,11 +31,15 @@ const app = createApp(App).use(Vue3Lottie);
 const pinia = createPinia();
 pinia.use(piniaPluginPersistedstate);
 
+const vuetify = createVuetify({
+  components,
+  directives,
+});
 const { VITE_API_KAKAO_MAP_API_KEY } = import.meta.env;
 useKakao(VITE_API_KAKAO_MAP_API_KEY, ["clusterer", "services", "drawing"]);
 
 app.use(router);
-
+app.use(vuetify);
 app.use(vueCookies);
 
 app.use(createPinia().use(piniaPluginPersistedstate));

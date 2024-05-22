@@ -271,7 +271,7 @@ const posts = [
   position: absolute;
   bottom: -10%; /* 이미지와 겹치도록 박스 위치 조정 */
   left: 50%;
-  transform: translate(-50%, 30%); /* Y 축으로 90% 이동하여 겹침 효과 */
+  transform: translate(-50%, 50%); /* Y 축으로 90% 이동하여 겹침 효과 */
   display: flex;
   justify-content: space-around;
   width: 80%;
@@ -286,7 +286,13 @@ const posts = [
   text-align: center;
   flex: 1;
   margin: 0 10px;
-  height: 250px;
+  height: auto; /* 박스 높이를 자동으로 조정 */
+  min-height: 250px; /* 최소 높이 설정 */
+}
+
+.box-image {
+  width: 100%; /* 이미지가 박스 크기에 맞게 조정 */
+  height: auto; /* 이미지 비율 유지 */
 }
 
 .box h3 {
@@ -296,6 +302,19 @@ const posts = [
 
 .box p {
   font-size: 1rem;
+}
+
+@media (max-width: 768px) {
+  .box-container {
+    flex-direction: column; /* 화면이 작아질 때 박스를 세로로 정렬 */
+    width: 90%; /* 컨테이너 너비 조정 */
+    bottom: 0;
+    transform: translate(-50%, 0);
+  }
+
+  .box {
+    margin-bottom: 20px; /* 박스 사이의 간격 조정 */
+  }
 }
 
 .custom-font1 {

@@ -147,8 +147,8 @@ const goDetail = (id) => {
 
               <p class="card-text" id="font-small">
                 <font-awesome-icon
-                  :icon="['fas', 'check']"
-                  style="color: #050505" />
+                  :icon="['fas', 'user']"
+                  style="color: #000000" />
                 {{ qna.qnaView }}
               </p>
               {{ qna.qnaContent }}
