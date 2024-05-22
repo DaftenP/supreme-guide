@@ -38,6 +38,8 @@ const goDetail = (id) => {
   });
 };
 
+
+
 const searchArticle = () => {
   // 검색어 입력 상태에서만 검색 조건 업데이트하도록
   if (word.value !== "") {

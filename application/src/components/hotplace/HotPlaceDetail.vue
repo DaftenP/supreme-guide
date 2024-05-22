@@ -6,6 +6,7 @@ import { useUserStore } from "@/stores/userStore";
 import { useMapStore } from "@/stores/map";
 import authClient from "@/api/authClient";
 import MapComponent from "@/components/commons/MapComponent2.vue";
+import ImageFrame from "@/components/item/ImageFrame.vue";  // 추가
 
 const IMAGE_URL = import.meta.env.VITE_IMAGE_BASE_URL;
 
@@ -86,19 +87,6 @@ const goList = () => {
   });
 };
 
-// const fetchComments = async () => {
-//   try {
-//     const res = await noAuthClient({
-//       method: "get",
-//       url: `${import.meta.env.VITE_API_BASE_URL}/hotplace/view/${hotplaceId}`,
-//     });
-//     hotplace.value = res.data;
-//     comments.value = res.data.list;
-//   } catch (error) {
-//     console.log(error);
-//   }
-// };
-
 const registComment = async () => {
   try {
     await authClient({
@@ -125,12 +113,8 @@ onBeforeMount(async () => {
 
 <template>
   <div class="container">
-    <div class="left-panel">
-      <img
-        :src="hotplace.image"
-        alt="핫플레이스 이미지"
-        class="hotplace-image"
-      />
+    <div class="right-panel">
+      <ImageFrame :imageSrc="hotplace.image" />
       <h1>{{ hotplace.hotplaceName }}</h1>
       <p>작성자: {{ hotplace.writer }}</p>
       <p>{{ hotplace.addr1 }}</p>
@@ -141,20 +125,6 @@ onBeforeMount(async () => {
       </div>
       <div class="comments">
         <h2>댓글</h2>
-        <!-- <ul>
-          <li v-for="comment in comments" :key="comment.qnaCommentId">
-            <div class="comment">
-              <p>{{ comment.commentContent }}</p>
-              <span>작성자: {{ comment.userId }}</span>
-              <button
-                v-if="comment.userId === userStore.userId"
-                @click.stop="deleteComment(comment.qnaCommentId)"
-              >
-                삭제
-              </button>
-            </div>
-          </li>
-        </ul> -->
         <form @submit.prevent="registComment">
           <div class="comment-form">
             <textarea
@@ -182,7 +152,7 @@ onBeforeMount(async () => {
         </ul>
       </div>
     </div>
-    <div class="right-panel">
+    <div class="left-panel">
       <MapComponent></MapComponent>
     </div>
   </div>
@@ -199,12 +169,6 @@ onBeforeMount(async () => {
 .left-panel,
 .right-panel {
   width: 48%;
-}
-
-.hotplace-image {
-  width: 100%;
-  height: auto;
-  margin-bottom: 20px;
 }
 
 h1 {

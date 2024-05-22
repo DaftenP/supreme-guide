@@ -1,22 +1,69 @@
 <script setup>
-import { ref, onMounted} from "vue";
+import { ref, onMounted, onBeforeMount } from "vue";
+import { useRouter } from 'vue-router';
 import AOS from "aos";
+import noAuthClient from "@/api/noAuthClient";
 import "aos/dist/aos.css";
 
-const images = ref([
+const IMAGE_URL = import.meta.env.VITE_IMAGE_BASE_URL;
+
+const hotplaces = ref([]);
+const images = ref([]);
+const images2 = ref([
   "/images/home2.jpg",
   "/images/home3.jpg",
   "/images/home4.jpg",
 ]);
+let currentIndex = ref(0);
+const router = useRouter();
 
 onMounted(() => {
   images.value = [...images.value, ...images.value];
 })
 
-let currentIndex = ref(0);
 
 const nextSlide = () => {
   currentIndex.value = (currentIndex.value + 1) % images.value.length;
+};
+
+// 핫플레이스 상세 페이지로 이동 함수
+const navigateToHotplaceDetail = (hotplaceId) => {
+  // vue-router를 사용하는 경우
+  router.push({ name: 'HotplaceDetail', params: { id: hotplaceId } });
+
+};
+// slider에 뿌릴 hotplace list가져오기
+const fetchHotPlaces = async () => {
+  try {
+    let url = `${import.meta.env.VITE_API_BASE_URL}/hotplace/all`;
+    
+    const res = await noAuthClient({
+      method: "get",
+      url: url,
+    });
+    hotplaces.value = res.data || [];
+    images.value = hotplaces.value.map(hotplace => `/${IMAGE_URL}/${hotplace.image}`);
+    // const startIndex =
+    //   (searchCondition.value.currentPage - 1) *
+    //   searchCondition.value.countPerPage;
+    // const endIndex = startIndex + searchCondition.value.countPerPage;
+    // hotplaces.value = res.data
+    //   .slice(startIndex, endIndex)
+    //   .map((item, index) => ({
+    //     ...item,
+    //     index: index + startIndex + 1,
+    //     image: `/${IMAGE_URL}/${item.image}`,
+    //   }));
+    // totalPages.value = Math.ceil(
+    //   res.data.length / searchCondition.value.countPerPage
+    // );
+    console.log(res.data);
+
+    // pagination 처리
+  } catch (error) {
+    console.log(error);
+    alert("리스트를 불러오는 데 실패했습니다.");
+  }
 };
 
 onMounted(() => {
@@ -24,12 +71,10 @@ onMounted(() => {
   AOS.init();
 });
 
-const boxes = [
-  { title: "박스 1", content: "내용 1" },
-  { title: "박스 2", content: "내용 2" },
-  { title: "박스 3", content: "내용 3" },
-  { title: "박스 4", content: "내용 4" },
-];
+onBeforeMount(async () => {
+  await fetchHotPlaces();
+})
+
 const posts = [
   {
     id: 1,
@@ -107,7 +152,7 @@ const posts = [
   <div class="relative home-view-fullscreen">
     <div class="relative slider-container">
       <img
-        v-for="(image, index) in images"
+        v-for="(image, index) in images2"
         :key="index"
         :src="image"
         class="home-image absolute inset-0 w-full h-full object-cover transition-opacity transform"
@@ -129,16 +174,18 @@ const posts = [
       </p>
     </div>
     <div class="box-container z-20" style="margin-bottom: 5dvb">
-      <div
-        v-for="(image, index) in images"
-        :key="index"
-        class="box"
-        :data-aos="'fade-up'"
-        :data-aos-delay="index * 100">
-        <img :src="image" alt="image" class="box-image" />
-        <h3 class="box-title">hi</h3>
-      </div>
-    </div>
+  <div
+    v-for="(hotplace, index) in hotplaces"
+    :key="hotplace.id"
+    class="box"
+    :data-aos="'fade-up'"
+    :data-aos-delay="index * 100"
+    @click="navigateToHotplaceDetail(hotplace.hotplaceId)">
+    <img :src="`${IMAGE_URL}/${hotplace.image}`" alt="hotplace image" class="box-image" />
+    <h3 class="box-title">{{ hotplace.hotplaceName }}</h3>
+  </div>
+</div>
+
   </div>
 
   <div id="main" class="bg-animation py-24 sm:py-32">
@@ -282,9 +329,9 @@ const posts = [
 .box-container {
   overflow: hidden;
   position: absolute;
-  bottom: -10%; /* 이미지와 겹치도록 박스 위치 조정 */
+  bottom: -30%; /* 이미지와 겹치도록 박스 위치 조정 */
   left: 50%;
-  transform: translate(-50%, 50%); /* Y 축으로 90% 이동하여 겹침 효과 */
+  transform: translate(-50%, 60%); /* Y 축으로 90% 이동하여 겹침 효과 */
   display: flex;
   justify-content: space-around;
   width: 100%;
