@@ -26,17 +26,21 @@
         WHERE
             hotplace_comment_id = #{id}
     </delete>
+
+    <!--  댓글 수정  -->
+    <update id="modify" parameterType="comment">
+        UPDATE
+            hotplace_comment
+        SET
+            hotplace_comment_content = #{content},
+            hotplace_comment_harmful = #{harmful}
+        WHERE
+            hotplace_comment_id = #{id}
+    </update>
     <!--  댓글 작성자 조회  -->
-<!--    <select id="selectCommentWriter" resultType="comment">-->
-<!--        SELECT hotplace_comment_id, hotplace_id, user_id-->
-<!--        FROM hotplace_comment-->
-<!--        WHERE hotplace_comment_id = #{id}-->
-<!--    </select>-->
+    <select id="selectCommentWriter" resultType="comment">
+        SELECT hotplace_comment_id, hotplace_id, user_id
+        FROM hotplace_comment
+        WHERE hotplace_comment_id = #{id}
+    </select>
 </mapper>
-
-
-<!--hotplace_comment_id int AI PK
-hotplace_comment_content text
-hotplace_comment_harmful tinyint(1)
-hotplace_id int
-user_id-->

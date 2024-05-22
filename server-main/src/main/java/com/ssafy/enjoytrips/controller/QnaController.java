@@ -200,22 +200,6 @@ public class QnaController {
 			@PathVariable int qna_comment_id) {
 		try {
 
-//            if (authorizationHeader == null || !authorizationHeader.startsWith("Bearer ")) {
-//                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Unauthorized");
-//            }
-//            String token = authorizationHeader.substring(7);
-//            String userId = tokenProvider.getUserId(token);
-//
-//            Comment comment = qnaCommentService.selectCommentWriter(qna_comment_id);
-//            if (comment == null) {
-//                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("댓글을 찾을 수 없습니다.");
-//            }
-//
-//            // 댓글 작성자와 현재 사용자 비교
-//            if (!comment.getUserId().equals(userId)) {
-//                return ResponseEntity.status(HttpStatus.FORBIDDEN).body("삭제할 수 있는 권한이 없습니다.");
-//            }
-
 			int result = qnaCommentService.delete(qna_comment_id);
 			return ResponseEntity.ok(result);
 
