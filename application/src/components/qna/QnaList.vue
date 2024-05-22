@@ -150,8 +150,8 @@ const goDetail = (id) => {
               <br />
               <div class="card-text d-flex">
                 <p>
-                  {{ qna.qnaCreateDate }}
-                </p>
+                {{ new Date(qna.qnaCreateDate).toLocaleDateString('ko-KR') }}
+              </p>
               </div>
               <p>
                 {{ qna.qnaWriter }}
@@ -215,9 +215,14 @@ const goDetail = (id) => {
 
 .card {
   position: relative; /* 아이콘을 상대적으로 위치시키기 위해 설정 */
-  transition: transform 0.2s;
+  transition: all 0.3s ease;
   cursor: pointer;
   max-width: 300px;
+  border: none;
+  border-radius: 10px;
+  overflow: hidden;
+  background-color: white;
+  border: 1px solid #ddd;
 }
 
 .card-container {
@@ -243,13 +248,9 @@ const goDetail = (id) => {
   max-width: 1000px;
 }
 
-.card {
-  transition: transform 0.2s;
-  cursor: pointer;
-}
-
 .card:hover {
-  transform: translateY(-5px);
+  transform: translateY(-10px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
 }
 
 .card-icon {
@@ -264,10 +265,24 @@ const goDetail = (id) => {
   color: #333;
   font-weight: bold;
   font-family: "CustomFont";
-  font-size: 20px;
+  font-size: 25px;
 }
 
 .card-title:hover {
   text-decoration: underline;
+}
+
+.card-body {
+  padding: 20px;
+}
+
+.card-text p {
+  margin-bottom: 0;
+  color: #666;
+}
+
+.card-text p:last-child {
+  margin-top: 10px;
+  color: #999;
 }
 </style>

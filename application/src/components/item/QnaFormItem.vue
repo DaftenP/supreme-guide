@@ -1,6 +1,5 @@
 <script setup>
 import { ref, toRefs } from "vue";
-import { getArticle } from "@/api/board";
 import { useRouter, useRoute } from "vue-router";
 
 const router = useRouter();
@@ -17,25 +16,21 @@ const { qna } = toRefs(props);
 
 const refTitle = ref(null);
 const refContent = ref(null);
-const refWriter = ref(null);
 
 const validate = () => {
   let isValid = true;
   let errMsg = "";
 
-  !props.qna.qnaTitle
-    ? ((isValid = false),
-      (errMsg = "제목을 입력해주세요."),
-      refTitle.value.focus())
-    : !props.qna.qnaContent
-    ? ((isValid = false),
-      (errMsg = "내용을 입력해주세요."),
-      refContent.value.focus())
-    : !props.qna.qnaWriter
-    ? ((isValid = false),
-      (errMsg = "작성자를 입력해주세요."),
-      refWriter.value.focus())
-    : (isValid = true);
+  if (!props.qna.qnaTitle) {
+    isValid = false;
+    errMsg = "제목을 입력해주세요.";
+    refTitle.value.focus();
+  } else if (!props.qna.qnaContent) {
+    isValid = false;
+    errMsg = "내용을 입력해주세요.";
+    refContent.value.focus();
+  }
+
   if (!isValid) {
     alert(errMsg);
   } else {
@@ -51,45 +46,96 @@ const goList = () => {
 </script>
 
 <template>
-  <div class="mb-3">
-    <label class="form-label" for="title">제목</label>
-    <input
-      class="form-control"
-      type="text"
-      id="title"
-      name="title"
-      v-model="qna.qnaTitle"
-      ref="refTitle" />
+  <div class="blog-post">
+    <h2 class="blog-post-title">Q&A {{ type === "create" ? "등록" : "수정" }}</h2>
+    <p class="blog-post-meta">{{ new Date().toLocaleDateString() }} by <a href="#">{{ qna.qnaWriter }}</a></p>
 
-    <label class="form-label pt-3" for="writer">글쓴이</label>
-    <input
-      class="form-control"
-      type="text"
-      id="writer"
-      name="writer"
-      v-model="qna.qnaWriter"
-      ref="refWriter"
-      disabled />
-
-    <label class="form-label pt-3" for="content">내용</label>
-    <textarea
-      class="form-control"
-      id="content"
-      name="content"
-      rows="5"
-      v-model="qna.qnaContent"
-      ref="refContent">
-    </textarea>
+    <div class="title-line">
+      <input
+        class="title-input"
+        v-model="qna.qnaTitle"
+        ref="refTitle"
+        placeholder="여기에 제목을 적어주세요"
+      />
+    </div>
+    
+    <div class="mb-3">
+      <label class="form-label visually-hidden" for="content">내용</label>
+      <textarea
+        class="form-control"
+        id="content"
+        name="content"
+        rows="10"
+        v-model="qna.qnaContent"
+        ref="refContent"
+        placeholder="내용을 여기에 입력하세요..."
+      ></textarea>
+    </div>
 
     <div class="d-flex justify-content-end mt-4">
-      <button class="btn btn-outline-dark ms-2 pe-4 ps-4" @click="validate">
+      <button class="btn btn-primary" @click="validate">
         {{ type === "create" ? "등록" : "수정" }}
       </button>
-      <button class="btn btn-outline-dark ms-2 pe-4 ps-4" @click="goList">
+      <button class="btn btn-secondary ms-2" @click="goList">
         목록
       </button>
     </div>
   </div>
 </template>
 
-<style scoped></style>
+<style scoped>
+.blog-post {
+  margin: 2rem auto;
+  padding: 2rem;
+  background-color: #f8f9fa;
+  border-radius: 0.5rem;
+  box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+}
+
+.blog-post-title {
+  margin-bottom: 1rem;
+  font-size: 2rem;
+  font-weight: 600;
+}
+
+.blog-post-meta {
+  margin-bottom: 2rem;
+  color: #6c757d;
+}
+
+.title-line {
+  margin-bottom: 1.5rem;
+  border-bottom: 2px solid #ccc;
+}
+
+.title-input {
+  width: 100%;
+  border: none;
+  outline: none;
+  font-size: 1.5rem;
+  background-color: transparent;
+  padding: 0.5rem 0;
+}
+
+.title-placeholder {
+  position: absolute;
+  top: -0.8em;
+  left: 0;
+  background-color: #f8f9fa;
+  padding: 0 0.5em;
+  color: #6c757d;
+  font-style: italic;
+}
+
+.btn-primary {
+  background-color: #007bff;
+  border-color: #007bff;
+}
+
+.btn-secondary {
+  background-color: #6c757d;
+  border-color: #6c757d;
+}
+
+
+</style>
