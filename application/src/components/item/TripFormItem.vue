@@ -29,6 +29,7 @@ onMounted(() => {
     mapStore.lat = tripItems.value[0].latitude;
     mapStore.lng = tripItems.value[0].longitude;
   }
+  mapStore.attractions = ref([]);
 });
 
 // methods
