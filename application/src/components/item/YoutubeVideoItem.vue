@@ -27,13 +27,11 @@ const adjustGridColumns = () => {
 </script>
 
 <template>
-  <div
-    ref="container"
-    class="mx-auto max-w-2xl border-t border-gray-200 mt-10 pt-2">
+  <div ref="container" class="mx-auto max-w-2xl p-2">
     <article
       v-for="(video, index) in videos.items"
       :key="index"
-      class="flex max-w-xl flex-col items-start justify-between border-b pt-2 pb-2">
+      class="d-flex max-w-xl flex-col items-start justify-between border-b pt-2 pb-2">
       <!-- <div class="group relative">
         <h4
           class="text-md font-semibold leading-6 text-gray-900 group-hover:text-gray-600">
@@ -53,6 +51,19 @@ const adjustGridColumns = () => {
         frameborder="0"
         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
         allowfullscreen></iframe>
+      <div class="flex items-center gap-x-4 text-xs">
+        <a
+          class="me-0 pe-0 a-title mt-2"
+          :href="`https://youtube.com/channel/${video.snippet.channelId}`"
+          target="_blank">
+          <span class="p-2">{{ video.snippet.channelTitle }}</span>
+        </a>
+        <time
+          :datetime="video.snippet.publishTime"
+          class="text-gray-500 ps-4 border-s mt-2"
+          >{{ video.snippet.publishTime.slice(0, 10) }}</time
+        >
+      </div>
     </article>
   </div>
 </template>

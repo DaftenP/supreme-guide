@@ -84,7 +84,7 @@ const closeInfo = () => {
     </div>
 
     <div class="offcanvas-body d-flex">
-      <div class="panel overflow-auto">
+      <div class="panel border-e overflow-auto">
         <div class="">
           <span v-for="checkbox in checkboxes" :key="checkbox.id">
             <button
@@ -260,8 +260,15 @@ const closeInfo = () => {
 }
 .panel {
   width: 350px;
+  padding: 1px;
 }
 .info-panel {
   display: none;
+}
+.nav-item {
+  width: 50%;
+  button {
+    width: 100%;
+  }
 }
 </style>
