@@ -68,7 +68,22 @@
     </delete>
 
 
-    <!-- 댓글   -->
-
+    <!-- 댓글 조회 -->
+    <select id="selectComment" parameterType="int" resultType="comment">
+        SELECT
+            c.hotplace_comment_id AS id,
+            c.hotplace_comment_content AS content,
+            c.hotplace_comment_harmful AS harmful,
+            c.hotplace_comment_create_date AS createDate,
+            q.hotplace_id AS articleId,
+            u.user_id,
+            u.user_name
+        FROM
+            hotplace h
+                    INNER JOIN hotplace_comment c ON h.hotplace_id = c.hotplace_id
+                    INNER JOIN user u ON c.user_id = u.user_id
+        WHERE
+            h.hotplace_id = #{hotplaceId}
+    </select>
 
 </mapper>
