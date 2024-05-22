@@ -6,6 +6,7 @@ import Cookies from "vue-cookies";
 import { useUserStore } from "@/stores/userStore";
 import noAuthClient from "@/api/noAuthClient";
 
+
 const userStore = useUserStore();
 const router = useRouter();
 const key = ref("");
@@ -98,80 +99,78 @@ const goDetail = (id) => {
   });
 };
 
-// searchArticle 구현
 </script>
 
 <template>
   <div class="container">
-    <div class="row justify-content-center">
-      <div class="col-lg-12">
-        <h2 class="my-3 py-3 shadow-sm bg-light text-center">
-          <mark class="sky">Notice</mark>
-        </h2>
+    <div class="row justify-content-center my-4">
+      <div class="col-lg-8">
+        <h2 class="text-center font-style">Notice</h2>
       </div>
-      <div class="col-lg-12">
-        <div class="row align-self-center mb-2">
-          <div class="col-md-2 text-start">
-            <button
-              type="button"
-              class="btn btn-outline-primary btn-sm"
-              v-if="userStore.userId != ''"
-              @click="movePage">
-              공지사항 등록
-            </button>
-          </div>
-          <div class="col-md-5 offset-5">
-            <form class="d-flex">
-              <div class="input-group input-group-sm">
-                <select class="form-select" v-model="key">
-                  <option value="noticeTitle">제목</option>
-                  <option value="noticeContent">내용</option>
-                  <option value="noticeWriter">작성자</option>
-                </select>
-                <input
-                  type="text"
-                  class="form-control"
-                  placeholder="검색어"
-                  v-model="word" />
-                <button
-                  class="btn btn-dark"
-                  type="button"
-                  @click="searchArticle">
-                  검색
-                </button>
+      <div class="d-flex column p-2">
+        <div class="col-6"></div>
+        <div class="col-6 d-flex">
+          <select class="form-select" v-model="key">
+            <option value="noticeTitle">제목</option>
+            <option value="noticeContent">내용</option>
+            <option value="noticeWriter">작성자</option>
+          </select>
+          <input
+            type="text"
+            class="form-control"
+            placeholder="검색어를 입력해 주세요"
+            v-model="word" />
+          <button class="btn btn-dark" type="button" @click="searchArticle">
+            <font-awesome-icon
+              :icon="['fas', 'magnifying-glass']"
+              style="color: #fcfcfc" />
+          </button>
+        </div>
+      </div>
+      <div class="row">
+        <div
+          class="col-md-4 mb-4"
+          v-for="(notice, index) in notices"
+          :key="notice.noticeId"
+          :index="index">
+          <div
+            class="card h-100"
+            @click="goDetail(notice.noticeId)"
+            :data-aos="'fade-up'">
+            <div class="card-body">
+              <h5 class="card-title">
+                {{ notice.noticeTitle }}
+              </h5>
+              <!-- {{ notice.noticeContent }} -->
+              <br />
+              <br />
+              <div class="card-text d-flex">
+                <p>
+                {{ new Date(notice.noticeCreateDate).toLocaleDateString('ko-KR') }}
+              </p>
               </div>
-            </form>
+              <p>
+                {{ notice.noticeWriter }}
+              </p>
+            </div>
           </div>
         </div>
-        <table class="table table-hover">
-          <thead>
-            <tr class="text-center">
-              <th scope="col">제목</th>
-              <th scope="col">조회수</th>
-              <th scope="col">작성자</th>
-              <th scope="col">작성일</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr
-              class="text-center"
-              v-for="(notice, index) in notices"
-              :index="index"
-              :notice="notice"
-              :key="notice.noticeId">
-              <td>
-                <a @click="goDetail(notice.noticeId)">{{
-                  notice.noticeTitle
-                }}</a>
-              </td>
-              <td>{{ notice.noticeView }}</td>
-              <td>{{ notice.noticeWriter }}</td>
-              <td>{{ notice.noticeCreateDate }}</td>
-            </tr>
-          </tbody>
-        </table>
       </div>
     </div>
+    <div class="col-md-2 text-start">
+      <button
+        type="button"
+        class="btn btn-sm"
+        id="font-small"
+         v-if="userStore.userId != ''"
+        @click="movePage">
+        공지사항 등록
+        <font-awesome-icon
+          :icon="['fas', 'arrow-right']"
+          style="color: black" />
+      </button>
+    </div>
+
     <nav aria-label="Page navigation example">
       <ul class="pagination justify-content-center">
         <!-- 이전 버튼 -->
@@ -211,5 +210,78 @@ const goDetail = (id) => {
 /* 페이지 처리 스타일 */
 .pagination {
   margin-top: 20px;
+}
+
+.card {
+  position: relative; /* 아이콘을 상대적으로 위치시키기 위해 설정 */
+  transition: all 0.3s ease;
+  cursor: pointer;
+  max-width: 300px;
+  border: none;
+  border-radius: 10px;
+  overflow: hidden;
+  background-color: white;
+  border: 1px solid #ddd;
+}
+
+.card-container {
+  /* max-width: 800px; 원하는 최대 너비 설정 */
+  /* margin: 0 auto; 가운데 정렬 */
+  max-width: 1200px;
+  flex-wrap: wrap;
+  display: flex;
+  gap: 1rem;
+}
+
+.font-style {
+  font-family: "CustomFont";
+  font-size: 50px;
+}
+
+#font-small {
+  font-family: "CustomFont3";
+  font-size: 20px;
+}
+
+.container {
+  max-width: 1000px;
+}
+
+.card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+.card-icon {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  font-size: 2.5rem; /* 아이콘 크기 조정 */
+  color: #63e6be;
+}
+
+.card-title {
+  color: #333;
+  font-weight: bold;
+  font-family: "CustomFont";
+  font-size: 25px;
+}
+
+.card-title:hover {
+  text-decoration: underline;
+}
+
+.card-body {
+  padding: 20px;
+}
+
+.card-text p {
+  margin-bottom: 0;
+  color: #666;
+}
+
+.card-text p:last-child {
+  margin-top: 10px;
+  color: #999;
 }
 </style>
