@@ -53,12 +53,15 @@ const adjustGridColumns = () => {
         </div>
       </div>
       <div class="flex items-center gap-x-4 text-xs">
-        <time :datetime="post.postdate" class="text-gray-500 pe-3 border-e">{{
-          post.postdate
-        }}</time>
-        <a :href="`https://${post.bloggerlink}`" target="_blank">
+        <a
+          class="me-0 pe-0"
+          :href="`https://${post.bloggerlink}`"
+          target="_blank">
           {{ post.bloggername }}
         </a>
+        <time :datetime="post.postdate" class="text-gray-500 ps-4 border-s">{{
+          post.postdate
+        }}</time>
       </div>
     </article>
   </div>

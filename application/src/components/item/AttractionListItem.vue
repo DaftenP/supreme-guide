@@ -17,7 +17,7 @@ const goTo = (attraction) => {
 </script>
 
 <template>
-  <div class="d-flex align-items-center m-2">
+  <div class="d-flex align-items-center m-2 border-t">
     <img
       class="thumbnail m-2"
       :src="
@@ -29,7 +29,9 @@ const goTo = (attraction) => {
       <a class="attraction-title" @click="goTo(attraction)">{{
         attraction.title
       }}</a>
-      <a>{{ attraction.addr1 + attraction.addr2 }}</a>
+      <a class="address overflow-clip" @click="goTo(attraction)">{{
+        attraction.addr1 + attraction.addr2
+      }}</a>
       <button
         v-if="type"
         class="btn btn-outline-primary"
@@ -59,5 +61,8 @@ a {
 }
 .attraction-title {
   font-size: large;
+}
+.address {
+  font-size: 10px;
 }
 </style>

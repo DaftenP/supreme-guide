@@ -55,7 +55,7 @@ import HeaderNav from "./components/commons/HeaderNav.vue";
   top: 0;
   left: 0;
   width: 100%;
-  z-index: 1000; /* 다른 컨텐츠 위에 놓이도록 z-index 설정 */
+  z-index: 2000; /* 다른 컨텐츠 위에 놓이도록 z-index 설정 */
 }
 
 .content {

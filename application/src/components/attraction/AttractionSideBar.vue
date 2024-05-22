@@ -211,6 +211,9 @@ const closeInfo = () => {
   --bs-offcanvas-width: 350px;
   top: 88px;
 }
+.offcanvas > * {
+  padding: 0;
+}
 
 .checkbox-button {
   padding: 5px 0px;
