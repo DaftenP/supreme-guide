@@ -31,6 +31,7 @@ onUpdated(() => {
 
 onMounted(() => {
   notice.noticeWriter = userStore.userId;
+  
 });
 
 // 글 작성
@@ -41,6 +42,7 @@ const writeNotice = async () => {
       url: `${import.meta.env.VITE_API_BASE_URL}/notice/regist`,
       data: notice,
     });
+    console.log(res.data);
     alert("공지사항 등록이 완료되었습니다.");
     notice.value = res.data;
     goList();
@@ -55,9 +57,9 @@ const writeNotice = async () => {
   <div class="container">
     <div class="row justify-content-center">
       <div class="col-lg-10">
-        <h2 class="my-3 py-3 shadow-sm bg-light text-center">
+        <!-- <h2 class="my-3 py-3 shadow-sm bg-light text-center">
           <mark class="sky">공지사항 등록</mark>
-        </h2>
+        </h2> -->
       </div>
       <div class="col-lg-10 text-start">
         <NoticeFormItem

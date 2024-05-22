@@ -51,6 +51,7 @@
     <update id="modify" parameterType="hotPlace">
         UPDATE hotplace
         SET hotplace_comment = #{comment}, hotplace_image = #{image}
+        WHERE hotplace_id = #{hotplaceId}
     </update>
 
     <!--  등록  -->
@@ -66,13 +67,23 @@
         WHERE hotplace_id = #{hotplaceId}
     </delete>
 
-    <!--  댓글 가져오기  -->
-<!--    <select id="selectComment" parameterType="int" resultType="comment">-->
-<!--        SELECT-->
 
-<!--        FROM-->
-
-<!--        WHERE-->
-<!--    </select>-->
+    <!-- 댓글 조회 -->
+    <select id="selectComment" parameterType="int" resultType="comment">
+        SELECT
+            c.hotplace_comment_id AS id,
+            c.hotplace_comment_content AS content,
+            c.hotplace_comment_harmful AS harmful,
+            c.hotplace_comment_create_date AS createDate,
+            h.hotplace_id AS articleId,
+            u.user_id,
+            u.user_name
+        FROM
+            hotplace h
+                    INNER JOIN hotplace_comment c ON h.hotplace_id = c.hotplace_id
+                    INNER JOIN user u ON c.user_id = u.user_id
+        WHERE
+            h.hotplace_id = #{hotplaceId}
+    </select>
 
 </mapper>

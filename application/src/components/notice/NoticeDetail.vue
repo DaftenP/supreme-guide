@@ -12,13 +12,14 @@ const router = useRouter();
 const notice = ref({});
 
 const noticeId = route.params.noticeId;
-console.log("detail     " + noticeId);
+
 
 const goModify = () => {
   router.push({
     name: "NoticeModify",
     params: { noticeId: notice.value.noticeId },
   });
+  console.log(notice.value.noticeId);
 };
 
 // 삭제
@@ -60,52 +61,140 @@ const goList = () => {
 
 <template>
   <div class="container">
-    <div class="row justify-content-center">
-      <div class="col-lg-12">
-        <h2 class="my-3 py-3 shadow-sm bg-light text-center">
-          <mark class="sky">공지사항 상세 페이지</mark>
-        </h2>
+    <div class="content" >
+      <div class="title">
+        <h1>{{ notice.noticeTitle }}</h1>
       </div>
-      <div class="col-lg-12">
-        <!-- <h1 class="">{{ notice.noticeTitle }}</h1> -->
-        <div class="d-flex justify-content-between">
-          <div>
-            <label for="writer">작성자 :</label>
-            {{ notice.noticeWriter }}
-          </div>
-
-          <div>
-            {{ notice.noticeCreateDate }}
-
-            <label class="ms-1" for="view">조회 </label>
-            {{ notice.noticeView }}
-          </div>
-        </div>
-        <hr />
-        <span v-html="notice.noticeContent"></span>
-        <hr />
-        <div class="d-flex justify-content-end">
-          <a
-            class="btn btn-outline-primary ms-2 pe-4 ps-4"
-            v-if="notice.noticeWriter === userStore.userId"
-            @click.prevent="goModify"
-            href="#"
-            >수정</a
-          >
-          <a
-            class="btn btn-outline-danger ms-2 pe-4 ps-4"
-            v-if="notice.noticeWriter === userStore.userId"
-            @click.prevent="deleteNotice"
-            href="#"
-            >삭제</a
-          >
-          <button class="btn btn-outline-dark ms-2 pe-4 ps-4" @click="goList">
-            목록
-          </button>
-        </div>
+      <div class="info">
+        <span>작성자: {{ notice.noticeWriter }}</span>
+        <span>{{ notice.noticeCreateDate }}</span>
+        <span>조회: {{ notice.noticeView }}</span>
       </div>
+      <!-- <font-awesome-icon 
+      :icon="['fas', 'ellipsis-vertical']" style="color: #d3d5d9;"
+      @click="toggleActions" /> -->
+      <div class="body">
+        <p v-html="notice.noticeContent"></p>
+      </div>
+      <div class="actions">
+      <button v-if="notice.noticeWriter === userStore.userId" @click.prevent="goModify">수정</button>
+      <button v-if="notice.noticeWriter === userStore.userId" @click="deleteNotice">삭제</button>
+      <button @click="goList">목록</button>
+    </div>
+
+    <div class="divider"></div>
     </div>
   </div>
 </template>
+<style scoped>
+.container {
+  width: 100%;
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+  font-family: 'Arial', sans-serif;
+}
 
-<style scoped></style>
+.content {
+  background-color: #fff;
+  padding: 20px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.title h1 {
+  font-size: 24px;
+  margin-bottom: 10px;
+}
+
+.info {
+  font-size: 14px;
+  color: #555;
+  margin-bottom: 20px;
+}
+
+.info span {
+  margin-right: 15px;
+}
+
+.body p {
+  font-size: 16px;
+  line-height: 1.6;
+  white-space: pre-line;
+}
+
+.actions {
+  margin-top: 20px;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.actions button {
+  margin-left: 10px;
+  padding: 5px 10px;
+  font-size: 14px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.actions button:hover {
+  background-color: #f0f0f0;
+}
+
+.comments {
+  margin-top: 30px;
+}
+
+.comments h3 {
+  font-size: 20px;
+  margin-bottom: 10px;
+}
+
+.comments form {
+  margin-bottom: 20px;
+}
+
+.comments textarea {
+  width: 100%;
+  height: 60px;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  margin-bottom: 10px;
+}
+
+.comments textarea:focus {
+  outline: none;
+  border-color: #aaa;
+}
+
+.comments button {
+  padding: 5px 10px;
+  font-size: 14px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.comments button:hover {
+  background-color: #f0f0f0;
+}
+
+.comments ul {
+  list-style: none;
+  padding: 0;
+}
+
+.comments li {
+  padding: 10px;
+}
+
+.divider {
+  height: 2px;
+  background: linear-gradient(to right, #ff7e5f, #feb47b);
+  margin: 30px 0;
+}
+
+</style>

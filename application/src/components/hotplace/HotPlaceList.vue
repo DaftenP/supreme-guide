@@ -4,6 +4,12 @@ import { ref, onBeforeMount } from "vue";
 import { useRouter } from "vue-router";
 import { useUserStore } from "@/stores/userStore";
 import noAuthClient from "@/api/noAuthClient";
+import AOS from "aos";
+import "aos/dist/aos.css";
+
+AOS.init({
+  duration: 1000,
+});
 
 const router = useRouter();
 const userStore = useUserStore();
@@ -37,6 +43,8 @@ const goDetail = (id) => {
     },
   });
 };
+
+
 
 const searchArticle = () => {
   // 검색어 입력 상태에서만 검색 조건 업데이트하도록
@@ -138,7 +146,7 @@ onBeforeMount(fetchHotPlaces);
             :key="hotplace.hotplaceId"
             cols="12"
             md="4">
-            <v-card>
+            <v-card :data-aos="'fade-up'">
               <v-img
                 :src="hotplace.image"
                 cover
@@ -149,7 +157,7 @@ onBeforeMount(fetchHotPlaces);
               <v-card-title>
                 <span class="headline">{{ hotplace.hotplaceName }}</span>
               </v-card-title>
-              <v-card-text>{{ hotplace.comment }}</v-card-text>
+              <v-card-text id="font-small">{{ hotplace.comment }}</v-card-text>
               <v-card-actions>
                 <v-btn
                   color="primary"
@@ -169,7 +177,7 @@ onBeforeMount(fetchHotPlaces);
       <button
         type="button"
         class="btn btn-sm"
-        id="font-small"
+        id="font-title"
         v-if="userStore.userId != ''"
         @click="goWrite">
         핫플레이스 등록
@@ -228,4 +236,12 @@ onBeforeMount(fetchHotPlaces);
   font-family: "CustomFont3";
   font-size: 20px;
 }
+
+#font-title {
+  font-family: "CustomFont";
+  font-size: 20px;
+}
+
+
+
 </style>

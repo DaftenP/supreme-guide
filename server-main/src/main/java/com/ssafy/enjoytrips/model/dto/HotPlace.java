@@ -6,6 +6,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.List;
+
 @Getter
 @Setter
 @AllArgsConstructor
@@ -21,6 +23,7 @@ public class HotPlace {
     private int category;
     private String image;
     private String writer;
+    private List<Comment> list;
 }
 
 //hotplace_id int PK

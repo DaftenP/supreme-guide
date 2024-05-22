@@ -102,78 +102,40 @@ onBeforeMount(async () => {
 
 <template>
   <div class="container">
-    <div class="row justify-content-center my-4">
-      <div class="col-lg-12">
-        <h2 class="my-3 py-3 shadow-sm bg-light text-center">
-          <h1 class="font-title">{{ qna.qnaTitle }}</h1>
-        </h2>
+    
+    <div class="content" >
+      <div class="title">
+        <h1>{{ qna.qnaTitle }}</h1>
       </div>
-      <div>
-        <div class="qna-header d-flex justify-content-between">
-          <div id="font-small">
-            <label for="writer">작성자 :</label>
-            {{ qna.qnaWriter }}
-          </div>
-          <div>
-            {{ qna.qnaCreateDate }}
-            <label class="ms-1" for="view">조회 </label>
-            {{ qna.qnaView }}
-          </div>
-        </div>
-        <div class="qna-body">
-          <span v-html="qna.qnaContent" class="qna-content"></span>
-        </div>
-        <div class="qna-footer d-flex justify-content-end">
-          <a
-            class="btn btn-outline-primary ms-2"
-            v-if="qna.qnaWriter === userStore.userId"
-            href="#"
-            @click.prevent="goModify"
-            >수정</a
-          >
-          <a
-            class="btn btn-danger ms-2"
-            v-if="qna.qnaWriter === userStore.userId"
-            @click="deleteQna"
-            ><font-awesome-icon :icon="['fas', 'trash']" style="color: #ffffff"
-          /></a>
-          <button class="btn btn-outline-dark ms-2" @click="goList">
-            목록
-          </button>
-        </div>
+      <div class="info">
+        <span>작성자: {{ qna.qnaWriter }}</span>
+        <span>{{ qna.qnaCreateDate }}</span>
+        <span>조회: {{ qna.qnaView }}</span>
+      </div>
+      <!-- <font-awesome-icon 
+      :icon="['fas', 'ellipsis-vertical']" style="color: #d3d5d9;"
+      @click="toggleActions" /> -->
+      <div class="body">
+        <p v-html="qna.qnaContent"></p>
+      </div>
+      <div class="actions">
+      <button v-if="qna.qnaWriter === userStore.userId" @click.prevent="goModify">수정</button>
+      <button v-if="qna.qnaWriter === userStore.userId" @click="deleteQna">삭제</button>
+      <button @click="goList">목록</button>
+    </div>
 
-        <h3 class="mt-4">댓글</h3>
-        <form @submit.prevent="registerComment" class="mb-3">
-          <div class="mb-3">
-            <label for="newComment" class="form-label">댓글 작성</label>
-            <textarea
-              class="form-control"
-              id="newComment"
-              rows="3"
-              v-model="newComment.commentContent"></textarea>
-          </div>
-          <button type="submit" class="btn btn-primary">댓글 등록</button>
+    <div class="divider"></div>
+      <div class="comments">
+        <h3>댓글</h3>
+        <form @submit.prevent="registerComment">
+          <textarea v-model="newComment.commentContent" placeholder="댓글 작성"></textarea>
+          <button type="submit">댓글 등록</button>
         </form>
-        <hr />
-        <ul class="list-group">
-          <li
-            class="list-group-item mb-2"
-            v-for="comment in comments"
-            :key="comment.qnaCommentId">
-            <div class="d-flex justify-content-between align-items-center">
-              <div>
-                <strong>{{ comment.userId }}:</strong> {{ comment.content }}
-              </div>
-              <div>
-                <button
-                  v-if="comment.userId === userStore.userId"
-                  class="btn btn-sm btn-danger rounded-pill px-3 py-1"
-                  @click="deleteComment(comment.id)">
-                  <font-awesome-icon
-                    :icon="['fas', 'trash']"
-                    style="color: #ffffff" />
-                </button>
-              </div>
+        <ul>
+          <li v-for="comment in comments" :key="comment.qnaCommentId">
+            <div class="comment">
+              <span><strong>{{ comment.userId }}:</strong> {{ comment.content }}</span>
+              <button v-if="comment.userId === userStore.userId" @click="deleteComment(comment.id)">삭제</button>
             </div>
           </li>
         </ul>
@@ -184,75 +146,113 @@ onBeforeMount(async () => {
 
 <style scoped>
 .container {
-  max-width: 1000px;
+  width: 100%;
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+  font-family: 'Arial', sans-serif;
 }
 
-.font-title {
-  font-family: "CustomFont";
-  font-size: 40px;
+.content {
+  background-color: #fff;
+  padding: 20px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
 
-#font-small {
-  font-family: "CustomFont3";
-  font-size: 20px;
+.title h1 {
+  font-size: 24px;
+  margin-bottom: 10px;
 }
 
-/* 댓글 목록 스타일 */
-.list-group {
-  max-height: 400px; /* 댓글이 너무 많아지는 것을 방지하기 위해 스크롤 가능한 영역 제한 */
-  overflow-y: auto; /* 스크롤 가능한 영역 만들기 */
+.info {
+  font-size: 14px;
+  color: #555;
+  margin-bottom: 20px;
 }
 
-.list-group-item:not(:last-child) {
-  border-bottom: 1px solid #dee2e6; /* 마지막 댓글 제외하고 아래 테두리 추가 */
+.info span {
+  margin-right: 15px;
 }
 
-.list-group-item {
-  border: 1px solid #dee2e6;
-  border-radius: 5px;
+.body p {
+  font-size: 16px;
+  line-height: 1.6;
+  white-space: pre-line;
 }
 
-.mb-2 {
-  margin-bottom: 0.5rem !important;
-}
-
-/* 추가적인 커스텀 스타일 */
-.qna-header {
-  background-color: #f8f9fa;
-  padding: 1rem;
-  border-radius: 8px 8px 0 0;
-}
-
-.qna-footer {
-  background-color: #f8f9fa;
-  padding: 1rem;
-  border-radius: 0 0 8px 8px;
+.actions {
+  margin-top: 20px;
   display: flex;
   justify-content: flex-end;
 }
 
-.qna-body {
-  padding: 1rem;
-  border: 1px solid #eee;
-  background-color: white;
-  border-top: none;
-  border-bottom: none;
+.actions button {
+  margin-left: 10px;
+  padding: 5px 10px;
+  font-size: 14px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
 }
 
-/* 댓글 삭제 버튼 스타일 */
-.btn-danger {
-  background-color: #dc3545;
-  border-color: #dc3545;
+.actions button:hover {
+  background-color: #f0f0f0;
 }
 
-.btn-danger:hover {
-  background-color: #c82333;
-  border-color: #bd2130;
+.comments {
+  margin-top: 30px;
 }
 
-.btn-danger:focus {
-  background-color: #b21f2d;
-  border-color: #9c1c23;
-  box-shadow: 0 0 0 0.25rem rgba(225, 83, 97, 0.5);
+.comments h3 {
+  font-size: 20px;
+  margin-bottom: 10px;
 }
+
+.comments form {
+  margin-bottom: 20px;
+}
+
+.comments textarea {
+  width: 100%;
+  height: 60px;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  margin-bottom: 10px;
+}
+
+.comments textarea:focus {
+  outline: none;
+  border-color: #aaa;
+}
+
+.comments button {
+  padding: 5px 10px;
+  font-size: 14px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.comments button:hover {
+  background-color: #f0f0f0;
+}
+
+.comments ul {
+  list-style: none;
+  padding: 0;
+}
+
+.comments li {
+  padding: 10px;
+}
+
+.divider {
+  height: 2px;
+  background: linear-gradient(to right, #ff7e5f, #feb47b);
+  margin: 30px 0;
+}
+
 </style>
