@@ -3,8 +3,10 @@ package com.ssafy.enjoytrips.service;
 import com.ssafy.enjoytrips.model.dao.HotplaceDao;
 import com.ssafy.enjoytrips.model.dto.HotPlace;
 import com.ssafy.enjoytrips.model.dto.SearchCondition;
+import com.ssafy.enjoytrips.util.FileUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -13,6 +15,8 @@ import java.util.List;
 public class HotPlaceServiceImpl implements HotPlaceService{
 
     private final HotplaceDao hotplaceDao;
+    private final FileUtil fileUtil;
+
     @Override
     public List<HotPlace> list(SearchCondition searchCondition) {
         return hotplaceDao.list(searchCondition);
@@ -24,12 +28,12 @@ public class HotPlaceServiceImpl implements HotPlaceService{
     }
 
     @Override
-    public int regist(HotPlace hotPlace) {
+    public int regist(HotPlace hotPlace) throws Exception {
         return hotplaceDao.regist(hotPlace);
     }
 
     @Override
-    public int modify(HotPlace hotPlace) {
+    public int modify(HotPlace hotPlace) throws Exception {
         return hotplaceDao.modify(hotPlace);
     }
 

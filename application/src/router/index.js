@@ -7,6 +7,7 @@ const router = createRouter({
       path: "/",
       name: "home",
       component: () => import("@/views/HomeView.vue"),
+      meta: { noDefaultClass: true } // HomeView에서는 전역 스타일 무시
     },
 
     {
@@ -143,17 +144,17 @@ const router = createRouter({
         },
         {
           path: "view/:hotplaceId",
-          name: "HotPlaceDetail",
+          name: "HotplaceDetail",
           component: () => import("@/components/hotplace/HotPlaceDetail.vue"),
         },
         {
           path: "modify/:hotplaceId",
-          name: "HotPlaceModify",
+          name: "HotplaceModify",
           component: () => import("@/components/hotplace/HotPlaceModify.vue"),
         },
         {
-          path: "/regist",
-          name: "HotPlaceWrite",
+          path: "regist",
+          name: "HotplaceWrite",
           component: () => import("@/components/hotplace/HotPlaceWrite.vue"),
         },
       ],

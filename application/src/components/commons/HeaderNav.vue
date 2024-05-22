@@ -3,9 +3,10 @@ import { Vue3Lottie } from "vue3-lottie";
 import { useRouter } from "vue-router";
 import { ref } from "vue";
 import { useUserStore } from "@/stores/userStore";
-import Cookies from "vue-cookies";
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 import BearJson from "@/assets/animations/Bear.json";
 import TripJson from "@/assets/animations/Trip.json";
+import settingCookie from "@/utils/settingCookie";
 const router = useRouter();
 const userStore = useUserStore();
 
@@ -45,6 +46,12 @@ const goNotice = () => {
   });
 };
 
+
+const goHotPlace = () => {
+  router.push({
+    name: "HotplaceList",
+  })
+}
 const goTrip = () => {
   router.push({
     name: "TripList",
@@ -53,8 +60,7 @@ const goTrip = () => {
 
 const logout = () => {
   userStore.setUserId("");
-  Cookies.remove("accessToken");
-  Cookies.remove("refreshToken");
+  settingCookie("remove");
   alert("로그아웃 되었습니다.");
   router.push({ name: "home" });
 };
@@ -66,7 +72,7 @@ const toggleMenu = () => {
 </script>
 
 <template>
-  <header class="bg-white shadow-md z-30">
+  <header class="bg-white shadow-md z-30 custom-font">
     <nav
       class="mx-auto flex max-w-7xl items-center justify-between p-6 lg:px-8"
       aria-label="Global">
@@ -74,43 +80,61 @@ const toggleMenu = () => {
         <a
           @click="goHome"
           class="-m-1.5 p-1.5 cursor-pointer flex items-center space-x-2">
-          <span class="text-lg font-semibold text-gray-900">YJTrip</span>
+          <span class="text-lg font-semibold text-gray-900 custom-font">YJTrip</span>
           <Vue3Lottie
             :animationData="TripJson"
             style="width: 50px; height: 50px" />
         </a>
+        <button @click="toggleMenu" class="text-white lg:hidden">
+          <i class="fas fa-bars"></i>
+        </button>
       </div>
       <div class="hidden lg:flex lg:gap-x-12">
         <button
           @click="goAttraction"
+          id=user-font
           class="text-sm font-semibold leading-6 text-gray-900 hover:text-indigo-600 transition duration-300">
           관광지
         </button>
         <button
           @click="goTrip"
+          id=user-font
           class="text-sm font-semibold leading-6 text-gray-900 hover:text-indigo-600 transition duration-300">
           여행
+
         </button>
         <button
           @click="goQna"
+          id=user-font
           class="text-sm font-semibold leading-6 text-gray-900 hover:text-indigo-600 transition duration-300">
           Q&A 게시판
         </button>
         <button
           @click="goNotice"
+          id=user-font
           class="text-sm font-semibold leading-6 text-gray-900 hover:text-indigo-600 transition duration-300">
           공지사항
         </button>
+
+        <button
+          @click="goHotPlace"
+          id=user-font
+          class="text-sm font-semibold leading-6 text-gray-900 hover:text-indigo-600 transition duration-300">
+          핫플레이스
+        </button>
+
       </div>
       <div
         class="hidden lg:flex lg:flex-1 lg:justify-end items-center space-x-6">
         <template v-if="userStore.isLoggedIn">
           <span
             class="text-gray-700 transition duration-500 ease-in-out transform hover:-translate-y-1 hover:scale-110"
+            id="user-font"
             >{{ userStore.userId }}님 환영합니다.</span
           >
           <button
             @click="logout"
+            id=user-font
             class="text-sm font-semibold leading-6 text-gray-900 hover:text-indigo-600 transition duration-300">
             로그아웃
           </button>
@@ -200,6 +224,11 @@ const toggleMenu = () => {
                 class="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:text-indigo-600 transition duration-300">
                 공지사항
               </button>
+              <button
+                @click="goHotPlace"
+                class="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:text-indigo-600 transition duration-300">
+                핫플레이스
+              </button>
             </div>
             <div class="py-6">
               <template v-if="userStore.isLoggedIn">
@@ -232,5 +261,12 @@ const toggleMenu = () => {
 <style scoped>
 .text-gray-700:hover {
   color: #007bff;
+}
+.custom-font {
+  font-family: 'CustomFont';
+  font-size: 30px;
+}
+#user-font {
+  font-size: 15px;
 }
 </style>

@@ -3,6 +3,8 @@ import "./assets/main.css";
 import { useKakao } from "vue3-kakao-maps/@utils";
 import { createApp } from "vue";
 import { createPinia } from "pinia";
+import AOS from "aos";
+import "aos/dist/aos.css";
 
 import piniaPluginPersistedstate from "pinia-plugin-persistedstate";
 import Vue3Lottie from "vue3-lottie";
@@ -25,9 +27,9 @@ useKakao(VITE_API_KAKAO_MAP_API_KEY, ["clusterer", "services", "drawing"]);
 
 app.use(router);
 
-app.use(createPinia().use(piniaPluginPersistedstate));
-
 app.use(vueCookies);
 app.$cookies.config("7d"); // 쿠키 만료일 -> 7일 default
 
-app.mount("#app");
+app.mount("#app", () => {
+    AOS.init();
+});

@@ -3,13 +3,16 @@ package com.ssafy.enjoytrips.controller;
 import com.ssafy.enjoytrips.model.dto.HotPlace;
 import com.ssafy.enjoytrips.model.dto.SearchCondition;
 import com.ssafy.enjoytrips.service.HotPlaceService;
+import com.ssafy.enjoytrips.util.FileUtil;
 import com.ssafy.utils.CommentPurifier;
 import com.ssafy.utils.TokenProvider;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.apache.coyote.Response;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -20,7 +23,13 @@ public class HotplaceController {
 
     private final HotPlaceService hotPlaceService;
     private final TokenProvider tokenProvider;
+    private final FileUtil fileUtil;
+
+    @Value("${com.ssafy.enjoytrips.upload.path}") // properties파일에 경로 설정
+    private String uploadPath;
+
     private final CommentPurifier commentPurifier;
+
 
     // 전체 조회
     @GetMapping("/all")
@@ -49,7 +58,7 @@ public class HotplaceController {
     }
     // 수정
     @PutMapping
-    public ResponseEntity<?> modify(@RequestHeader("Authorization") String authorizationHeader, @RequestBody HotPlace hotplace) {
+    public ResponseEntity<?> modify(@RequestHeader("Authorization") String authorizationHeader, @RequestBody HotPlace hotPlace) {
         try {
             if (authorizationHeader == null || !authorizationHeader.startsWith("Bearer ")) {
                 // 헤더가 없거나 Bearer 토큰이 아닌 경우의 처리
@@ -59,11 +68,16 @@ public class HotplaceController {
             String token = authorizationHeader.substring(7);
             String userId = tokenProvider.getUserId(token);
 
-            if (!hotplace.getWriter().equals(userId)) {
-                return ResponseEntity.status(HttpStatus.FORBIDDEN).body("수정할 권한이 없습니다.");
+            String fileName="";
+            // 파일 저장
+            if (hotPlace.getImage() != null && !hotPlace.getImage().isEmpty()) {
+                fileName = fileUtil.saveFile(hotPlace.getImage(), uploadPath);
             }
-            hotplace.setWriter(userId);
-            int result = hotPlaceService.modify(hotplace);
+            hotPlace.setImage(fileName);
+
+
+            hotPlace.setWriter(userId);
+            int result = hotPlaceService.modify(hotPlace);
             return ResponseEntity.ok(result);
         } catch (Exception e) {
             return exceptionHandling(e);
@@ -104,7 +118,15 @@ public class HotplaceController {
             }
             String token = authorizationHeader.substring(7);
             String userId = tokenProvider.getUserId(token);
+            String fileName="";
             hotPlace.setWriter(userId);
+
+            // 파일 저장
+            if (hotPlace.getImage() != null && !hotPlace.getImage().isEmpty()) {
+                fileName = fileUtil.saveFile(hotPlace.getImage(), uploadPath);
+            }
+            hotPlace.setImage(fileName);
+
             int result = hotPlaceService.regist(hotPlace);
             return ResponseEntity.ok(result);
         } catch (Exception e) {
