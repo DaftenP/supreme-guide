@@ -30,19 +30,19 @@ const boxes = [
 const posts = [
   {
     id: 1,
-    title: 'Boost your conversion rate',
-    href: '#',
+    title: "Boost your conversion rate",
+    href: "#",
     description:
-      'Illo sint voluptas. Error voluptates culpa eligendi. Hic vel totam vitae illo. Non aliquid explicabo necessitatibus unde. Sed exercitationem placeat consectetur nulla deserunt vel. Iusto corrupti dicta.',
-    date: 'Mar 16, 2020',
-    datetime: '2020-03-16',
-    category: { title: 'Marketing', href: '#' },
+      "Illo sint voluptas. Error voluptates culpa eligendi. Hic vel totam vitae illo. Non aliquid explicabo necessitatibus unde. Sed exercitationem placeat consectetur nulla deserunt vel. Iusto corrupti dicta.",
+    date: "Mar 16, 2020",
+    datetime: "2020-03-16",
+    category: { title: "Marketing", href: "#" },
     author: {
-      name: 'Michael Foster',
-      role: 'Co-Founder / CTO',
-      href: '#',
+      name: "Michael Foster",
+      role: "Co-Founder / CTO",
+      href: "#",
       imageUrl:
-        'https://images.unsplash.com/photo-1519244703995-f4e0f30006d5?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
+        "https://images.unsplash.com/photo-1519244703995-f4e0f30006d5?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
     },
   },
   // More posts...
@@ -51,16 +51,16 @@ const posts = [
     title: 'Boost your conversion rate',
     href: '#',
     description:
-      'Illo sint voluptas. Error voluptates culpa eligendi. Hic vel totam vitae illo. Non aliquid explicabo necessitatibus unde. Sed exercitationem placeat consectetur nulla deserunt vel. Iusto corrupti dicta.',
-    date: 'Mar 16, 2020',
-    datetime: '2020-03-16',
-    category: { title: 'Marketing', href: '#' },
+      "Illo sint voluptas. Error voluptates culpa eligendi. Hic vel totam vitae illo. Non aliquid explicabo necessitatibus unde. Sed exercitationem placeat consectetur nulla deserunt vel. Iusto corrupti dicta.",
+    date: "Mar 16, 2020",
+    datetime: "2020-03-16",
+    category: { title: "Marketing", href: "#" },
     author: {
-      name: 'Michael Foster',
-      role: 'Co-Founder / CTO',
-      href: '#',
+      name: "Michael Foster",
+      role: "Co-Founder / CTO",
+      href: "#",
       imageUrl:
-        'https://images.unsplash.com/photo-1519244703995-f4e0f30006d5?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
+        "https://images.unsplash.com/photo-1519244703995-f4e0f30006d5?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
     },
   },
   {
@@ -85,19 +85,19 @@ const posts = [
     title: 'Boost your conversion rate',
     href: '#',
     description:
-      'Illo sint voluptas. Error voluptates culpa eligendi. Hic vel totam vitae illo. Non aliquid explicabo necessitatibus unde. Sed exercitationem placeat consectetur nulla deserunt vel. Iusto corrupti dicta.',
-    date: 'Mar 16, 2020',
-    datetime: '2020-03-16',
-    category: { title: 'Marketing', href: '#' },
+      "Illo sint voluptas. Error voluptates culpa eligendi. Hic vel totam vitae illo. Non aliquid explicabo necessitatibus unde. Sed exercitationem placeat consectetur nulla deserunt vel. Iusto corrupti dicta.",
+    date: "Mar 16, 2020",
+    datetime: "2020-03-16",
+    category: { title: "Marketing", href: "#" },
     author: {
-      name: 'Michael Foster',
-      role: 'Co-Founder / CTO',
-      href: '#',
+      name: "Michael Foster",
+      role: "Co-Founder / CTO",
+      href: "#",
       imageUrl:
-        'https://images.unsplash.com/photo-1519244703995-f4e0f30006d5?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
+        "https://images.unsplash.com/photo-1519244703995-f4e0f30006d5?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
     },
   },
-]
+];
 </script>
 
 <template>
@@ -113,12 +113,15 @@ const posts = [
             :class="{ 'opacity-100': index === currentIndex, 'opacity-0': index !== currentIndex }"
             :style="{ zIndex: index === currentIndex ? 10 : 0 }"
           />
-        
       </div>
     </div>
     <div class="overlay-text z-20">
-      <h1 class="heading text-white font-bold text-5xl md:text-7xl">Enjoy Trip!</h1>
-      <p class="sub-heading text-white text-lg md:text-xl">꿈꾸던 여행지를 찾아보세요! <br />어디를 가고 싶으신가요?</p>
+      <h1 class="heading text-white font-bold text-5xl md:text-7xl">
+        Enjoy Trip!
+      </h1>
+      <p class="sub-heading text-white text-lg md:text-xl">
+        꿈꾸던 여행지를 찾아보세요! <br />어디를 가고 싶으신가요?
+      </p>
     </div>
     <div class="box-container z-20">
       <div
@@ -178,7 +181,6 @@ const posts = [
               <p class="text-gray-600">{{ post.author.role }}</p>
             </div>
           </div>
-        </article>
       </div>
     </div>
   </div>

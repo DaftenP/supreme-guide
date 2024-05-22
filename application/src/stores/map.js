@@ -6,11 +6,15 @@ export const useMapStore = defineStore("map", () => {
   const lng = ref(126.570667);
   const attractions = ref([]);
   const attractionInfo = ref({});
+  const blogList = ref([]);
+  const videoList = ref([]);
 
   return {
     lat,
     lng,
     attractions,
     attractionInfo,
+    blogList,
+    videoList,
   };
 });

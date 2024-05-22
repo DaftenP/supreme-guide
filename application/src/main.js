@@ -28,7 +28,6 @@ useKakao(VITE_API_KAKAO_MAP_API_KEY, ["clusterer", "services", "drawing"]);
 app.use(router);
 
 app.use(vueCookies);
-app.use(createPinia().use(piniaPluginPersistedstate));
 app.$cookies.config("7d"); // 쿠키 만료일 -> 7일 default
 
 app.mount("#app", () => {
