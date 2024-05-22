@@ -25,15 +25,24 @@ import HeaderNav from "./components/commons/HeaderNav.vue";
 }
 
 @font-face {
-  font-family: 'CustomFont'; /* 사용할 글꼴의 이름을 지정합니다. */
-  src: url('/fonts/font1.ttf') format('truetype'); /* font1.ttf의 경로를 지정합니다. */
+  font-family: "CustomFont"; /* 사용할 글꼴의 이름을 지정합니다. */
+  src: url("/fonts/font1.ttf") format("truetype"); /* font1.ttf의 경로를 지정합니다. */
+}
+
+@font-face {
+  font-family: "CustomFont2"; /* 사용할 글꼴의 이름을 지정합니다. */
+  src: url("/fonts/font2.ttf") format("truetype"); /* font1.ttf의 경로를 지정합니다. */
+}
+
+@font-face {
+  font-family: "CustomFont3"; /* 사용할 글꼴의 이름을 지정합니다. */
+  src: url("/fonts/font3.ttf") format("truetype"); /* font1.ttf의 경로를 지정합니다. */
 }
 
 #app {
-  background-image: url('/images/new-background.jpg');
+  background-image: url("/images/new-background.jpg");
   background-size: cover;
   background-repeat: no-repeat;
   background-attachment: fixed;
 }
-
 </style>
