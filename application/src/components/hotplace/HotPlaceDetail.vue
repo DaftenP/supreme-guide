@@ -22,11 +22,15 @@ const newComment = reactive({
 });
 
 const hotplaceId = route.params.hotplaceId;
+console.log("detail----+" +hotplaceId);
+
 const goModify = () => {
   router.push({
     name: "HotplaceModify",
-    params: { hotplaceId: hotplace.value.hotplaceId },
+   params: { hotplaceId: hotplace.value.hotplaceId },
   });
+  console.log(hotplace.value.hotplaceId);
+  
 };
 
 const deleteHotplace = async () => {
@@ -95,7 +99,7 @@ onBeforeMount(async () => {
       </div>
 
       <div class="actions">
-        <button @click="goModify">수정</button>
+        <button @click.prevent="goModify">수정</button>
         <button @click="deleteHotplace">삭제</button>
         <button @click="goList">목록으로</button>
       </div>

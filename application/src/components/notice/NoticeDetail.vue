@@ -12,13 +12,14 @@ const router = useRouter();
 const notice = ref({});
 
 const noticeId = route.params.noticeId;
-console.log("detail     " + noticeId);
+
 
 const goModify = () => {
   router.push({
     name: "NoticeModify",
     params: { noticeId: notice.value.noticeId },
   });
+  console.log(notice.value.noticeId);
 };
 
 // 삭제

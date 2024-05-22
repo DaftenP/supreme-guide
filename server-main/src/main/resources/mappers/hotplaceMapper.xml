@@ -51,6 +51,7 @@
     <update id="modify" parameterType="hotPlace">
         UPDATE hotplace
         SET hotplace_comment = #{comment}, hotplace_image = #{image}
+        WHERE hotplace_id = #{hotplaceId}
     </update>
 
     <!--  등록  -->
@@ -66,13 +67,8 @@
         WHERE hotplace_id = #{hotplaceId}
     </delete>
 
-    <!--  댓글 가져오기  -->
-<!--    <select id="selectComment" parameterType="int" resultType="comment">-->
-<!--        SELECT-->
 
-<!--        FROM-->
-
-<!--        WHERE-->
-<!--    </select>-->
+    <!-- 댓글   -->
+    
 
 </mapper>

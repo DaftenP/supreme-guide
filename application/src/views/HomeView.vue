@@ -1,5 +1,5 @@
 <script setup>
-import { ref, onMounted } from "vue";
+import { ref, onMounted} from "vue";
 import AOS from "aos";
 import "aos/dist/aos.css";
 
@@ -8,6 +8,10 @@ const images = ref([
   "/images/home3.jpg",
   "/images/home4.jpg",
 ]);
+
+onMounted(() => {
+  images.value = [...images.value, ...images.value];
+})
 
 let currentIndex = ref(0);
 
@@ -267,15 +271,25 @@ const posts = [
   font-family: "Arial", sans-serif;
 }
 
+@keyframes slideInfinite {
+  from {
+    transform: translateX(0%);
+  }
+  to {
+    transform: translateX(-100%);
+  }
+}
 .box-container {
+  overflow: hidden;
   position: absolute;
   bottom: -10%; /* 이미지와 겹치도록 박스 위치 조정 */
   left: 50%;
   transform: translate(-50%, 50%); /* Y 축으로 90% 이동하여 겹침 효과 */
   display: flex;
   justify-content: space-around;
-  width: 80%;
+  width: 100%;
   z-index: 20;
+  animation: slideInfinite 20s linear infinite;
 }
 
 .box {
@@ -287,7 +301,10 @@ const posts = [
   flex: 1;
   margin: 0 10px;
   height: auto; /* 박스 높이를 자동으로 조정 */
-  min-height: 250px; /* 최소 높이 설정 */
+  max-height: 250px; /* 최소 높이 설정 */
+  animation: slideToLeft 10s linear infinite;
+  display: inline-block;
+  white-space: nowrap;
 }
 
 .box-image {
@@ -345,4 +362,6 @@ const posts = [
   background-color: #ffffff;
   height: 88px; /* 헤더의 높이를 88px로 설정하세요 */
 }
+
+
 </style>

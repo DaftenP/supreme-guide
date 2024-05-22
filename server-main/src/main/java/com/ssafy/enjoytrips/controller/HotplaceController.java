@@ -75,7 +75,6 @@ public class HotplaceController {
             }
             hotPlace.setImage(fileName);
 
-
             hotPlace.setWriter(userId);
             int result = hotPlaceService.modify(hotPlace);
             return ResponseEntity.ok(result);
