@@ -1,14 +1,11 @@
 <script setup>
 import { ref } from "vue";
 import { useMapStore } from "@/stores/map";
-import BlogArticleItem from "@/components/item/BlogArticleItem.vue";
 
 const mapStore = useMapStore();
 </script>
 
 <template>
-  <div class="modal-wrap" v-show="mapStore.modalCheck" @click="modalOpen"></div>
-
   <!-- Modal -->
   <div
     class="modal fade"

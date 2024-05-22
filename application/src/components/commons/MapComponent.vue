@@ -8,7 +8,7 @@ import { ref, computed, onBeforeMount } from "vue";
 import { useMapStore } from "@/stores/map";
 
 const mapStore = useMapStore();
-
+const error = ref(null);
 const map = ref();
 const props = defineProps({
   attractions: Object,
@@ -32,6 +32,7 @@ const markerList = computed(() => {
 
 const onLoadKakaoMap = (mapRef) => {
   map.value = mapRef;
+  getLocation();
 };
 
 const mouseOverKakaoMapMarker = (param) => {
@@ -48,6 +49,37 @@ const panTo = () => {
     map.value.panTo(new kakao.maps.LatLng(33.45058, 126.574942));
   }
 };
+
+const getLocation = () => {
+  if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(setPosition, showError);
+  } else {
+    error.value = "이 브라우저에서는 Geolocation을 지원하지 않습니다.";
+  }
+};
+
+const setPosition = (position) => {
+  mapStore.lat = position.coords.latitude;
+  mapStore.lng = position.coords.longitude;
+  error.value = null;
+};
+
+const showError = (errorObj) => {
+  switch (errorObj.code) {
+    case errorObj.PERMISSION_DENIED:
+      error.value = "사용자가 Geolocation 요청을 거부했습니다.";
+      break;
+    case errorObj.POSITION_UNAVAILABLE:
+      error.value = "위치 정보를 사용할 수 없습니다.";
+      break;
+    case errorObj.TIMEOUT:
+      error.value = "사용자 위치 요청이 시간 초과되었습니다.";
+      break;
+    case errorObj.UNKNOWN_ERROR:
+      error.value = "알 수 없는 오류가 발생했습니다.";
+      break;
+  }
+};
 </script>
 
 <template>
@@ -58,7 +90,7 @@ const panTo = () => {
       @onLoadKakaoMap="onLoadKakaoMap"
       width="100%"
       height="100%"
-      level="11">
+      level="6">
       <KakaoMapMarker
         v-for="(attraction, index) in attractions"
         :key="index"

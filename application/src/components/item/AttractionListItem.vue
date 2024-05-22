@@ -3,20 +3,21 @@ import { ref } from "vue";
 import { useMapStore } from "@/stores/map";
 
 const mapStore = useMapStore();
-
+const emits = defineEmits(["detailView"]);
 const props = defineProps({
   attraction: Object,
   type: String,
 });
 
-const goTo = () => {
+const goTo = (attraction) => {
   mapStore.lat = props.attraction.latitude;
   mapStore.lng = props.attraction.longitude;
+  emits("detailView", attraction.contentId, attraction.title);
 };
 </script>
 
 <template>
-  <div class="bg-lightgray d-flex align-items-center m-2">
+  <div class="d-flex align-items-center m-2">
     <img
       class="thumbnail m-2"
       :src="
@@ -25,16 +26,10 @@ const goTo = () => {
           : '/src/assets/img/no-img.png'
       " />
     <div>
-      <a class="attraction-title" @click="goTo">{{ attraction.title }}</a>
-      <br />
+      <a class="attraction-title" @click="goTo(attraction)">{{
+        attraction.title
+      }}</a>
       <a>{{ attraction.addr1 + attraction.addr2 }}</a>
-      <button
-        class="btn btn-outline-danger"
-        @click="$emit('detailView', attraction.contentId, attraction.title)"
-        data-bs-toggle="modal"
-        data-bs-target="#attractionModal">
-        상세정보
-      </button>
       <button
         v-if="type"
         class="btn btn-outline-primary"
@@ -53,6 +48,7 @@ const goTo = () => {
   object-position: center; /* 이미지가 잘릴 때 중앙을 기준으로 잘리도록 설정 */
   display: block; /* 이미지를 블록 요소로 설정 */
   overflow: hidden; /* 넘치는 부분은 숨김 */
+  border-radius: 10px;
 }
 a {
   display: block;
@@ -63,8 +59,5 @@ a {
 }
 .attraction-title {
   font-size: large;
-}
-.bg-lightgray {
-  background-color: #f6fcfb;
 }
 </style>

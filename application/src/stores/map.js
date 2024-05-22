@@ -7,6 +7,7 @@ export const useMapStore = defineStore("map", () => {
   const attractions = ref([]);
   const attractionInfo = ref({});
   const blogList = ref([]);
+  const videoList = ref([]);
 
   return {
     lat,
@@ -14,5 +15,6 @@ export const useMapStore = defineStore("map", () => {
     attractions,
     attractionInfo,
     blogList,
+    videoList,
   };
 });

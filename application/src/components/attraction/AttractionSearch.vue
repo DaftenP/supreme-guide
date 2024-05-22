@@ -41,12 +41,10 @@ const search = () => {
     params.key = "title";
     params.word = keywordSelectedOption.value;
   }
-  console.log(params);
   getAllAttraction(
     params,
     // success
     (resp) => {
-      console.log(resp.data);
       mapStore.attractions = resp.data;
       if (mapStore.attractions.length > 0) {
         mapStore.lat = mapStore.attractions[0].latitude;
@@ -119,7 +117,7 @@ getRegion(
             <option value="0" selected>유형</option>
             <option value="12">관광지</option>
             <option value="14">문화시설</option>
-            <option value="15">축제공연행사</option>
+            <option value="15">축제/공연/행사</option>
             <option value="25">여행코스</option>
             <option value="28">레포츠</option>
             <option value="32">숙박</option>
