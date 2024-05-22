@@ -3,15 +3,9 @@ import { ref } from "vue";
 import { useMapStore } from "@/stores/map";
 
 const mapStore = useMapStore();
-
-const modalOpen = () => {
-  mapStore.modalCheck = !mapStore.modalCheck;
-};
 </script>
 
 <template>
-  <div class="modal-wrap" v-show="mapStore.modalCheck" @click="modalOpen"></div>
-
   <!-- Modal -->
   <div
     class="modal fade"
@@ -47,6 +41,7 @@ const modalOpen = () => {
           <div>{{ mapStore.attractionInfo.zipcode }}</div>
           <div>{{ mapStore.attractionInfo.tel }}</div>
           <div>{{ mapStore.attractionInfo.description }}</div>
+          <BlogArticleItem :articles="mapStore.blogList"></BlogArticleItem>
         </div>
       </div>
     </div>
