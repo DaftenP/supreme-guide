@@ -77,15 +77,19 @@ onBeforeMount(async () => {
 <template>
   <div class="container">
     <div class="right-panel">
+      <div class="image">
+        <img :src="hotplace.image" alt="핫플레이스 이미지" />
+      </div>
+    </div>
+    <div class="left-panel">
+      <MapComponent></MapComponent>
       <div class="title">
         <h1>{{ hotplace.hotplaceName }}</h1>
       </div>
       <div class="author">
         <p>작성자: {{ hotplace.writer }}</p>
       </div>
-      <div class="image">
-        <img :src="hotplace.image" alt="핫플레이스 이미지" />
-      </div>
+
       <div class="address">
         <p>{{ hotplace.addr1 }}</p>
       </div>
@@ -95,9 +99,6 @@ onBeforeMount(async () => {
         <button @click="deleteHotplace">삭제</button>
         <button @click="goList">목록으로</button>
       </div>
-    </div>
-    <div class="left-panel">
-      <MapComponent></MapComponent>
     </div>
   </div>
 </template>
