@@ -110,24 +110,26 @@ const goDetail = (id) => {
       <div class="col-lg-8">
         <h2 class="text-center font-style">Q&A</h2>
       </div>
-      <div class="input-group my-4">
-        <select class="form-select" v-model="key">
-          <option value="qna_title">제목</option>
-          <option value="qna_content">내용</option>
-          <option value="qna_writer">작성자</option>
-        </select>
-        <input
-          type="text"
-          class="form-control"
-          placeholder="검색어를 입력해 주세요"
-          v-model="word" />
-        <button class="btn btn-dark" type="button" @click="searchArticle">
-          <font-awesome-icon
-            :icon="['fas', 'magnifying-glass']"
-            style="color: #fcfcfc" />
-        </button>
+      <div class="d-flex column p-2">
+        <div class="col-6"></div>
+        <div class="col-6 d-flex">
+          <select class="form-select" v-model="key">
+            <option value="qna_title">제목</option>
+            <option value="qna_content">내용</option>
+            <option value="qna_writer">작성자</option>
+          </select>
+          <input
+            type="text"
+            class="form-control"
+            placeholder="검색어를 입력해 주세요"
+            v-model="word" />
+          <button class="btn btn-dark" type="button" @click="searchArticle">
+            <font-awesome-icon
+              :icon="['fas', 'magnifying-glass']"
+              style="color: #fcfcfc" />
+          </button>
+        </div>
       </div>
-
       <div class="row">
         <div
           class="col-md-4 mb-4"
