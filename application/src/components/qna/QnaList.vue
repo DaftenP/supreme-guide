@@ -3,6 +3,12 @@ import { ref, onBeforeMount, computed } from "vue";
 import { useRouter } from "vue-router";
 import noAuthClient from "@/api/noAuthClient";
 import { useUserStore } from "@/stores/userStore";
+import AOS from "aos";
+import "aos/dist/aos.css";
+
+AOS.init({
+  duration: 1000,
+});
 
 const userStore = useUserStore();
 const router = useRouter();
@@ -13,7 +19,7 @@ const qna = ref({});
 const currentPage = ref(1);
 const totalPages = ref(0);
 const searchCondition = ref({
-  countPerPage: 5,
+  countPerPage: 9,
   key: "",
   word: "",
   currentPage: 1,
@@ -100,76 +106,88 @@ const goDetail = (id) => {
 
 <template>
   <div class="container">
-    <div class="row justify-content-center">
-      <div class="col-lg-12">
-        <h2 class="my-3 py-3 shadow-sm bg-light text-center">
-          <mark class="sky">Q&A 목록</mark>
-        </h2>
+    <div class="row justify-content-center my-4">
+      <div class="col-lg-8">
+        <h2 class="text-center font-style">Q&A</h2>
       </div>
-      <div class="col-lg-12">
-        <div class="row align-self-center mb-2">
-          <div class="col-md-2 text-start">
-            <button
-              type="button"
-              class="btn btn-outline-primary btn-sm"
-              v-if="userStore.userId != ''"
-              @click="movePage">
-              질문 등록
-            </button>
-          </div>
-          <div class="col-md-5 offset-5">
-            <form class="d-flex">
-              <div class="input-group input-group-sm">
-                <select class="form-select" v-model="key">
-                  <option value="qna_title">제목</option>
-                  <option value="qna_content">내용</option>
-                  <option value="qna_writer">작성자</option>
-                </select>
-                <input
-                  type="text"
-                  class="form-control"
-                  placeholder="검색어"
-                  v-model="word" />
-                <button
-                  class="btn btn-dark"
-                  type="button"
-                  @click="searchArticle">
-                  검색
-                </button>
+      <div class="input-group my-4">
+        <select class="form-select" v-model="key">
+          <option value="qna_title">제목</option>
+          <option value="qna_content">내용</option>
+          <option value="qna_writer">작성자</option>
+        </select>
+        <input
+          type="text"
+          class="form-control"
+          placeholder="검색어를 입력해 주세요"
+          v-model="word" />
+        <button class="btn btn-dark" type="button" @click="searchArticle">
+          <font-awesome-icon
+            :icon="['fas', 'magnifying-glass']"
+            style="color: #fcfcfc" />
+        </button>
+      </div>
+
+      <div class="row">
+        <div
+          class="col-md-4 mb-4"
+          v-for="(qna, index) in qnas"
+          :key="qna.qnaId"
+          :index="index"
+          :data-aos="'zoom-in'">
+          <div class="card h-100" @click="goDetail(qna.qnaId)">
+            <font-awesome-icon
+              :icon="['fas', 'question']"
+              class="card-icon"
+              style="color: #63e6be" />
+            <div class="card-body">
+              <h5 class="card-title">
+                {{ qna.qnaTitle }}
+              </h5>
+
+              <p class="card-text" id="font-small">
+                <font-awesome-icon
+                  :icon="['fas', 'user']"
+                  style="color: #000000" />
+                {{ qna.qnaView }}
+              </p>
+              {{ qna.qnaContent }}
+              <br />
+              <br />
+              <div class="card-text d-flex">
+                <p>
+                  <font-awesome-icon
+                    :icon="['fas', 'calendar-days']"
+                    style="color: #000000" />{{ qna.qnaCreateDate }}
+                </p>
               </div>
-            </form>
+              <p>
+                <font-awesome-icon
+                  :icon="['fas', 'pencil']"
+                  style="color: #000000" />
+                {{ qna.qnaWriter }}
+              </p>
+            </div>
           </div>
         </div>
-        <table class="table table-hover">
-          <thead>
-            <tr class="text-center">
-              <th scope="col">제목</th>
-              <th scope="col">조회수</th>
-              <th scope="col">작성자</th>
-              <th scope="col">작성일</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr
-              class="text-center"
-              v-for="(qna, index) in qnas"
-              :index="index"
-              :qna="qna"
-              :key="qna.qnaId">
-              <td>
-                <a @click="goDetail(qna.qnaId)">{{ qna.qnaTitle }}</a>
-              </td>
-              <td>{{ qna.qnaView }}</td>
-              <td>{{ qna.qnaWriter }}</td>
-              <td>{{ qna.qnaCreateDate }}</td>
-            </tr>
-          </tbody>
-        </table>
       </div>
     </div>
-    <nav aria-label="Page navigation example">
+    <div class="col-md-2 text-start">
+      <button
+        type="button"
+        class="btn btn-sm"
+        id="font-small"
+        v-if="userStore.userId != ''"
+        @click="movePage">
+        질문 등록
+        <font-awesome-icon
+          :icon="['fas', 'arrow-right']"
+          style="color: black" />
+      </button>
+    </div>
+
+    <nav aria-label="Page navigation example" class="mt-4">
       <ul class="pagination justify-content-center">
-        <!-- 이전 버튼 -->
         <li class="page-item" :class="{ disabled: currentPage === 1 }">
           <button
             class="page-link"
@@ -178,7 +196,6 @@ const goDetail = (id) => {
             <span aria-hidden="true">&laquo;</span>
           </button>
         </li>
-        <!-- 페이지 번호 -->
         <li
           class="page-item"
           v-for="pageNumber in totalPages"
@@ -188,7 +205,6 @@ const goDetail = (id) => {
             {{ pageNumber }}
           </button>
         </li>
-        <!-- 다음 버튼 -->
         <li class="page-item" :class="{ disabled: currentPage === totalPages }">
           <button
             class="page-link"
@@ -206,5 +222,63 @@ const goDetail = (id) => {
 /* 페이지 처리 스타일 */
 .pagination {
   margin-top: 20px;
+}
+
+.card {
+  position: relative; /* 아이콘을 상대적으로 위치시키기 위해 설정 */
+  transition: transform 0.2s;
+  cursor: pointer;
+  max-width: 300px;
+}
+
+.card-container {
+  /* max-width: 800px; 원하는 최대 너비 설정 */
+  /* margin: 0 auto; 가운데 정렬 */
+  max-width: 1200px;
+  flex-wrap: wrap;
+  display: flex;
+  gap: 1rem;
+}
+
+.font-style {
+  font-family: "CustomFont";
+  font-size: 50px;
+}
+
+#font-small {
+  font-family: "CustomFont3";
+  font-size: 20px;
+}
+
+.container {
+  max-width: 1000px;
+}
+
+.card {
+  transition: transform 0.2s;
+  cursor: pointer;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+}
+
+.card-icon {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  font-size: 2.5rem; /* 아이콘 크기 조정 */
+  color: #63e6be;
+}
+
+.card-title {
+  color: #333;
+  font-weight: bold;
+  font-family: "CustomFont";
+  font-size: 20px;
+}
+
+.card-title:hover {
+  text-decoration: underline;
 }
 </style>

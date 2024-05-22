@@ -23,9 +23,12 @@
     "vue-router": "^4.3.0",
     "vue3-kakao-maps": "^2.3.6",
     "vue3-lottie": "^3.3.0",
-    "vuedraggable": "^4.1.0"
+    "vuedraggable": "^4.1.0",
+    "vuetify": "^3.6.7"
   },
   "devDependencies": {
+    "@fortawesome/fontawesome-svg-core": "^6.5.2",
+    "@fortawesome/free-solid-svg-icons": "^6.5.2",
     "@vitejs/plugin-vue": "^5.0.4",
     "autoprefixer": "^10.4.19",
     "eslint": "^8.57.0",

@@ -7,7 +7,7 @@ const router = createRouter({
       path: "/",
       name: "home",
       component: () => import("@/views/HomeView.vue"),
-      meta: { noDefaultClass: true } // HomeView에서는 전역 스타일 무시
+      meta: { noDefaultClass: true }, // HomeView에서는 전역 스타일 무시
     },
 
     {
@@ -32,7 +32,7 @@ const router = createRouter({
           component: () => import("@/components/qna/QnaModify.vue"),
         },
         {
-          path: "/regist",
+          path: "regist",
           name: "QnaWrite",
           component: () => import("@/components/qna/QnaWrite.vue"),
         },

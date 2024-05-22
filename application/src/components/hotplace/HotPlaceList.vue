@@ -106,11 +106,9 @@ onBeforeMount(fetchHotPlaces);
 
 <template>
   <div class="container">
-    <div class="row justify-content-center">
-      <div class="col-lg-12">
-        <h2 class="my-3 py-3 shadow-sm bg-light text-center">
-          <mark class="sky">HotPlace</mark>
-        </h2>
+    <div class="row justify-content-center my-4">
+      <div class="col-lg-8">
+        <h2 class="text-center font-style">HotPlace</h2>
       </div>
       <div class="row align-self-center mb-2">
         <div class="col-md-2 text-start">
@@ -122,63 +120,55 @@ onBeforeMount(fetchHotPlaces);
             핫플레이스 등록
           </button>
         </div>
-        <div class="col-md-5 offset-5">
-          <form class="d-flex">
-            <div class="input-group input-group-sm">
-              <select class="form-select" v-model="key">
-                <option value="hotplaceName">제목</option>
-                <option value="comment">내용</option>
-                <option value="writer">작성자</option>
-              </select>
-              <input
-                type="text"
-                class="form-control"
-                placeholder="검색어"
-                v-model="word" />
-              <button class="btn btn-dark" type="button" @click="searchArticle">
-                검색
-              </button>
-            </div>
-          </form>
+        <div class="input-group my-4">
+          <select class="form-select" v-model="key">
+            <option value="qna_title">제목</option>
+            <option value="qna_content">내용</option>
+            <option value="qna_writer">작성자</option>
+          </select>
+          <input
+            type="text"
+            class="form-control"
+            placeholder="검색어를 입력해 주세요"
+            v-model="word" />
+          <button class="btn btn-dark" type="button" @click="searchArticle">
+            <font-awesome-icon
+              :icon="['fas', 'magnifying-glass']"
+              style="color: #fcfcfc" />
+          </button>
         </div>
 
-        <div class="bg-white">
-          <div class="mx-auto max-w-7xl px-4 py-16 sm:px-6 sm:py-24 lg:px-8">
-            <div
-              class="grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-3 xl:gap-x-8">
-              <div
-                v-for="hotplace in hotplaces"
-                :key="hotplace.hotplaceId"
-                class="group relative">
-                <div
-                  class="aspect-w-1 aspect-h-1 w-full overflow-hidden rounded-md bg-gray-200 lg:aspect-none group-hover:opacity-75 lg:h-80">
-                  <img
-                    :src="hotplace.image"
-                    :alt="hotplace.hotplaceName"
-                    class="h-full w-full object-cover object-center lg:h-full lg:w-full" />
-                </div>
-                <div class="mt-4 flex justify-between">
-                  <div>
-                    <h3 class="text-sm text-gray-700">
-                      <a @click="goDetail(hotplace.hotplaceId)">
-                        <span
-                          aria-hidden="true"
-                          class="absolute inset-0"></span>
-                        {{ hotplace.hotplaceName }}
-                      </a>
-                    </h3>
-                    <p class="mt-1 text-sm text-gray-500">
-                      {{ hotplace.comment }}
-                    </p>
-                  </div>
-                  <p class="text-sm font-medium text-gray-900">
-                    {{ hotplace.writer }}
-                  </p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
+        <v-row class="mt-8">
+          <v-col
+            v-for="hotplace in hotplaces"
+            :key="hotplace.hotplaceId"
+            cols="12"
+            md="4">
+            <v-card>
+              <v-img
+                :src="hotplace.image"
+                cover
+                height="200"
+                aspect-ratio="2.75"
+                alt="Hotplace Image">
+              </v-img>
+              <v-card-title>
+                <span class="headline">{{ hotplace.hotplaceName }}</span>
+              </v-card-title>
+              <v-card-text>{{ hotplace.comment }}</v-card-text>
+              <v-card-actions>
+                <v-btn
+                  color="primary"
+                  text
+                  @click="goDetail(hotplace.hotplaceId)">
+                  자세히 보기
+                </v-btn>
+                <v-spacer></v-spacer>
+                <v-subheader>{{ hotplace.writer }}</v-subheader>
+              </v-card-actions>
+            </v-card>
+          </v-col>
+        </v-row>
       </div>
     </div>
     <nav aria-label="Page navigation example">
@@ -218,6 +208,11 @@ onBeforeMount(fetchHotPlaces);
 
 <style scoped>
 .container {
-  padding: 1rem;
+  max-width: 1000px;
+}
+
+.font-style {
+  font-family: "CustomFont";
+  font-size: 50px;
 }
 </style>

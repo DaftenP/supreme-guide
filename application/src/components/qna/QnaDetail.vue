@@ -102,16 +102,15 @@ onBeforeMount(async () => {
 
 <template>
   <div class="container">
-    <div class="row justify-content-center">
+    <div class="row justify-content-center my-4">
       <div class="col-lg-12">
         <h2 class="my-3 py-3 shadow-sm bg-light text-center">
-          <mark class="sky">질문 상세 페이지</mark>
+          <h1 class="font-title">{{ qna.qnaTitle }}</h1>
         </h2>
       </div>
-      <div class="col-lg-12">
-        <h1>{{ qna.qnaTitle }}</h1>
-        <div class="d-flex justify-content-between">
-          <div>
+      <div>
+        <div class="qna-header d-flex justify-content-between">
+          <div id="font-small">
             <label for="writer">작성자 :</label>
             {{ qna.qnaWriter }}
           </div>
@@ -121,29 +120,30 @@ onBeforeMount(async () => {
             {{ qna.qnaView }}
           </div>
         </div>
-        <hr />
-        <span v-html="qna.qnaContent"></span>
-        <hr />
-        <div class="d-flex justify-content-end">
+        <div class="qna-body">
+          <span v-html="qna.qnaContent" class="qna-content"></span>
+        </div>
+        <div class="qna-footer d-flex justify-content-end">
           <a
-            class="btn btn-outline-primary ms-2 pe-4 ps-4"
+            class="btn btn-outline-primary ms-2"
             v-if="qna.qnaWriter === userStore.userId"
             href="#"
             @click.prevent="goModify"
             >수정</a
           >
           <a
-            class="btn btn-outline-danger ms-2 pe-4 ps-4"
+            class="btn btn-danger ms-2"
             v-if="qna.qnaWriter === userStore.userId"
             @click="deleteQna"
-            >삭제</a
-          >
-          <button class="btn btn-outline-dark ms-2 pe-4 ps-4" @click="goList">
+            ><font-awesome-icon :icon="['fas', 'trash']" style="color: #ffffff"
+          /></a>
+          <button class="btn btn-outline-dark ms-2" @click="goList">
             목록
           </button>
         </div>
-        <h3>댓글</h3>
-        <form @submit.prevent="registerComment">
+
+        <h3 class="mt-4">댓글</h3>
+        <form @submit.prevent="registerComment" class="mb-3">
           <div class="mb-3">
             <label for="newComment" class="form-label">댓글 작성</label>
             <textarea
@@ -155,19 +155,26 @@ onBeforeMount(async () => {
           <button type="submit" class="btn btn-primary">댓글 등록</button>
         </form>
         <hr />
-        <ul class="list-group mb-3">
+        <ul class="list-group">
           <li
-            class="list-group-item"
+            class="list-group-item mb-2"
             v-for="comment in comments"
             :key="comment.qnaCommentId">
-            <strong>{{ comment.userId }}:</strong> {{ comment.content }}
-
-            <button
-              v-if="comment.userId === userStore.userId"
-              class="btn btn-sm btn-outline-danger ms-2"
-              @click="deleteComment(comment.id)">
-              삭제
-            </button>
+            <div class="d-flex justify-content-between align-items-center">
+              <div>
+                <strong>{{ comment.userId }}:</strong> {{ comment.content }}
+              </div>
+              <div>
+                <button
+                  v-if="comment.userId === userStore.userId"
+                  class="btn btn-sm btn-danger rounded-pill px-3 py-1"
+                  @click="deleteComment(comment.id)">
+                  <font-awesome-icon
+                    :icon="['fas', 'trash']"
+                    style="color: #ffffff" />
+                </button>
+              </div>
+            </div>
           </li>
         </ul>
       </div>
@@ -175,4 +182,77 @@ onBeforeMount(async () => {
   </div>
 </template>
 
-<style scoped></style>
+<style scoped>
+.container {
+  max-width: 1000px;
+}
+
+.font-title {
+  font-family: "CustomFont";
+  font-size: 40px;
+}
+
+#font-small {
+  font-family: "CustomFont3";
+  font-size: 20px;
+}
+
+/* 댓글 목록 스타일 */
+.list-group {
+  max-height: 400px; /* 댓글이 너무 많아지는 것을 방지하기 위해 스크롤 가능한 영역 제한 */
+  overflow-y: auto; /* 스크롤 가능한 영역 만들기 */
+}
+
+.list-group-item:not(:last-child) {
+  border-bottom: 1px solid #dee2e6; /* 마지막 댓글 제외하고 아래 테두리 추가 */
+}
+
+.list-group-item {
+  border: 1px solid #dee2e6;
+  border-radius: 5px;
+}
+
+.mb-2 {
+  margin-bottom: 0.5rem !important;
+}
+
+/* 추가적인 커스텀 스타일 */
+.qna-header {
+  background-color: #f8f9fa;
+  padding: 1rem;
+  border-radius: 8px 8px 0 0;
+}
+
+.qna-footer {
+  background-color: #f8f9fa;
+  padding: 1rem;
+  border-radius: 0 0 8px 8px;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.qna-body {
+  padding: 1rem;
+  border: 1px solid #eee;
+  background-color: white;
+  border-top: none;
+  border-bottom: none;
+}
+
+/* 댓글 삭제 버튼 스타일 */
+.btn-danger {
+  background-color: #dc3545;
+  border-color: #dc3545;
+}
+
+.btn-danger:hover {
+  background-color: #c82333;
+  border-color: #bd2130;
+}
+
+.btn-danger:focus {
+  background-color: #b21f2d;
+  border-color: #9c1c23;
+  box-shadow: 0 0 0 0.25rem rgba(225, 83, 97, 0.5);
+}
+</style>

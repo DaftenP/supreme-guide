@@ -76,9 +76,6 @@ onBeforeMount(async () => {
 
 <template>
   <div class="container">
-    <div class="left-panel">
-      <MapComponent></MapComponent>
-    </div>
     <div class="right-panel">
       <div class="title">
         <h1>{{ hotplace.hotplaceName }}</h1>
@@ -98,6 +95,9 @@ onBeforeMount(async () => {
         <button @click="deleteHotplace">삭제</button>
         <button @click="goList">목록으로</button>
       </div>
+    </div>
+    <div class="left-panel">
+      <MapComponent></MapComponent>
     </div>
   </div>
 </template>
