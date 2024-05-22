@@ -4,7 +4,10 @@ import HeaderNav from "./components/commons/HeaderNav.vue";
 </script>
 
 <template>
-  <HeaderNav />
+  <div class="header">
+    <HeaderNav />
+  </div>
+  <div class="blank-space content"></div>
   <RouterView />
   <Footer />
 </template>
@@ -44,5 +47,23 @@ import HeaderNav from "./components/commons/HeaderNav.vue";
   background-size: cover;
   background-repeat: no-repeat;
   background-attachment: fixed;
+  background-color: azure;
 }
+
+.header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1000; /* 다른 컨텐츠 위에 놓이도록 z-index 설정 */
+}
+
+.content {
+  padding-top: 88px; /* HeaderNav의 높이만큼 상단 여백 추가 */
+}
+
+.blank-space {
+  height: 88px !important;
+}
+/* top: 88px -> 가상선택자 */
 </style>

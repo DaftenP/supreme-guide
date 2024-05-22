@@ -4,6 +4,9 @@
   margin: 0 auto;
   /* padding: 2rem; */
   font-weight: normal;
+  /* background-color: azure; */
+  position: relative;
+  /* animation: changeBackgroundColor 3s infinite alternate; */
 }
 
 a,
@@ -17,6 +20,18 @@ a,
 @media (hover: hover) {
   a:hover {
     background-color: hsla(160, 100%, 37%, 0.2);
+  }
+}
+
+@keyframes changeBackgroundColor {
+  0% {
+    background-color: #bee8f5; /* 초기 색상 */
+  }
+  50% {
+    background-color: #9dd3e9; /* 중간 색상 */
+  }
+  100% {
+    background-color: #abf8ee; /* 최종 색상 */
   }
 }
 

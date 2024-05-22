@@ -80,7 +80,7 @@ const isActive = (routeName) => {
 </script>
 
 <template>
-  <header class="bg-white shadow-md z-30 custom-font">
+  <header id="header" class="bg-white shadow-md z-30 custom-font">
     <nav
       class="mx-auto flex max-w-7xl items-center justify-between py-1 lg:px-5"
       aria-label="Global">
@@ -331,6 +331,15 @@ const isActive = (routeName) => {
 </template>
 
 <style scoped>
+.header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 999;
+  background-color: #ffffff; /* 원하는 배경색으로 설정하세요 */
+}
+
 .text-gray-700:hover {
   color: #007bff;
 }

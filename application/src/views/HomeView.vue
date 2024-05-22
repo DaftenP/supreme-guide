@@ -7,7 +7,6 @@ const images = ref([
   "/images/home2.jpg",
   "/images/home3.jpg",
   "/images/home4.jpg",
-  "/images/home4.jpg",
 ]);
 
 let currentIndex = ref(0);
@@ -138,9 +137,9 @@ const posts = [
     </div>
   </div>
 
-  <div class="bg-animation py-24 sm:py-32">
+  <div id="main" class="bg-animation py-24 sm:py-32">
     <div class="mx-auto max-w-7xl px-6 lg:px-8">
-      <div class="mx-auto max-w-2xl lg:mx-0">
+      <div class="mx-auto max-w-2xl lg:mx-0" style="margin-top: 20vh">
         <h2
           class="custom-fonts text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl"
           data-aos="fade-up">
@@ -174,6 +173,7 @@ const posts = [
         </button>
       </div>
       <div
+        id="main"
         class="mx-auto mt-10 grid max-w-2xl grid-cols-1 gap-x-8 gap-y-16 border-t border-gray-200 pt-10 sm:mt-16 sm:pt-16 lg:mx-0 lg:max-w-none lg:grid-cols-3">
         <article
           v-for="post in posts"
@@ -229,11 +229,6 @@ const posts = [
   width: 100%;
   height: 90vh; /* 높이를 조정하여 메인 화면을 설정합니다 */
   position: relative;
-}
-
-.frame {
-  border: 20px solid aquamarine; /* 액자 스타일의 테두리 */
-  box-shadow: 0 0 20px rgba(0, 0, 0, 0.5); /* 그림자 효과 */
 }
 
 .slider-container {
@@ -316,31 +311,19 @@ const posts = [
   font-size: 20px;
 }
 
-/* 배경 애니메이션 넣기 */
-.bg-animation {
-  position: relative;
+#main {
+  background-color: azure;
+  margin: 0;
+  padding: 0;
 }
 
-@keyframes backgroundAnimation {
-  0% {
-    background-color: #ffffff; /* 시작 색상 */
-  }
-  50% {
-    background-color: #bdf0e3; /* 중간 색상 */
-  }
-  100% {
-    background-color: #ffffff; /* 끝 색상 */
-  }
-}
-
-.bg-animation::before {
-  /* content: ""; */
-  position: absolute;
+.header {
+  position: fixed;
   top: 0;
   left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: #ffffff; /* 초기 배경 색상 */
-  animation: backgroundAnimation 10s infinite alternate; /* 애니메이션 지정 */
+  right: 0;
+  z-index: 999;
+  background-color: #ffffff;
+  height: 88px; /* 헤더의 높이를 88px로 설정하세요 */
 }
 </style>
