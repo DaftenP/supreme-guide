@@ -133,38 +133,25 @@ const goDetail = (id) => {
           class="col-md-4 mb-4"
           v-for="(qna, index) in qnas"
           :key="qna.qnaId"
-          :index="index"
-          :data-aos="'zoom-in'">
-          <div class="card h-100" @click="goDetail(qna.qnaId)">
-            <font-awesome-icon
-              :icon="['fas', 'question']"
-              class="card-icon"
-              style="color: #63e6be" />
+          :index="index">
+          <div
+            class="card h-100"
+            @click="goDetail(qna.qnaId)"
+            :data-aos="'fade-up'">
             <div class="card-body">
               <h5 class="card-title">
                 {{ qna.qnaTitle }}
               </h5>
 
-              <p class="card-text" id="font-small">
-                <font-awesome-icon
-                  :icon="['fas', 'user']"
-                  style="color: #000000" />
-                {{ qna.qnaView }}
-              </p>
-              {{ qna.qnaContent }}
+              <!-- {{ qna.qnaContent }} -->
               <br />
               <br />
               <div class="card-text d-flex">
                 <p>
-                  <font-awesome-icon
-                    :icon="['fas', 'calendar-days']"
-                    style="color: #000000" />{{ qna.qnaCreateDate }}
+                  {{ qna.qnaCreateDate }}
                 </p>
               </div>
               <p>
-                <font-awesome-icon
-                  :icon="['fas', 'pencil']"
-                  style="color: #000000" />
                 {{ qna.qnaWriter }}
               </p>
             </div>
