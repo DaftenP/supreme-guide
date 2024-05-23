@@ -1,5 +1,12 @@
 <script setup>
-import { ref, computed, onBeforeMount, reactive } from "vue";
+import {
+  ref,
+  computed,
+  onMounted,
+  onBeforeMount,
+  onBeforeUnmount,
+  reactive,
+} from "vue";
 import { useRoute, useRouter } from "vue-router";
 import noAuthClient from "@/api/noAuthClient";
 import Cookies from "vue-cookies";
@@ -37,7 +44,32 @@ const computedEndDate = computed(() => {
 const newComment = reactive({
   content: "",
 });
+const scrollContainer = ref(null);
 
+const handleItemClick = (item) => {
+  mapStore.lat = item.latitude;
+  mapStore.lng = item.longitude;
+};
+
+const handleWheel = (event) => {
+  event.preventDefault(); // 수직 스크롤 방지
+  const { deltaX, deltaY } = event;
+  scrollContainer.value.scrollLeft += deltaY + deltaX;
+};
+
+onMounted(() => {
+  if (scrollContainer.value) {
+    scrollContainer.value.addEventListener("wheel", handleWheel, {
+      passive: false,
+    });
+  }
+});
+
+onBeforeUnmount(() => {
+  if (scrollContainer.value) {
+    scrollContainer.value.removeEventListener("wheel", handleWheel);
+  }
+});
 const goModify = () => {
   router.push({
     name: "TripModify",
@@ -131,35 +163,54 @@ onBeforeMount(async () => {
       <div class="title">
         <h1>{{ tripStore.trip.tripName }}</h1>
       </div>
-      <div class="info">
+      <div class="info border-b">
         <span>작성자: {{ tripStore.trip.userName }}</span>
         <span>{{ tripStore.trip.tripCreateDate }}</span>
       </div>
-      <!-- <font-awesome-icon 
-      :icon="['fas', 'ellipsis-vertical']" style="color: #d3d5d9;"
-      @click="toggleActions" /> -->
       <div class="body">
         <div class="d-flex row pd-0 mg-0">
           <div class="col-lg-12 col-md-12">
-            <div>
+            <!-- <div>
               {{ computedStartDate }}
-            </div>
-            <div>
+              ~
               {{ computedEndDate }}
-            </div>
-            <div>
-              <span>설명 : </span>
+            </div> -->
+            <div class="border-b mb-5">
               <span v-html="tripStore.trip.tripContent"></span>
-            </div>
-            <div>
-              <li
-                v-for="item in tripStore.trip.tripItems"
-                :key="item.contentId">
-                {{ item.title }}
-              </li>
             </div>
             <div class="col-lg-12 col-md-12">
               <MapComponent :tripList="tripStore.trip.tripItems"></MapComponent>
+            </div>
+            <div class="container mx-auto p-0 mt-3 border rounded-lg">
+              <div
+                ref="scrollContainer"
+                class="flex align-items-center overflow-x-auto no-scrollbar w-full h-30">
+                <div
+                  v-for="item in tripStore.trip.tripItems"
+                  :key="item.contentId"
+                  class="d-flex align-items-center h-20 m-2 border border-gray-500 rounded-md cursor-pointer hover:bg-gray-50"
+                  @click="handleItemClick(item)">
+                  <div class="w-20">
+                    <img
+                      class="thumbnail m-1 border"
+                      :src="
+                        item.firstImage
+                          ? item.firstImage
+                          : `/src/assets/img/no-img.png`
+                      " />
+                  </div>
+                  <div class="w-25 pe-5">
+                    <span
+                      class="text-sm truncate overflow-hidden whitespace-nowrap"
+                      >{{ item.title }}</span
+                    ><br />
+                    <span
+                      class="text-xs truncate overflow-hidden whitespace-nowrap"
+                      >{{ item.addr1 }}</span
+                    >
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -172,7 +223,7 @@ onBeforeMount(async () => {
         </button>
         <button
           v-if="tripStore.trip.userId === userStore.userId"
-          @click="deleteQna">
+          @click="deleteTrip">
           삭제
         </button>
         <button @click="goList">목록</button>
@@ -181,9 +232,9 @@ onBeforeMount(async () => {
       <div class="divider"></div>
       <div class="comments">
         <h3>댓글</h3>
-        <form @submit.prevent="registerComment">
+        <form @submit.prevent="registComment">
           <textarea
-            v-model="newComment.commentContent"
+            v-model="newComment.content"
             placeholder="댓글 작성"></textarea>
           <button type="submit">댓글 등록</button>
         </form>
@@ -199,7 +250,7 @@ onBeforeMount(async () => {
               </span>
               <button
                 v-if="comment.userId === userStore.userId"
-                @click="deleteComment(comment.id)">
+                @click="removeComment(comment.id)">
                 삭제
               </button>
             </div>
@@ -240,7 +291,7 @@ onBeforeMount(async () => {
 .info {
   font-size: 14px;
   color: #555;
-  margin-bottom: 20px;
+  margin-bottom: 10px;
 }
 
 .info span {
@@ -324,5 +375,21 @@ onBeforeMount(async () => {
   height: 2px;
   background: linear-gradient(to right, #ff7e5f, #feb47b);
   margin: 30px 0;
+}
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+}
+.thumbnail {
+  width: 70px; /* 원하는 너비 설정 */
+  height: 70px; /* 원하는 높이 설정 */
+  object-fit: cover; /* 비율을 유지하면서 주어진 너비와 높이에 맞게 조정 */
+  object-position: center; /* 이미지가 잘릴 때 중앙을 기준으로 잘리도록 설정 */
+  display: block; /* 이미지를 블록 요소로 설정 */
+  overflow: hidden; /* 넘치는 부분은 숨김 */
+  border-radius: 10px;
 }
 </style>
