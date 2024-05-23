@@ -9,7 +9,6 @@ import HeaderNav from "./components/commons/HeaderNav.vue";
   </div>
   <div class="blank-space content"></div>
   <RouterView />
-  <br /><br />
   <Footer />
 </template>
 

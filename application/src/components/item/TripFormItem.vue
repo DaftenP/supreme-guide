@@ -25,7 +25,6 @@ const refWriter = ref(null);
 const scrollContainer = ref(null);
 
 const handleItemClick = (item) => {
-  console.log(12312);
   mapStore.lat = item.latitude;
   mapStore.lng = item.longitude;
 };

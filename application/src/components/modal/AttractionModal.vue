@@ -1,23 +1,27 @@
 <script setup>
 import { ref } from "vue";
 import { useMapStore } from "@/stores/map";
-
-const mapStore = useMapStore();
+import BlogArticleItem from "@/components/item/BlogArticleItem.vue";
+import YoutubeVideoItem from "@/components/item/YoutubeVideoItem.vue";
+const props = defineProps({
+  title: String,
+  blogList: Object,
+  videoList: Object,
+});
 </script>
 
 <template>
-  <!-- Modal -->
   <div
     class="modal fade"
     id="attractionModal"
     tabindex="-1"
     aria-labelledby="attractionModalLabel"
     aria-hidden="true">
-    <div class="modal-dialog">
+    <div class="modal-dialog mt-30">
       <div class="modal-content">
         <div class="modal-header">
           <h5 class="modal-title" id="attractionModalLabel">
-            {{ mapStore.attractionInfo.title }}
+            {{ title }}
           </h5>
           <button
             type="button"
@@ -26,22 +30,54 @@ const mapStore = useMapStore();
             aria-label="Close"></button>
         </div>
         <div class="modal-container overflow-auto" @click.stop="">
-          <div class="d-flex justify-content-center">
-            <img
-              class="modal-img"
-              :src="
-                mapStore.attractionInfo.firstImage
-                  ? mapStore.attractionInfo.firstImage
-                  : 'http://localhost:5173/src/assets/img/no-img.png'
-              " />
+          <div>
+            <ul class="nav nav-tabs" id="myTab" role="tablist">
+              <li class="nav-item" role="presentation">
+                <button
+                  class="nav-link active"
+                  id="blog-tab"
+                  data-bs-toggle="tab"
+                  data-bs-target="#blog"
+                  type="button"
+                  role="tab"
+                  aria-controls="blog"
+                  aria-selected="true">
+                  네이버 블로그
+                </button>
+              </li>
+              <li class="nav-item" role="presentation">
+                <button
+                  class="nav-link"
+                  id="video-tab"
+                  data-bs-toggle="tab"
+                  data-bs-target="#video"
+                  type="button"
+                  role="tab"
+                  aria-controls="video"
+                  aria-selected="false">
+                  유튜브
+                </button>
+              </li>
+            </ul>
           </div>
-          <div></div>
-          <div>{{ mapStore.attractionInfo.addr1 }}</div>
-          <div>{{ mapStore.attractionInfo.addr2 }}</div>
-          <div>{{ mapStore.attractionInfo.zipcode }}</div>
-          <div>{{ mapStore.attractionInfo.tel }}</div>
-          <div>{{ mapStore.attractionInfo.description }}</div>
-          <BlogArticleItem :articles="mapStore.blogList"></BlogArticleItem>
+          <div class="tab-content">
+            <div
+              class="tab-pane fade show active"
+              id="blog"
+              role="tabpanel"
+              aria-labelledby="blog-tab">
+              <BlogArticleItem :articles="blogList"></BlogArticleItem>
+            </div>
+            <div
+              class="tab-pane fade"
+              id="video"
+              role="tabpanel"
+              aria-labelledby="video-tab">
+              <YoutubeVideoItem
+                :videos="videoList"
+                type="modal"></YoutubeVideoItem>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -58,7 +94,9 @@ const mapStore = useMapStore();
 .modal-img {
   width: 80%;
 }
-
+.modal-dialog {
+  margin-top: 120px; /* 원하는 값으로 조정 */
+}
 ::-webkit-scrollbar-button:start {
   display: block;
   height: 22px;
