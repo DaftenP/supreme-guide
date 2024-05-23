@@ -102,8 +102,7 @@ onBeforeMount(async () => {
 
 <template>
   <div class="container">
-    
-    <div class="content" >
+    <div class="content">
       <div class="title">
         <h1>{{ qna.qnaTitle }}</h1>
       </div>
@@ -119,23 +118,41 @@ onBeforeMount(async () => {
         <p v-html="qna.qnaContent"></p>
       </div>
       <div class="actions">
-      <button v-if="qna.qnaWriter === userStore.userId" @click.prevent="goModify">수정</button>
-      <button v-if="qna.qnaWriter === userStore.userId" @click="deleteQna">삭제</button>
-      <button @click="goList">목록</button>
-    </div>
+        <button
+          v-if="qna.qnaWriter === userStore.userId"
+          @click.prevent="goModify">
+          수정
+        </button>
+        <button v-if="qna.qnaWriter === userStore.userId" @click="deleteQna">
+          삭제
+        </button>
+        <button @click="goList">목록</button>
+      </div>
 
-    <div class="divider"></div>
+      <div class="divider"></div>
       <div class="comments">
         <h3>댓글</h3>
         <form @submit.prevent="registerComment">
-          <textarea v-model="newComment.commentContent" placeholder="댓글 작성"></textarea>
+          <textarea
+            v-model="newComment.commentContent"
+            placeholder="댓글 작성"></textarea>
           <button type="submit">댓글 등록</button>
         </form>
         <ul>
           <li v-for="comment in comments" :key="comment.qnaCommentId">
             <div class="comment">
-              <span><strong>{{ comment.userId }}:</strong> {{ comment.content }}</span>
-              <button v-if="comment.userId === userStore.userId" @click="deleteComment(comment.id)">삭제</button>
+              <span
+                :class="comment.harmful ? 'blur-sm cursor-pointer' : ''"
+                @click="comment.harmful = false"
+                class="select-none transition duration-500 ease-in-out">
+                <strong>{{ comment.userId }}:</strong>
+                {{ comment.content }}
+              </span>
+              <button
+                v-if="comment.userId === userStore.userId"
+                @click="deleteComment(comment.id)">
+                삭제
+              </button>
             </div>
           </li>
         </ul>
@@ -150,7 +167,7 @@ onBeforeMount(async () => {
   max-width: 800px;
   margin: 0 auto;
   padding: 20px;
-  font-family: 'Arial', sans-serif;
+  font-family: "Arial", sans-serif;
 }
 
 .content {
@@ -158,7 +175,7 @@ onBeforeMount(async () => {
   padding: 20px;
   border: 1px solid #ddd;
   border-radius: 4px;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .title h1 {
@@ -254,5 +271,4 @@ onBeforeMount(async () => {
   background: linear-gradient(to right, #ff7e5f, #feb47b);
   margin: 30px 0;
 }
-
 </style>

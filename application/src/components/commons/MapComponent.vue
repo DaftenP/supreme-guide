@@ -16,6 +16,7 @@ const props = defineProps({
   attractions: Object,
   searchPlaces: String,
   tripList: Object,
+  type: String,
 });
 
 const markerList = computed(() => {
@@ -35,7 +36,9 @@ const markerList = computed(() => {
 
 const onLoadKakaoMap = (mapRef) => {
   map.value = mapRef;
-  getLocation();
+  if (props.type == "attractionSearch") {
+    getLocation();
+  }
 };
 
 const searchPlaces = () => {
@@ -143,12 +146,13 @@ defineExpose({
 <template>
   <div id="div-map">
     <KakaoMap
+      class="rounded-lg border"
       :lat="mapStore.lat"
       :lng="mapStore.lng"
       @onLoadKakaoMap="onLoadKakaoMap"
       width="100%"
       height="100%"
-      level="6">
+      :level="type == 'attractionSearch' ? 6 : 11">
       <KakaoMapMarker
         v-for="(attraction, index) in attractions"
         :key="index"

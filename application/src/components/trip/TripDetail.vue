@@ -1,5 +1,12 @@
 <script setup>
-import { ref, computed, onBeforeMount, reactive } from "vue";
+import {
+  ref,
+  computed,
+  onMounted,
+  onBeforeMount,
+  onBeforeUnmount,
+  reactive,
+} from "vue";
 import { useRoute, useRouter } from "vue-router";
 import noAuthClient from "@/api/noAuthClient";
 import Cookies from "vue-cookies";
@@ -37,7 +44,32 @@ const computedEndDate = computed(() => {
 const newComment = reactive({
   content: "",
 });
+const scrollContainer = ref(null);
 
+const handleItemClick = (item) => {
+  mapStore.lat = item.latitude;
+  mapStore.lng = item.longitude;
+};
+
+const handleWheel = (event) => {
+  event.preventDefault(); // 수직 스크롤 방지
+  const { deltaX, deltaY } = event;
+  scrollContainer.value.scrollLeft += deltaY + deltaX;
+};
+
+onMounted(() => {
+  if (scrollContainer.value) {
+    scrollContainer.value.addEventListener("wheel", handleWheel, {
+      passive: false,
+    });
+  }
+});
+
+onBeforeUnmount(() => {
+  if (scrollContainer.value) {
+    scrollContainer.value.removeEventListener("wheel", handleWheel);
+  }
+});
 const goModify = () => {
   router.push({
     name: "TripModify",
@@ -127,95 +159,101 @@ onBeforeMount(async () => {
 
 <template>
   <div class="container">
-    <div class="row justify-content-center">
-      <div class="col-lg-12">
-        <h2 class="my-3 py-3 shadow-sm bg-light text-center">
-          <mark class="sky">여행 상세 페이지</mark>
-        </h2>
-      </div>
-      <div class="col-lg-12">
+    <div class="content">
+      <div class="title">
         <h1>{{ tripStore.trip.tripName }}</h1>
-        <div class="d-flex justify-content-between">
-          <div>
-            <label for="writer">작성자 :</label>
-            {{ tripStore.trip.userName }}
-          </div>
-          <div>
-            {{ tripStore.trip.tripCreateDate }}
-            <label class="ms-1" for="view">조회 </label>
-            {{ tripStore.trip.tripView }}
-          </div>
-        </div>
-        <hr />
+      </div>
+      <div class="info border-b">
+        <span>작성자: {{ tripStore.trip.userName }}</span>
+        <span>{{ tripStore.trip.tripCreateDate }}</span>
+      </div>
+      <div class="body">
         <div class="d-flex row pd-0 mg-0">
-          <div class="col-lg-6 col-md-12">
-            <MapComponent :tripList="tripStore.trip.tripItems"></MapComponent>
-          </div>
-          <div class="col-lg-6 col-md-12">
-            <div>
+          <div class="col-lg-12 col-md-12">
+            <!-- <div>
               {{ computedStartDate }}
-            </div>
-            <div>
+              ~
               {{ computedEndDate }}
-            </div>
-            <div>
-              <span>설명 : </span>
+            </div> -->
+            <div class="border-b mb-5">
               <span v-html="tripStore.trip.tripContent"></span>
             </div>
-            <div>
-              <li
-                v-for="item in tripStore.trip.tripItems"
-                :key="item.contentId">
-                {{ item.title }}
-              </li>
+            <div class="col-lg-12 col-md-12">
+              <MapComponent :tripList="tripStore.trip.tripItems"></MapComponent>
+            </div>
+            <div class="container mx-auto p-0 mt-3 border rounded-lg">
+              <div
+                ref="scrollContainer"
+                class="flex align-items-center overflow-x-auto no-scrollbar w-full h-30">
+                <div
+                  v-for="item in tripStore.trip.tripItems"
+                  :key="item.contentId"
+                  class="d-flex align-items-center h-20 m-2 border border-gray-500 rounded-md cursor-pointer hover:bg-gray-50"
+                  @click="handleItemClick(item)">
+                  <div class="w-20">
+                    <img
+                      class="thumbnail m-1 border"
+                      :src="
+                        item.firstImage
+                          ? item.firstImage
+                          : `/src/assets/img/no-img.png`
+                      " />
+                  </div>
+                  <div class="w-25 pe-5">
+                    <span
+                      class="text-sm truncate overflow-hidden whitespace-nowrap"
+                      >{{ item.title }}</span
+                    ><br />
+                    <span
+                      class="text-xs truncate overflow-hidden whitespace-nowrap"
+                      >{{ item.addr1 }}</span
+                    >
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
-        <hr />
-        <div class="d-flex justify-content-end">
-          <a
-            class="btn btn-outline-primary ms-2 pe-4 ps-4"
-            v-if="tripStore.trip.userId === userStore.userId"
-            href="#"
-            @click.prevent="goModify"
-            >수정</a
-          >
-          <a
-            class="btn btn-outline-danger ms-2 pe-4 ps-4"
-            v-if="tripStore.trip.userId == userStore.userId"
-            @click="deleteTrip"
-            >삭제</a
-          >
-          <button class="btn btn-outline-dark ms-2 pe-4 ps-4" @click="goList">
-            목록
-          </button>
-        </div>
+      </div>
+      <div class="actions">
+        <button
+          v-if="tripStore.trip.userId === userStore.userId"
+          @click.prevent="goModify">
+          수정
+        </button>
+        <button
+          v-if="tripStore.trip.userId === userStore.userId"
+          @click="deleteTrip">
+          삭제
+        </button>
+        <button @click="goList">목록</button>
+      </div>
+
+      <div class="divider"></div>
+      <div class="comments">
         <h3>댓글</h3>
         <form @submit.prevent="registComment">
-          <div class="mb-3">
-            <label for="newComment" class="form-label">댓글 작성</label>
-            <textarea
-              class="form-control"
-              id="newComment"
-              rows="3"
-              v-model="newComment.content"></textarea>
-          </div>
-          <button type="submit" class="btn btn-primary">댓글 등록</button>
+          <textarea
+            v-model="newComment.content"
+            placeholder="댓글 작성"></textarea>
+          <button type="submit">댓글 등록</button>
         </form>
-        <hr />
-        <ul class="list-group mb-3">
-          <li
-            class="list-group-item"
-            v-for="comment in comments"
-            :key="comment.tripCommentId">
-            <strong>{{ comment.userId }}:</strong> {{ comment.content }}
-
-            <button
-              v-if="comment.userId === userStore.userId"
-              class="btn btn-sm btn-outline-danger ms-2"
-              @click="removeComment(comment.id)">
-              삭제
-            </button>
+        <ul>
+          <li v-for="comment in comments" :key="comment.tripCommentId">
+            <div class="comment">
+              <span
+                :class="comment.harmful ? 'blur-sm cursor-pointer' : ''"
+                @click="comment.harmful = false"
+                class="select-none transition duration-500 ease-in-out">
+                <strong>{{ comment.userId }}:</strong>
+                {{ comment.content }}
+              </span>
+              <button
+                v-if="comment.userId === userStore.userId"
+                @click="removeComment(comment.id)">
+                삭제
+              </button>
+            </div>
           </li>
         </ul>
       </div>
@@ -227,5 +265,131 @@ onBeforeMount(async () => {
 #div-map {
   width: 100% !important;
   height: 600px !important;
+}
+
+.container {
+  width: 100%;
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+  font-family: "Arial", sans-serif;
+}
+
+.content {
+  background-color: #fff;
+  padding: 20px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.title h1 {
+  font-size: 24px;
+  margin-bottom: 10px;
+}
+
+.info {
+  font-size: 14px;
+  color: #555;
+  margin-bottom: 10px;
+}
+
+.info span {
+  margin-right: 15px;
+}
+
+.body p {
+  font-size: 16px;
+  line-height: 1.6;
+  white-space: pre-line;
+}
+
+.actions {
+  margin-top: 20px;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.actions button {
+  margin-left: 10px;
+  padding: 5px 10px;
+  font-size: 14px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.actions button:hover {
+  background-color: #f0f0f0;
+}
+
+.comments {
+  margin-top: 30px;
+}
+
+.comments h3 {
+  font-size: 20px;
+  margin-bottom: 10px;
+}
+
+.comments form {
+  margin-bottom: 20px;
+}
+
+.comments textarea {
+  width: 100%;
+  height: 60px;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  margin-bottom: 10px;
+}
+
+.comments textarea:focus {
+  outline: none;
+  border-color: #aaa;
+}
+
+.comments button {
+  padding: 5px 10px;
+  font-size: 14px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.comments button:hover {
+  background-color: #f0f0f0;
+}
+
+.comments ul {
+  list-style: none;
+  padding: 0;
+}
+
+.comments li {
+  padding: 10px;
+}
+
+.divider {
+  height: 2px;
+  background: linear-gradient(to right, #ff7e5f, #feb47b);
+  margin: 30px 0;
+}
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+}
+.thumbnail {
+  width: 70px; /* 원하는 너비 설정 */
+  height: 70px; /* 원하는 높이 설정 */
+  object-fit: cover; /* 비율을 유지하면서 주어진 너비와 높이에 맞게 조정 */
+  object-position: center; /* 이미지가 잘릴 때 중앙을 기준으로 잘리도록 설정 */
+  display: block; /* 이미지를 블록 요소로 설정 */
+  overflow: hidden; /* 넘치는 부분은 숨김 */
+  border-radius: 10px;
 }
 </style>
