@@ -3,7 +3,7 @@ import { ref, reactive } from "vue";
 import { useRouter } from "vue-router";
 import { KakaoMap, KakaoMapMarker } from "vue3-kakao-maps";
 import axios from "axios";
-import MapComponent from "@/components/commons/MapComponent2.vue";
+import MapComponent from "@/components/commons/MapComponent.vue";
 import PhotoUpload from "../item/PhotoUpload.vue";
 import authClient from "@/api/authClient";
 import { useMapStore } from "@/stores/map";
@@ -75,17 +75,29 @@ const goList = () => {
   <div class="container my-5">
     <div class="row justify-content-center">
       <div class="col-md-6">
-        <MapComponent :searchPlaces="searchQuery" ref="mapComponentRef"></MapComponent>
+        <MapComponent
+          :searchPlaces="searchQuery"
+          ref="mapComponentRef"></MapComponent>
       </div>
       <div class="col-md-6">
         <div class="search-box mb-4">
-          <input v-model="searchQuery" placeholder="장소 검색" class="form-control" />
-          <button @click="searchPlaces" class="btn btn-primary mt-2">검색</button>
+          <input
+            v-model="searchQuery"
+            placeholder="장소 검색"
+            class="form-control" />
+          <button @click="searchPlaces" class="btn btn-primary mt-2">
+            검색
+          </button>
         </div>
         <form @submit.prevent="submitForm" class="form-needs">
           <div class="form-group mb-3">
             <label for="title">제목</label>
-            <input type="text" id="title" v-model="title" class="form-control" required />
+            <input
+              type="text"
+              id="title"
+              v-model="title"
+              class="form-control"
+              required />
           </div>
           <div class="form-group mb-3">
             <label for="type">관광지 유형</label>
@@ -103,11 +115,18 @@ const goList = () => {
           </div>
           <div class="form-group mb-3">
             <label for="description">설명</label>
-            <textarea id="description" v-model="description" class="form-control" required></textarea>
+            <textarea
+              id="description"
+              v-model="description"
+              class="form-control"
+              required></textarea>
           </div>
           <div class="form-group mb-3">
             <label>이미지 첨부</label>
-            <PhotoUpload :width="'100%'" :height="'100%'" @update:image="updateImage" />
+            <PhotoUpload
+              :width="'100%'"
+              :height="'100%'"
+              @update:image="updateImage" />
           </div>
           <button type="submit" class="btn btn-success">등록</button>
         </form>

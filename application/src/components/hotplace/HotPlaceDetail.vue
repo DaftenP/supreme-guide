@@ -5,8 +5,8 @@ import noAuthClient from "@/api/noAuthClient";
 import { useUserStore } from "@/stores/userStore";
 import { useMapStore } from "@/stores/map";
 import authClient from "@/api/authClient";
-import MapComponent from "@/components/commons/MapComponent2.vue";
-import ImageFrame from "@/components/item/ImageFrame.vue";  // 추가
+import MapComponent from "@/components/commons/MapComponent.vue";
+import ImageFrame from "@/components/item/ImageFrame.vue"; // 추가
 
 const IMAGE_URL = import.meta.env.VITE_IMAGE_BASE_URL;
 
@@ -129,8 +129,7 @@ onBeforeMount(async () => {
           <div class="comment-form">
             <textarea
               v-model="newComment.commentContent"
-              placeholder="댓글을 입력하세요"
-            ></textarea>
+              placeholder="댓글을 입력하세요"></textarea>
             <button type="submit">댓글 추가</button>
           </div>
         </form>
@@ -143,8 +142,7 @@ onBeforeMount(async () => {
               >
               <button
                 v-if="comment.userId === userStore.userId"
-                @click="deleteComment(comment.id)"
-              >
+                @click="deleteComment(comment.id)">
                 삭제
               </button>
             </div>
