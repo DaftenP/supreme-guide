@@ -20,16 +20,17 @@ onUpdated(() => {
   console.log(`정보: ${JSON.stringify(trip)}`);
 });
 
-const goList = () => {
+const goArticle = (param) => {
   router.push({
-    name: "TripList",
+    name: "TripDetail",
+    params: { tripId: param },
   });
 };
 
 const modifyArticle = async (param) => {
   await putArticle(param, (res) => {
     alert("등록 완료");
-    goList();
+    goArticle(param.tripId);
   }),
     (err) => {
       console.log(err);
