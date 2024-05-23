@@ -37,8 +37,8 @@
     </select>
 
     <insert id="regist" parameterType="notice">
-        INSERT INTO notice(notice_id, notice_title, notice_content, notice_view, notice_writer, notice_create_date)
-        VALUES (#{noticeId}, #{noticeTitle}, #{noticeContent}, #{noticeView}, #{noticeWriter}, #{noticeCreateDate})
+        INSERT INTO notice(notice_id, notice_title, notice_content, notice_view, notice_writer)
+        VALUES (#{noticeId}, #{noticeTitle}, #{noticeContent}, #{noticeView}, #{noticeWriter})
     </insert>
 
     <select id="select" parameterType="int" resultType="notice">
