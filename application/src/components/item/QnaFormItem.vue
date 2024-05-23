@@ -47,18 +47,22 @@ const goList = () => {
 
 <template>
   <div class="blog-post">
-    <h2 class="blog-post-title">Q&A {{ type === "create" ? "등록" : "수정" }}</h2>
-    <p class="blog-post-meta">{{ new Date().toLocaleDateString() }} by <a href="#">{{ qna.qnaWriter }}</a></p>
+    <h2 class="blog-post-title">
+      Q&A {{ type === "create" ? "등록" : "수정" }}
+    </h2>
+    <p class="blog-post-meta">
+      {{ new Date().toLocaleDateString() }} by
+      <a href="#">{{ qna.qnaWriter }}</a>
+    </p>
 
     <div class="title-line">
       <input
         class="title-input"
         v-model="qna.qnaTitle"
         ref="refTitle"
-        placeholder="여기에 제목을 적어주세요"
-      />
+        placeholder="여기에 제목을 적어주세요" />
     </div>
-    
+
     <div class="mb-3">
       <label class="form-label visually-hidden" for="content">내용</label>
       <textarea
@@ -68,17 +72,14 @@ const goList = () => {
         rows="10"
         v-model="qna.qnaContent"
         ref="refContent"
-        placeholder="내용을 여기에 입력하세요..."
-      ></textarea>
+        placeholder="내용을 여기에 입력하세요..."></textarea>
     </div>
 
     <div class="d-flex justify-content-end mt-4">
       <button class="btn btn-primary" @click="validate">
         {{ type === "create" ? "등록" : "수정" }}
       </button>
-      <button class="btn btn-secondary ms-2" @click="goList">
-        목록
-      </button>
+      <button class="btn btn-secondary ms-2" @click="goList">목록</button>
     </div>
   </div>
 </template>
@@ -136,6 +137,4 @@ const goList = () => {
   background-color: #6c757d;
   border-color: #6c757d;
 }
-
-
 </style>

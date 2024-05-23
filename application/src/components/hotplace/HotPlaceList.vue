@@ -20,7 +20,7 @@ const IMAGE_URL = import.meta.env.VITE_IMAGE_BASE_URL;
 console.log(IMAGE_URL);
 
 const searchCondition = ref({
-  countPerPage: 6,
+  countPerPage: 3,
   key: "",
   word: "",
   currentPage: 1,
@@ -43,8 +43,6 @@ const goDetail = (id) => {
     },
   });
 };
-
-
 
 const searchArticle = () => {
   // 검색어 입력 상태에서만 검색 조건 업데이트하도록
@@ -146,7 +144,7 @@ onBeforeMount(fetchHotPlaces);
             :key="hotplace.hotplaceId"
             cols="12"
             md="4">
-            <v-card :data-aos="'fade-up'">
+            <v-card :data-aos="'fade-up'" :data-aos-delay="index * 100">
               <v-img
                 :src="hotplace.image"
                 cover
@@ -241,7 +239,4 @@ onBeforeMount(fetchHotPlaces);
   font-family: "CustomFont";
   font-size: 20px;
 }
-
-
-
 </style>

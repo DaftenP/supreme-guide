@@ -4,10 +4,13 @@ import {
   KakaoMapMarker,
   KakaoMapMarkerPolyline,
 } from "vue3-kakao-maps";
-import { ref, computed, onBeforeMount } from "vue";
+import { ref, computed } from "vue";
 import { useMapStore } from "@/stores/map";
+import { mapListStore } from "@/stores/mapStore";
 
 const mapStore = useMapStore();
+const mapListStores = mapListStore();
+
 const error = ref(null);
 const map = ref();
 const hotplaceMarkerList = ref([]);
@@ -50,6 +53,8 @@ const placesSearchCB = (data, status) => {
   if (status === kakao.maps.services.Status.OK) {
     const bounds = new kakao.maps.LatLngBounds();
     const geocoder = new kakao.maps.services.Geocoder();
+    // 마커 수 추적
+    let processedMarkers = 0;
 
     for (let marker of data) {
       const markerItem = {
@@ -67,21 +72,28 @@ const placesSearchCB = (data, status) => {
         } else {
           markerItem.address = "주소 검색 실패";
         }
+
+        newMarkerList.value.push(markerItem);
+        processedMarkers++;
+        if (processedMarkers === data.length) {
+          hotplaceMarkerList.value = newMarkerList.value;
+          map.value.setBounds(bounds);
+          mapListStores.maplist = newMarkerList.value;
+          console.log(newMarkerList.value);
+        }
       });
-
-      newMarkerList.value.push(markerItem);
-
       bounds.extend(new kakao.maps.LatLng(Number(marker.y), Number(marker.x)));
+
+      // hotplaceMarkerList.value = newMarkerList.value;
+
+      map.value.setBounds(bounds);
     }
-
-    hotplaceMarkerList.value = newMarkerList.value;
-
-    map.value.setBounds(bounds);
   } else {
     console.error("검색 실패:", status);
   }
 };
 
+console.log(newMarkerList.value);
 const onClickMapMarker = (markerItem) => {
   // Map Store의 상태 업데이트
   mapStore.lat = markerItem.lat;

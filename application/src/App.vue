@@ -45,7 +45,7 @@ import HeaderNav from "./components/commons/HeaderNav.vue";
 #app {
   background-image: url("/images/new-background.jpg");
   background-size: cover;
-  background-repeat: no-repeat;
+
   background-attachment: fixed;
   background-color: azure;
 }
