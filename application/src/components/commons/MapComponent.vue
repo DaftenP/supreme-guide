@@ -143,6 +143,7 @@ defineExpose({
 <template>
   <div id="div-map">
     <KakaoMap
+      class="rounded-lg border"
       :lat="mapStore.lat"
       :lng="mapStore.lng"
       @onLoadKakaoMap="onLoadKakaoMap"
