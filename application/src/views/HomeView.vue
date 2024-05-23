@@ -1,6 +1,6 @@
 <script setup>
 import { ref, onMounted, onBeforeMount } from "vue";
-import { useRouter } from 'vue-router';
+import { useRouter } from "vue-router";
 import AOS from "aos";
 import noAuthClient from "@/api/noAuthClient";
 import "aos/dist/aos.css";
@@ -19,30 +19,30 @@ const router = useRouter();
 
 onMounted(() => {
   images.value = [...images.value, ...images.value];
-})
-
+});
 
 const nextSlide = () => {
-  currentIndex.value = (currentIndex.value + 1) % images.value.length;
+  currentIndex.value = (currentIndex.value + 1) % images2.value.length;
 };
 
 // 핫플레이스 상세 페이지로 이동 함수
 const navigateToHotplaceDetail = (hotplaceId) => {
   // vue-router를 사용하는 경우
-  router.push({ name: 'HotplaceDetail', params: { id: hotplaceId } });
-
+  router.push({ name: "HotplaceDetail", params: { id: hotplaceId } });
 };
 // slider에 뿌릴 hotplace list가져오기
 const fetchHotPlaces = async () => {
   try {
     let url = `${import.meta.env.VITE_API_BASE_URL}/hotplace/all`;
-    
+
     const res = await noAuthClient({
       method: "get",
       url: url,
     });
     hotplaces.value = res.data || [];
-    images.value = hotplaces.value.map(hotplace => `/${IMAGE_URL}/${hotplace.image}`);
+    images.value = hotplaces.value.map(
+      (hotplace) => `/${IMAGE_URL}/${hotplace.image}`
+    );
     // const startIndex =
     //   (searchCondition.value.currentPage - 1) *
     //   searchCondition.value.countPerPage;
@@ -73,7 +73,7 @@ onMounted(() => {
 
 onBeforeMount(async () => {
   await fetchHotPlaces();
-})
+});
 
 const posts = [
   {
@@ -174,18 +174,20 @@ const posts = [
       </p>
     </div>
     <div class="box-container z-20" style="margin-bottom: 5dvb">
-  <div
-    v-for="(hotplace, index) in hotplaces"
-    :key="hotplace.id"
-    class="box"
-    :data-aos="'fade-up'"
-    :data-aos-delay="index * 100"
-    @click="navigateToHotplaceDetail(hotplace.hotplaceId)">
-    <img :src="`${IMAGE_URL}/${hotplace.image}`" alt="hotplace image" class="box-image" />
-    <!-- <h3 class="box-title">{{ hotplace.hotplaceName }}</h3> -->
-  </div>
-</div>
-
+      <div
+        v-for="(hotplace, index) in hotplaces"
+        :key="hotplace.id"
+        class="box"
+        :data-aos="'fade-up'"
+        :data-aos-delay="index * 100"
+        @click="navigateToHotplaceDetail(hotplace.hotplaceId)">
+        <img
+          :src="`${IMAGE_URL}/${hotplace.image}`"
+          alt="hotplace image"
+          class="box-image" />
+        <!-- <h3 class="box-title">{{ hotplace.hotplaceName }}</h3> -->
+      </div>
+    </div>
   </div>
 
   <div id="main" class="bg-animation py-24 sm:py-32">
@@ -409,6 +411,4 @@ const posts = [
   background-color: #ffffff;
   height: 88px; /* 헤더의 높이를 88px로 설정하세요 */
 }
-
-
 </style>
