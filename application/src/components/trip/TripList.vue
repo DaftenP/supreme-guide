@@ -87,9 +87,9 @@ const goDetail = (id) => {
         <div class="col-6"></div>
         <div class="col-6 d-flex">
           <select class="form-select" v-model="key">
-            <option value="trip_title">제목</option>
+            <option value="trip_name">제목</option>
             <option value="trip_content">내용</option>
-            <option value="trip_writer">작성자</option>
+            <option value="t.user_id">작성자</option>
           </select>
           <input
             type="text"
@@ -144,7 +144,7 @@ const goDetail = (id) => {
         id="font-small"
         v-if="userStore.userId != ''"
         @click="movePage">
-        질문 등록
+        여행 등록
         <font-awesome-icon
           :icon="['fas', 'arrow-right']"
           style="color: black" />
