@@ -75,7 +75,6 @@ onMounted(() => {
 onBeforeMount(async () => {
   await fetchHotPlaces();
 });
-
 </script>
 
 <template>
@@ -108,8 +107,6 @@ onBeforeMount(async () => {
         v-for="(hotplace, index) in hotplaces"
         :key="hotplace.id"
         class="box"
-        :data-aos="'fade-up'"
-        :data-aos-delay="index * 100"
         @click="navigateToHotplaceDetail(hotplace.hotplaceId)">
         <img
           :src="`${IMAGE_URL}/${hotplace.image}`"
@@ -179,7 +176,7 @@ onBeforeMount(async () => {
 .box-container {
   overflow: hidden;
   position: absolute;
-  bottom: -40%; /* 이미지와 겹치도록 박스 위치 조정 */
+  bottom: 3%; /* 이미지와 겹치도록 박스 위치 조정 */
   left: 50%;
   transform: translate(-50%, 60%); /* Y 축으로 90% 이동하여 겹침 효과 */
   display: flex;
