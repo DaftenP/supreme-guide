@@ -3,6 +3,7 @@ import { ref, onMounted } from "vue";
 
 const props = defineProps({
   videos: Object,
+  type: String,
 });
 
 const container = ref();
@@ -32,21 +33,9 @@ const adjustGridColumns = () => {
       v-for="(video, index) in videos.items"
       :key="index"
       class="d-flex max-w-xl flex-col items-start justify-between border-b pt-2 pb-2">
-      <!-- <div class="group relative">
-        <h4
-          class="text-md font-semibold leading-6 text-gray-900 group-hover:text-gray-600">
-          <a :href="post.link" target="_blank">
-            <span class="absolute inset-0" />
-            <span class="overflow-ellipsis" v-html="post.title" />
-          </a>
-        </h4>
-        <p
-          class="mt-1 line-clamp-3 text-sm leading-6 text-gray-500"
-          v-html="post.description"></p>
-      </div> -->
       <iframe
-        width="320"
-        height="180"
+        :width="type ? 432 : 320"
+        :height="type ? 243 : 180"
         :src="`https://www.youtube.com/embed/${video.id.videoId}`"
         frameborder="0"
         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"

@@ -1,6 +1,6 @@
 <script setup>
 import { ref } from "vue";
-import { getRegion, getAllAttraction, getAttraction } from "@/api/attraction";
+import { getRegion, getAllAttraction } from "@/api/attraction";
 import { useMapStore } from "@/stores/map";
 
 const mapStore = useMapStore();
