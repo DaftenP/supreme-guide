@@ -7,10 +7,11 @@ import MapComponent from "@/components/commons/MapComponent.vue";
 import PhotoUpload from "../item/PhotoUpload.vue";
 import authClient from "@/api/authClient";
 import { useMapStore } from "@/stores/map";
+import { useUserStore } from "@/stores/userStore";
 import noAuthClient from "@/api/noAuthClient";
 
 const mapStore = useMapStore();
-
+const userStore = useUserStore();
 const route = useRoute();
 const router = useRouter();
 
@@ -85,31 +86,43 @@ onMounted(async () => {
 </script>
 
 <template>
-  <div class="container my-5">
+  <div class="blog-post">
+    <div class="col-lg-8">
+      <h2 class="blog-post-title font-style">HotPlace 수정</h2>
+    </div>
+    <p class="blog-post-meta">
+      {{ new Date().toLocaleDateString() }} by
+      <a href="#">{{ userStore.userId }}</a>
+    </p>
+
     <div class="row justify-content-center">
-      <div class="col-md-6">
+      <div class="col-md-6 map-container">
         <MapComponent
           :searchPlaces="searchQuery"
           ref="mapComponentRef"></MapComponent>
       </div>
-      <div class="col-md-6">
+      <div class="col-md-5 form-container">
         <div class="search-box mb-4">
           <input
             v-model="searchQuery"
             placeholder="장소 검색"
-            class="form-control" />
-          <button @click="searchPlaces" class="btn btn-primary mt-2">
-            검색
+            class="form-control search-input" />
+          <button
+            @click="searchPlaces"
+            class="btn btn-primary mt-2 search-button">
+            <font-awesome-icon
+              :icon="['fas', 'magnifying-glass']"
+              style="color: #ffffff" />
           </button>
         </div>
         <form @submit.prevent="modifyHotplace" class="form-needs">
-          <div class="form-group mb-3">
-            <label for="title">장소명</label>
+          <div class="title_line mb-3">
+            <label for="title">제목</label>
             <input
-              type="text"
               id="title"
               v-model="hotplace.hotplaceName"
-              class="form-control"
+              class="form-control title-input"
+              placeholder="여기에 제목을 적어주세요"
               required />
           </div>
           <div class="form-group mb-3">
@@ -127,12 +140,19 @@ onMounted(async () => {
             </select>
           </div>
           <div class="form-group mb-3">
-            <label for="description">설명</label>
+            <label for="content">설명</label>
             <textarea
               id="description"
               v-model="hotplace.comment"
               class="form-control"
+              rows="5"
+              placeholder="내용을 여기에 입력하세요..."
               required></textarea>
+          </div>
+          <div class="form-group mb-3">
+            <label for="selected-place">선택한 장소</label>
+            <div>{{ mapStore.attractionInfo.title }}</div>
+            <div>{{ mapStore.attractionInfo.address }}</div>
           </div>
           <div class="form-group mb-3">
             <label>이미지 첨부</label>
@@ -141,7 +161,7 @@ onMounted(async () => {
               :height="'100%'"
               @update:image="updateImage" />
           </div>
-          <button type="submit" class="btn btn-success">등록</button>
+          <button type="submit" class="btn btn-success">수정</button>
         </form>
       </div>
     </div>
@@ -150,37 +170,149 @@ onMounted(async () => {
 
 <style scoped>
 #div-map {
-  height: 600px !important;
+  height: 500px !important;
+  width: 500px !important;
 }
-.container {
-  max-width: 960px;
-  margin: auto;
+.map-container {
+  border: 2px solid white; /* 액자 효과 */
+  padding: 10px;
+
+  overflow: hidden;
+  /* margin-right: 20px; */
 }
+
+.form-container {
+  background-color: #f9f9f9; /* 공지사항 스타일 */
+  padding: 20px;
+  border-radius: 5px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  max-width: 800px;
+}
+
+.search-box {
+  display: flex;
+  align-items: center;
+}
+
+.search-input {
+  border-radius: 4px;
+  border: 1px solid #ced4da;
+  padding: 10px;
+  width: calc(100% - 45px);
+  margin-right: 10px;
+}
+
+.search-button {
+  background-color: #007bff;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 4px;
+  color: #ffffff;
+}
+
+.form-needs .form-group {
+  margin-bottom: 15px;
+}
+
 .form-needs .form-group label {
   font-weight: bold;
 }
-.form-needs .form-group input,
-.form-needs .form-group select,
-.form-needs .form-group textarea {
-  margin-top: 0.5rem;
+
+.form-needs .form-control,
+.form-needs .form-select {
+  border-radius: 5px;
+  padding: 10px;
+  border: 1px solid #ccc;
 }
 
-.left-panel {
-  width: 50%;
-  padding: 20px;
+.form-needs textarea.form-control {
+  resize: vertical;
 }
-.right-panel {
-  width: 50%;
-  padding: 20px;
+
+.form-needs .btn-success {
+  background-color: #28a745;
+  border-color: #28a745;
 }
-.map {
-  width: 100%;
-  height: 500px;
+
+.font-style {
+  font-family: "CustomFont";
+  font-size: 50px;
 }
-.search-box {
-  margin-bottom: 20px;
+
+.blog-post {
+  margin: 2rem auto;
+  padding: 2rem;
+  background-color: white;
+  border-radius: 0.5rem;
+  box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+  max-width: 1200px;
 }
-.selected {
-  background-color: yellow;
+
+.blog-post-title {
+  margin-bottom: 1rem;
+  font-size: 2rem;
+  font-weight: 600;
+}
+
+.blog-post-meta {
+  margin-bottom: 2rem;
+  color: #6c757d;
+}
+
+.title-line {
+  margin-bottom: 1.5rem;
+  border-bottom: 2px solid #ccc;
+}
+
+.title-input {
+  border-radius: 4px;
+  border: 1px solid #ced4da;
+  padding: 10px;
+}
+
+.title-placeholder {
+  position: absolute;
+  top: -0.8em;
+  left: 0;
+  background-color: #f8f9fa;
+  padding: 0 0.5em;
+  color: #6c757d;
+  font-style: italic;
+}
+
+.form-select {
+  border-radius: 4px;
+  border: 1px solid #ced4da;
+  padding: 10px;
+}
+
+.form-control {
+  border-radius: 4px;
+  border: 1px solid #ced4da;
+  padding: 10px;
+}
+
+.btn-success {
+  background-color: #28a745;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 4px;
+  color: #ffffff;
+}
+
+.btn-primary {
+  background-color: #007bff;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 4px;
+  color: #ffffff;
+}
+
+.form-group label {
+  font-weight: bold;
+}
+
+.form-group div {
+  margin-bottom: 5px;
 }
 </style>

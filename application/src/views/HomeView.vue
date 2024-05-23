@@ -75,6 +75,7 @@ onMounted(() => {
 onBeforeMount(async () => {
   await fetchHotPlaces();
 });
+
 </script>
 
 <template>
