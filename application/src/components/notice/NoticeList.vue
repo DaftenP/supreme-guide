@@ -6,7 +6,6 @@ import Cookies from "vue-cookies";
 import { useUserStore } from "@/stores/userStore";
 import noAuthClient from "@/api/noAuthClient";
 
-
 const userStore = useUserStore();
 const router = useRouter();
 const key = ref("");
@@ -98,7 +97,6 @@ const goDetail = (id) => {
     },
   });
 };
-
 </script>
 
 <template>
@@ -136,7 +134,8 @@ const goDetail = (id) => {
           <div
             class="card h-100"
             @click="goDetail(notice.noticeId)"
-            :data-aos="'fade-up'">
+            :data-aos="'fade-up'"
+            :data-aos-delay="index * 100">
             <div class="card-body">
               <h5 class="card-title">
                 {{ notice.noticeTitle }}
@@ -146,8 +145,12 @@ const goDetail = (id) => {
               <br />
               <div class="card-text d-flex">
                 <p>
-                {{ new Date(notice.noticeCreateDate).toLocaleDateString('ko-KR') }}
-              </p>
+                  {{
+                    new Date(notice.noticeCreateDate).toLocaleDateString(
+                      "ko-KR"
+                    )
+                  }}
+                </p>
               </div>
               <p>
                 {{ notice.noticeWriter }}
@@ -162,7 +165,7 @@ const goDetail = (id) => {
         type="button"
         class="btn btn-sm"
         id="font-small"
-         v-if="userStore.userId != ''"
+        v-if="userStore.userId != ''"
         @click="movePage">
         공지사항 등록
         <font-awesome-icon
