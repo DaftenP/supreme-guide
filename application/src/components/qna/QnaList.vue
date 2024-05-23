@@ -139,7 +139,8 @@ const goDetail = (id) => {
           <div
             class="card h-100"
             @click="goDetail(qna.qnaId)"
-            :data-aos="'fade-up'">
+            :data-aos="'fade-up'"
+            :data-aos-delay="index * 100">
             <div class="card-body">
               <h5 class="card-title">
                 {{ qna.qnaTitle }}
@@ -150,8 +151,8 @@ const goDetail = (id) => {
               <br />
               <div class="card-text d-flex">
                 <p>
-                {{ new Date(qna.qnaCreateDate).toLocaleDateString('ko-KR') }}
-              </p>
+                  {{ new Date(qna.qnaCreateDate).toLocaleDateString("ko-KR") }}
+                </p>
               </div>
               <p>
                 {{ qna.qnaWriter }}

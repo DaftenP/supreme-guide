@@ -10,6 +10,8 @@ import { useMapStore } from "@/stores/map";
 const mapStore = useMapStore();
 const error = ref(null);
 const map = ref();
+const hotplaceMarkerList = ref([]);
+const newMarkerList = ref([]);
 const props = defineProps({
   attractions: Object,
   searchPlaces: String,
@@ -68,11 +70,12 @@ const placesSearchCB = (data, status) => {
       });
 
       newMarkerList.value.push(markerItem);
+
       bounds.extend(new kakao.maps.LatLng(Number(marker.y), Number(marker.x)));
     }
 
-    markerList.value = newMarkerList.value;
-    console.log(markerList.value);
+    hotplaceMarkerList.value = newMarkerList.value;
+
     map.value.setBounds(bounds);
   } else {
     console.error("검색 실패:", status);
@@ -168,6 +171,33 @@ defineExpose({
         @mouseOutKakaoMapMarker="mouseOutKakaoMapMarker(attraction)"
         @onClickKakaoMapMarker="onClickMapMarker(attraction)" />
 
+      <KakaoMapMarker
+        v-for="(marker, index) in newMarkerList"
+        :key="index"
+        :lat="marker.lat"
+        :lng="marker.lng"
+        :title="marker.title"
+        :clickable="true"
+        :infoWindow="{
+          content: `
+            <span class=&quot;border border-2 rounded &quot;>${marker.title}</span>
+          `,
+          visible: marker.visible == true,
+        }"
+        @onClickKakaoMapMarker="onClickMapMarker(marker)"
+        @mouseOverKakaoMapMarker="
+          () => {
+            mouseOverKakaoMapMarker(marker);
+            console.log('Mouse Over:', marker);
+          }
+        "
+        @mouseOutKakaoMapMarker="
+          () => {
+            mouseOutKakaoMapMarker(marker);
+            console.log('Mouse Out:', marker);
+          }
+        " />
+
       <KakaoMapMarkerPolyline
         v-if="tripList"
         :markerList="markerList"
@@ -175,7 +205,6 @@ defineExpose({
         strokeColor="#C74C5E"
         :strokeOpacity="1"
         strokeStyle="shortdot" />
-
     </KakaoMap>
   </div>
 </template>
