@@ -68,10 +68,7 @@ KakaoMap과 공공데이터를 기반으로 만들어진 웹 서비스 **YJTrip*
 ---
 #### 프로젝트 시연 영상
 
-<video width="600" controls>
-  <source src="./presentation/project시연영상.mp4" type="video/mp4">
-  Your browser does not support the video tag.
-</video>
+[여기에서 시연영상을 보실 수 있습니다.](./presentation/project시연영상.mp4)
 
 #### ppt 발표자료
 [여기에서 ppt자료를 보실 수 있습니다.](./presentation/YJTrip_최종발표.pptx)
